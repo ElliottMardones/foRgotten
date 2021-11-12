@@ -37,7 +37,7 @@ The function returns a list with subsets of data.
 $boot: List of data.frame for each of the generated commands, contains the following components:
 \item{From}{Indicates the origin of the forgotten effects relationships.}
 \item{Through_x}{Dynamic field representing the intermediate relationships of the forgotten effects.
-For example, for order n there will be "though_1" up to "though_ <n-1>" \eqn{though_(n-1)}.}
+For example, for order n there will be "Through_1" up to "Through_ <n-1>" \eqn{Through_(n-1)}.}
 \item{To}{Indicates the end of the forgotten effects relationships.}
 \item{Count}{Number of times the forgotten effect was repeated.}
 \item{Mean}{Mean effect of the forgotten effect.}
@@ -49,7 +49,7 @@ $byExperts: List of data.frames for each of the generated orders that contains t
 values for each of the relationships found by the expert, the components are:
 \item{From}{Indicates the origin of the forgotten effects relationships.}
 \item{Through_x}{Dynamic field representing the intermediate relationships of the forgotten effects.
-For example, for order n there will be "though_1" up to "though_ <n-1>".}
+For example, for order n there will be "Through_1" up to "Through_<n-1>".}
 \item{To}{Indicates the end of the forgotten effects relationships.}
 \item{Count}{Number of times the forgotten effect was repeated.}
 \item{Expert_x}{Dynamic field that represent each of the entered experts.}

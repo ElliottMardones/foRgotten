@@ -80,7 +80,7 @@ The package provides five functions:
 ?directEffects
 ```
 
-Computes the mean incidence, lower confidence interval, and p-value with multiple key informants for complete graphs and chain bipartite graphs. For more details, see help (de.sq).
+Computes the mean incidence, upper confidence interval, and p-value with multiple key informants for complete graphs and chain bipartite graphs. For more details, see help (de.sq).
 
 ```{r echo=TRUE}
 ?bootMargin

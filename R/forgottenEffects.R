@@ -38,7 +38,7 @@
 
 #' \item{From}{Indicates the origin of the forgotten effects relationships.}
 #' \item{Through_x}{Dynamic field representing the intermediate relationships of the forgotten effects.
-#' For example, for order n there will be "though_1" up to "though_ <n-1>" \eqn{though_(n-1)}.}
+#' For example, for order n there will be "Through_1" up to "Through_ <n-1>" \eqn{Through_(n-1)}.}
 #' \item{To}{Indicates the end of the forgotten effects relationships.}
 #' \item{Count}{Number of times the forgotten effect was repeated.}
 #' \item{Mean}{Mean effect of the forgotten effect.}
@@ -50,7 +50,7 @@
 #' values for each of the relationships found by the expert, the components are:
 #' \item{From}{Indicates the origin of the forgotten effects relationships.}
 #' \item{Through_x}{Dynamic field representing the intermediate relationships of the forgotten effects.
-#' For example, for order n there will be "though_1" up to "though_ <n-1>".}
+#' For example, for order n there will be "Through_1" up to "Through_<n-1>".}
 #' \item{To}{Indicates the end of the forgotten effects relationships.}
 #' \item{Count}{Number of times the forgotten effect was repeated.}
 #' \item{Expert_x}{Dynamic field that represent each of the entered experts.}
@@ -127,7 +127,7 @@ fe.sq <- function(CC, thr = 0.5, maxOrder = 2, reps = 10000, parallel = c("multi
 
 #' \item{From}{Indicates the origin of the forgotten effects relationships.}
 #' \item{Through_x}{Dynamic field representing the intermediate relationships of the forgotten effects.
-#' For example, for order n there will be "though_1" up to "though_ <n-1>" \eqn{though_(n-1)}.}
+#' For example, for order n there will be "Through_1" up to "Through_ <n-1>" \eqn{Through_(n-1)}.}
 #' \item{To}{Indicates the end of the forgotten effects relationships.}
 #' \item{Count}{Number of times the forgotten effect was repeated.}
 #' \item{Mean}{Mean effect of the forgotten effect.}
@@ -139,7 +139,7 @@ fe.sq <- function(CC, thr = 0.5, maxOrder = 2, reps = 10000, parallel = c("multi
 #' values for each of the relationships found by the expert, the components are:
 #' \item{From}{Indicates the origin of the forgotten effects relationships.}
 #' \item{Through_x}{Dynamic field representing the intermediate relationships of the forgotten effects.
-#' For example, for order n there will be "though_1" up to "though_ <n-1>".}
+#' For example, for order n there will be "Through_1" up to "Through_ <n-1>".}
 #' \item{To}{Indicates the end of the forgotten effects relationships.}
 #' \item{Count}{Number of times the forgotten effect was repeated.}
 #' \item{Expert_x}{Dynamic field that represent each of the entered experts.}
