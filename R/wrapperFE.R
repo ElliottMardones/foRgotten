@@ -78,6 +78,10 @@ wrapper.indirectEffects_R <- function(CC,CE,EE, thr, maxOrder,reps, parallel, nc
     CC            <- if( is.list(CC) == TRUE)  listo_to_Array3D(CC) else CC
     CE            <- if( is.list(CE) == TRUE)  listo_to_Array3D(CE) else CE
     EE            <- if( is.list(EE) == TRUE)  listo_to_Array3D(EE) else EE
+    if( is.na(dim(CC)[3]) & is.na(dim(CE)[3]) & is.na(dim(EE)[3])){
+        resultFE <- wrapper.FE_R(CC ,CE ,EE , thr, maxOrder)
+        return(resultFE)
+    }
     listOfExperts <- vector(mode ="list" ,length = dim(CC)[3])
     for(i in seq_len(dim(CC)[3])){
       resultFE <- wrapper.FE_R(CC[,,i],CE[,,i],EE[,,i], thr, maxOrder)
@@ -135,6 +139,10 @@ wrapper.indirectEffects_S <- function(AA, AB, thr, maxOrder,reps, parallel, ncpu
     parallel      <- ifelse( length(parallel) != 1, "no", parallel)
     AA            <- if( is.list(AA) == TRUE)  listo_to_Array3D(AA) else AA
     AB            <- if( is.list(AB) == TRUE)  listo_to_Array3D(AB) else AB
+    if( is.na(dim(AA)[3]) ){
+        resultFE <- wrapper.FE_S(AA,AB, thr,maxOrder)
+        return(resultFE)
+    }
     listOfExperts <- vector(mode ="list" ,length = dim(AA)[3])
     for(i in seq_len(dim(AA)[3])){
       ### wrapper.FE_S perform the forgotten effects calculation ###
