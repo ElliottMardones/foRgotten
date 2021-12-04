@@ -10,9 +10,24 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// feRcpp
-DataFrame feRcpp(NumericMatrix valueOverThreshold, NumericMatrix M1, NumericMatrix M2, NumericMatrix M3);
-RcppExport SEXP _foRgotten_feRcpp(SEXP valueOverThresholdSEXP, SEXP M1SEXP, SEXP M2SEXP, SEXP M3SEXP) {
+// fe
+List fe(NumericMatrix threshold, NumericMatrix CC, NumericMatrix CE, NumericMatrix EE, NumericMatrix M3);
+RcppExport SEXP _foRgotten_fe(SEXP thresholdSEXP, SEXP CCSEXP, SEXP CESEXP, SEXP EESEXP, SEXP M3SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type threshold(thresholdSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type CC(CCSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type CE(CESEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type EE(EESEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type M3(M3SEXP);
+    rcpp_result_gen = Rcpp::wrap(fe(threshold, CC, CE, EE, M3));
+    return rcpp_result_gen;
+END_RCPP
+}
+// fe_left
+DataFrame fe_left(NumericMatrix valueOverThreshold, NumericMatrix M1, NumericMatrix M2, NumericMatrix M3);
+RcppExport SEXP _foRgotten_fe_left(SEXP valueOverThresholdSEXP, SEXP M1SEXP, SEXP M2SEXP, SEXP M3SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -20,26 +35,42 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< NumericMatrix >::type M1(M1SEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type M2(M2SEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type M3(M3SEXP);
-    rcpp_result_gen = Rcpp::wrap(feRcpp(valueOverThreshold, M1, M2, M3));
+    rcpp_result_gen = Rcpp::wrap(fe_left(valueOverThreshold, M1, M2, M3));
     return rcpp_result_gen;
 END_RCPP
 }
-// maxminRcpp
-NumericMatrix maxminRcpp(NumericMatrix matrix_1, NumericMatrix matrix_2);
-RcppExport SEXP _foRgotten_maxminRcpp(SEXP matrix_1SEXP, SEXP matrix_2SEXP) {
+// fe_right
+DataFrame fe_right(NumericMatrix valueOverThreshold, NumericMatrix M1, NumericMatrix M2, NumericMatrix M3);
+RcppExport SEXP _foRgotten_fe_right(SEXP valueOverThresholdSEXP, SEXP M1SEXP, SEXP M2SEXP, SEXP M3SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type valueOverThreshold(valueOverThresholdSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type M1(M1SEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type M2(M2SEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type M3(M3SEXP);
+    rcpp_result_gen = Rcpp::wrap(fe_right(valueOverThreshold, M1, M2, M3));
+    return rcpp_result_gen;
+END_RCPP
+}
+// maxmin_rcpp
+NumericMatrix maxmin_rcpp(NumericMatrix matrix_1, NumericMatrix matrix_2);
+RcppExport SEXP _foRgotten_maxmin_rcpp(SEXP matrix_1SEXP, SEXP matrix_2SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type matrix_1(matrix_1SEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type matrix_2(matrix_2SEXP);
-    rcpp_result_gen = Rcpp::wrap(maxminRcpp(matrix_1, matrix_2));
+    rcpp_result_gen = Rcpp::wrap(maxmin_rcpp(matrix_1, matrix_2));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_foRgotten_feRcpp", (DL_FUNC) &_foRgotten_feRcpp, 4},
-    {"_foRgotten_maxminRcpp", (DL_FUNC) &_foRgotten_maxminRcpp, 2},
+    {"_foRgotten_fe", (DL_FUNC) &_foRgotten_fe, 5},
+    {"_foRgotten_fe_left", (DL_FUNC) &_foRgotten_fe_left, 4},
+    {"_foRgotten_fe_right", (DL_FUNC) &_foRgotten_fe_right, 4},
+    {"_foRgotten_maxmin_rcpp", (DL_FUNC) &_foRgotten_maxmin_rcpp, 2},
     {NULL, NULL, 0}
 };
 

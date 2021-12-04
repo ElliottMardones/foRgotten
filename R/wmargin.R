@@ -3,7 +3,6 @@
 #' @import ggplot2
 #' @import ggsci
 #' @import ggrepel
-#'
 plotBootMargin <-function(dataSet,axesLimits=""){
   data <- list(Drivers =dataSet$byRow, Dependance =  dataSet$byCol)
   data$Drivers$varname<- dataSet$byRow$Var

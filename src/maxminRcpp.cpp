@@ -4,7 +4,7 @@ using namespace std;
 
 //' @useDynLib foRgotten, .registration=TRUE
 // [[Rcpp::export]]
-NumericMatrix maxminRcpp(NumericMatrix matrix_1, NumericMatrix matrix_2) {
+NumericMatrix maxmin_rcpp(NumericMatrix matrix_1, NumericMatrix matrix_2) {
   int n = matrix_1.nrow();
   int m = matrix_1.ncol();
   int l = matrix_2.ncol();
