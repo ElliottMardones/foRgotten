@@ -87,8 +87,7 @@ wrapper.FE <- function( CC, CE, EE, thr, maxOrder, reps, parallel, ncpus ){
         # 2) resolver para cuando solo existe un experto
         if( is.na(dim(CC)[3]) & is.na(dim(CE)[3]) & is.na(dim(EE)[3])){
             response <- call.FE.recursive(CC = CC, CE = CE, EE = EE, THR = thr, maxOrder = maxOrder)
-            # agregar el putOrder
-            return(response)
+            return(putOrder(response))
         }
         # 3) resolver para multiples expertos (efectos conjugados)
         list_of_experts <- vector(mode ="list" ,length = dim(CC)[3])
