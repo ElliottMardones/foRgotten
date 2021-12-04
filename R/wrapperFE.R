@@ -16,7 +16,7 @@ wrapper.FE <- function( CC, CE, EE, thr, maxOrder, reps, parallel, ncpus ){
         }
         # 3) resolver para multiples expertos por izquierda
         list_of_experts <- vector(mode ="list" ,length = dim(CE)[3])
-        for(i in seq_len(dim(CC)[3])){
+        for(i in seq_len(dim(CE)[3])){
             response <- call.FE.recursive(CC = CC[,,i], CE = CE[,,i], EE = NULL, THR = thr, maxOrder = maxOrder)
             if(length(response) == 0){
                 warning("Expert number ", i," has no 2nd order or higher effects.")
@@ -53,7 +53,7 @@ wrapper.FE <- function( CC, CE, EE, thr, maxOrder, reps, parallel, ncpus ){
         }
         # 3) resolver para multiples expertos por derecha
         list_of_experts <- vector(mode ="list" ,length = dim(CE)[3])
-        for(i in seq_len(dim(CC)[3])){
+        for(i in seq_len(dim(CE)[3])){
             response <- call.FE.recursive(CC = NULL, CE = CE[,,i], EE = EE[,,i], THR = thr, maxOrder = maxOrder)
             if(length(response) == 0){
                 warning("Expert number ", i," has no 2nd order or higher effects.")
@@ -92,7 +92,7 @@ wrapper.FE <- function( CC, CE, EE, thr, maxOrder, reps, parallel, ncpus ){
         }
         # 3) resolver para multiples expertos (efectos conjugados)
         list_of_experts <- vector(mode ="list" ,length = dim(CC)[3])
-        for(i in seq_len(dim(CC)[3])){
+        for(i in seq_len(dim(CE)[3])){
             response <- call.FE.recursive(CC = CC[,,i], CE = CE[,,i], EE = EE[,,i], THR = thr, maxOrder = maxOrder)
             if( length(response) == 0){
                 warning("Expert number ", i," has no 2nd maxOrder or higher effects.")
