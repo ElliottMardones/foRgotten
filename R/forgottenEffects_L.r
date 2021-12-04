@@ -10,6 +10,7 @@ assign_global <- function( xVal, valVal){
 }
 
 leftHandPath <- function(data_set, original_matrix){
+
   lengthDataSet  <- length(data_set)
   nextGeneration <- 0
   for(experts in seq_len(lengthDataSet)) {

@@ -168,3 +168,7 @@ fe.rect <- function(CC, CE, EE, thr = 0.5, maxOrder = 2, reps = 10000, parallel 
   return(output)
 }
 
+FE <- function(CC, CE, EE, thr = 0.5, maxOrder = 2, reps = 10000, parallel = c("multicore","snow","no"), ncpus = 1){
+    output <- wrapper.FE( CC =CC, CE = CE, EE =EE, thr = thr, maxOrder = maxOrder, reps =reps , parallel =parallel , ncpus = ncpus)
+    return(output)
+}

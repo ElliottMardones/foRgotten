@@ -63,6 +63,7 @@ right.recursive.ForgottenEfects <- function(AB, BB, secondGeneration, THR, order
     currentOrder     <- AB
     BB<- data.matrix(BB, rownames.force = NA)
     nextOrder        <- maxminRcpp(currentOrder, BB)
+    #debo pasar el acumulado del orden anterior para poder hacer la resta
     secondGeneration <- (nextOrder - currentOrder)
     right.recursive.ForgottenEfects(nextOrder, BB, secondGeneration, THR, order )
     counter_1_right  <- (counter_1_right + 1)
