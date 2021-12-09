@@ -19,7 +19,7 @@ plotBootMargin <-function(dataSet,axesLimits=""){
     ggrepel::geom_text_repel(aes(x=data$Dependance$Mean,y=data$Drivers$Mean,
                                  label=data$Dependance$varname),alpha=1,col="black")+
     ggsci::scale_colour_ucscgb("Variables",palette = "default",alpha=1)+
-    ggplot2::labs(x="Dependance",y="Influence")#+
+    ggplot2::labs(x="Dependence",y="Influence")#+
   #theme_dark()+
   #theme(legend.position = "none")
   if(axesLimits=="auto"){

@@ -83,7 +83,7 @@ strsplit_function <- function(newData){
     Data      <- newData[1]
     df_output <- data.frame(Data="")
     for( i in seq_len(nrow(Data))){
-        output   <- strsplit(Data[i,], " -> ")[[1]]
+        output   <- strsplit(Data[i,], " -> ")[[1]] # puede que strsplit cause la nota
         for(j in seq_len(length(output))){
             df_output[i,j] <- output[j]
         }

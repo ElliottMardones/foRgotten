@@ -61,7 +61,9 @@
 #' # For instance:
 #' centrality( CC = AA, CE = AB, EE= BB, model = "median", reps = 100)
 centrality <- function(CC, CE = NULL, EE = NULL, model = c("conpl", "conlnorm","median") , reps = 10000, conf = 0.95, parallel=c("multicore","snow","no") , ncpus = 1){
-  output <- bootCent( CC = CC, CE = CE, EE = EE, model = model, reps =reps, conf = conf, parallel = parallel, ncpus = ncpus)
-  return(output)
+
+    output <- bootCent( CC = CC, CE = CE, EE = EE, model = model, reps =reps, conf = conf, parallel = parallel, ncpus = ncpus)
+
+    return(output)
 }
 

@@ -3,7 +3,8 @@ wrapper.FE <- function( CC, CE, EE, thr, maxOrder, reps, parallel, ncpus ){
     # agregar valicaciones
     # agregar validacion para parallel y ncpus
     parallel <- ifelse( length(parallel) != 1, "no", parallel)
-
+    # agregar validaciones para las dimensiones de las matrices (m1: col = m2: row, m2:col = m3:row)
+    # que pasa si una de las matrices de los laterales no esta presente???.
     if( is.null(EE) ){
         # derecha o cuadrada
         # 1) validacion de datos por izquierda

@@ -10,7 +10,7 @@ Description: The foRgotten library extends the theory of forgotten effects with 
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports: Rcpp (>= 1.0.7), igraph, wBoot, poweRlaw, boot, ggplot2, ggsci,ggrepel
+Imports: Rcpp (>= 1.0.7), igraph, wBoot, poweRlaw, boot, ggplot2, ggsci,ggrepel, stats
 LinkingTo: Rcpp
 RoxygenNote: 7.1.2
 Depends: 
