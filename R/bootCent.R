@@ -1,9 +1,6 @@
 #' @import boot
 #' @import poweRlaw
 
-
-
-
 bs_median_function <- function(data, statistic, R, parallel, ncpus){
   output <- tryCatch(
     bs_median <- boot(data = data, statistic = statistic, R = R, parallel = parallel, ncpus= ncpus), error = function(e) NULL
@@ -11,7 +8,7 @@ bs_median_function <- function(data, statistic, R, parallel, ncpus){
   return(output)
 }
 
-conpl_function <- function(resultCent, R, conf,  parallel, ncpus ){
+conpl_function <- function(resultCent, R, conf.BCa, conf.pl,  parallel, ncpus ){
   cent_table<-data.frame(Var=colnames(resultCent),Median=0,LCI=0,UCI=0, Method=0, pValue = 0.0)
   for(j in seq_len(nrow(cent_table))){
     col <- resultCent[ resultCent[,j]!=0 ,j]
@@ -50,13 +47,13 @@ conpl_function <- function(resultCent, R, conf,  parallel, ncpus ){
                 cent_table[j,5] <- "median"
                 cent_table[j, 6]  <- NA
             }else{
-                cent_ci<-boot.ci(bs_median,conf = conf,type = "bca")
+                cent_ci<-boot.ci(bs_median,conf = conf.BCa,type = "bca")
                 cent_table[j,2:4]<-cbind(bs_median$t0,cent_ci$bca[4],cent_ci$bca[5])
                 cent_table[j, 5]<- "median"
                 cent_table[j, 6]  <- NA
             }
         }else{
-            cent_ci           <- boot.ci(bs_median,conf = conf,type = "bca")
+            cent_ci           <- boot.ci(bs_median,conf = conf.BCa,type = "bca")
             cent_table[j,2:4] <- cbind(bs_median$t0,cent_ci$bca[4],cent_ci$bca[5])
             cent_table[j, 5]  <- "conpl"
             #
@@ -66,8 +63,8 @@ conpl_function <- function(resultCent, R, conf,  parallel, ncpus ){
             bsp <- poweRlaw::bootstrap_p(m_pl, no_of_sims=R, threads=ncpus)
             cent_table[j, 6]  <- bsp$p
 
-            if( bsp$p <= (1 - conf )){
-                cent_ci<-boot.ci(bs_median,conf = conf,type = "bca")
+            if( bsp$p <= (1 - conf.pl )){
+                cent_ci<-boot.ci(bs_median,conf = conf.BCa,type = "bca")
                 cent_table[j,2:4]<-cbind(bs_median$t0,cent_ci$bca[4],cent_ci$bca[5])
                 cent_table[j, 5]<- "median"
                 cent_table[j, 6]  <- NA
@@ -78,72 +75,7 @@ conpl_function <- function(resultCent, R, conf,  parallel, ncpus ){
   return(cent_table)
 }
 
-conlnorm_function <- function(resultCent, R, conf,  parallel, ncpus){
-  #browser()
-  cent_table<-data.frame(Var=colnames(resultCent),Median=0,LCI=0,UCI=0, Method=0, pValue = 0)#
-  for(j in seq_len(nrow(cent_table))){
-      col <- #resultCent[ resultCent[,j]!=0 ,j]
-      col <- resultCent[,j]
-      browser()
-      assign_global("dist_rand", poweRlaw::dist_rand)
-      assign_global("estimate_xmin", poweRlaw::estimate_xmin)
-      #
-      if( length(col) == 0){
-          cent_table[j,2] <- 0
-          cent_table[j,3] <- 0
-          cent_table[j,4] <- 0
-          cent_table[j,5] <- "median length(col) == 0"
-          cent_table[j, 6]  <- NA
-      }else if(sd(col) == 0){
-          cent_table[j,2] <- col[1]
-          cent_table[j,3] <- col[1]
-          cent_table[j,4] <- col[1]
-          cent_table[j,5] <- "median sd(col) == 0"
-          cent_table[j, 6]  <- NA
-      }else{
-          bs_median <- bs_median_function(data=col, statistic=sample_ln, R=R, parallel=parallel, ncpus=ncpus)
-          if(is.null(bs_median)){
-              bs_median <- boot(data = col, statistic = sample_median, R = R, parallel = parallel, ncpus= ncpus)
-              if( bs_median$t0 == 0){
-                  cent_table[j,2] <- 0
-                  cent_table[j,3] <- 0
-                  cent_table[j,4] <- 0
-                  cent_table[j,5] <- "median"
-              }
-              else if( length(unique(col) == 1)){
-                  cent_table[j,2] <- unique(col)
-                  cent_table[j,3] <- unique(col)
-                  cent_table[j,4] <- unique(col)
-                  cent_table[j,5] <- "median"
-                  cent_table[j, 6]  <- NA
-              }else{
-                  cent_ci<-boot.ci(bs_median,conf = conf,type = "bca")
-                  cent_table[j,2:4]<-cbind(bs_median$t0,cent_ci$bca[4],cent_ci$bca[5])
-                  cent_table[j, 5]<- "median"
-                  cent_table[j, 6]  <- NA
-              }
-          }else{
-              cent_ci           <- boot.ci(bs_median,conf = conf,type = "bca")
-              cent_table[j,2:4] <- cbind(bs_median$t0,cent_ci$bca[4],cent_ci$bca[5])
-              cent_table[j, 5]  <- "conlnorm"
-              m_pl <- conlnorm$new(col)
-              est <- estimate_xmin(m_pl, xmax= max(col)*2)
-              m_pl$setXmin(est)
-              bsp <- poweRlaw::bootstrap_p(m_pl, no_of_sims=R, threads=ncpus)
-              #
-              cent_table[j, 6]  <- bsp$p
 
-              if( bsp$p <= (1 - conf )){
-                  cent_ci<-boot.ci(bs_median,conf = conf,type = "bca")
-                  cent_table[j,2:4]<-cbind(bs_median$t0,cent_ci$bca[4],cent_ci$bca[5])
-                  cent_table[j, 5]<- "median"
-                  cent_table[j, 6]  <- NA
-              }
-          }
-      }
-  }
-  return(cent_table)
-}
 
 resultBoot_median <- function(resultCent, parallel, reps, ncpus, conf){
   cent_table<-data.frame(Var=colnames(resultCent),Median=0,LCI=0,UCI=0, Method = 0, pValue = 0)#
@@ -178,7 +110,7 @@ resultBoot_median <- function(resultCent, parallel, reps, ncpus, conf){
             cent_table[j,5] <- "median"
             cent_table[j, 6]  <- NA
         }else{
-            cent_ci<-boot.ci(bs_median,conf = conf,type = "bca")
+            cent_ci<-boot.ci(bs_median,conf = conf.BCa,type = "bca")
             cent_table[j,2:4]<-cbind(bs_median$t0,cent_ci$bca[4],cent_ci$bca[5])
             cent_table[j, 5]<- "median"
             cent_table[j, 6]  <- NA
@@ -188,47 +120,37 @@ resultBoot_median <- function(resultCent, parallel, reps, ncpus, conf){
   return(cent_table)
 }
 
-bootCent <- function(CC, CE, EE, model, reps, conf, parallel, ncpus){
+bootCent <- function(CC, CE, EE, model, reps, conf.BCa ,conf.pl , parallel, ncpus){
     ofuss <- .GlobalEnv
     assign_global <- function( xVal, valVal){
         assign(xVal, valVal, envir = ofuss)
     }
   if( !is.null(CE) & !is.null(EE)){
-    CC <- BTCgraphs_centrality(CC = CC, CE = CE, EE = EE)
+    CE <- BTCgraphs_centrality(CC = CC, CE = CE, EE = EE)
   }
-  if( missing(CC)){
+  if( missing(CE)){
     warning("Parameter CC is missing, its required.")
     return(NULL)
   }else{
-    CC <- if( is.list(CC) == TRUE)  listo_to_Array3D(CC) else CC
-    if( nrow(CC) != ncol(CC)){
+    CE <- if( is.list(CE) == TRUE)  listo_to_Array3D(CE) else CE
+    if( nrow(CE) != ncol(CE)){
       warning("Only for square matrix.")
       return(NULL)
     }
-    output_resultIgraph <- resultIgraph(CC)
-    #cambiar aca
+    output_resultIgraph <- resultIgraph(CE)
+
     model <- ifelse( length(model) != 1, "median", model )
     parallel <- ifelse( length(parallel) != 1, "no", parallel)
 
     if(model == "conpl"){
-      pl <- conpl_function(resultCent=output_resultIgraph, parallel=parallel, R=reps, ncpus=ncpus, conf=conf)
+      pl <- conpl_function(resultCent=output_resultIgraph, parallel=parallel, R=reps, ncpus=ncpus, conf.BCa=conf.BCa, conf.pl = conf.pl)
       rm("dist_rand", envir = ofuss)
       rm("estimate_xmin", envir = ofuss)
       rm(ofuss, envir = ofuss)
       return(pl)
     }
-    else if(model == "conlnorm"){
-      ln <- conlnorm_function(resultCent=output_resultIgraph, parallel=parallel, R=reps, ncpus=ncpus, conf=conf)
-      rm("dist_rand", envir = ofuss)
-      rm("estimate_xmin", envir = ofuss)
-      rm(ofuss, envir = ofuss)
-      return(ln)
-    }
     else if(model == "median"){
-      median_resultBoot <- resultBoot_median(output_resultIgraph, parallel, reps, ncpus, conf= conf)
-      #rm("dist_rand", envir = ofuss)
-      #rm("estimate_xmin", envir = ofuss)
-      #rm(ofuss, envir = ofuss)
+      median_resultBoot <- resultBoot_median(output_resultIgraph, parallel, reps, ncpus, conf.BCa=conf.BCa)
       return(median_resultBoot)
     }
   }

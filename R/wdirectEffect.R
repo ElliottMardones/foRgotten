@@ -22,23 +22,23 @@ validations_de_rect <- function(CC, CE, EE){
   }
 }
 
-wrapper.de.sq <- function(CC, thr, conf.level, reps, delete){
-  if( missing(CC)){
+wrapper.de.sq <- function(CE, thr, conf.level, reps, delete){
+  if( missing(CE)){
     message("Parameter CC is missing, its required.")
     return(NULL)
   }else{
-    if(is.list(CC)){
-      CC <- listo_to_Array3D(CC)
+    if(is.list(CE)){
+      CE <- listo_to_Array3D(CE)
     }
     bootCC <- data.frame(From = character(), To = character(), Mean = numeric(), UCI= numeric(), p.value = numeric())
-    numdim  <- (dim(CC)[1] * dim(CC)[2] - dim(CC)[2] ) * dim(CC)[3]
-    rownamesData <- rownames(CC[,,1])
-    colnamesData <- colnames(CC[,,1])
+    numdim  <- (dim(CE)[1] * dim(CE)[2] - dim(CE)[2] ) * dim(CE)[3]
+    rownamesData <- rownames(CE[,,1])
+    colnamesData <- colnames(CE[,,1])
     vector_Value  <- numeric()
-    for(x in seq_len(dim(CC)[1]) ){
-      for( y in seq_len(dim(CC)[2]) ){
+    for(x in seq_len(dim(CE)[1]) ){
+      for( y in seq_len(dim(CE)[2]) ){
         if( x != y){
-          vector_Value <- CC[x,y,]
+          vector_Value <- CE[x,y,]
           valuesFromArrays <- (as.numeric(vector_Value))
           Data.CI<- boot.one.bca(valuesFromArrays,mean,null.hyp = thr, alternative = "less",R=reps, conf.level = conf.level)#agrege conf.level a boot.one.bca
           bootCC <- rbind( bootCC, data.frame(From = rownamesData[x],

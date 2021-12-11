@@ -49,12 +49,12 @@
 #' # For chain bipartite graphs the parameters CC, CE and EE are used.
 #' # For instance:
 #' directEffects(CC = AA, CE = AB, EE = BB, thr = 0.5, conf.level=0.95, reps = 100, delete = FALSE)
-directEffects <- function(CC, CE =NULL, EE=NULL, thr=0.5, conf.level=0.95, reps=10000, delete=FALSE){
+directEffects <- function(CC=NULL, CE =NULL, EE=NULL, thr=0.5, conf.level=0.95, reps=10000, delete=FALSE){
   if( !is.null(CE) & !is.null(EE)){
     output <- wrapper.de.rect(CC = CC, CE = CE , EE = EE, thr =thr, conf.level =conf.level, reps =reps, delete =delete)
     return(output)
   }else{
-    output <- wrapper.de.sq(CC = CC, thr = thr, conf.level = conf.level, reps =reps, delete =delete)
+    output <- wrapper.de.sq(CE = CE, thr = thr, conf.level = conf.level, reps =reps, delete =delete)
     return(output)
   }
 }

@@ -59,19 +59,19 @@ deconstructMatrix <- function(dataSet, AA, AB=NULL, BB=NULL){
 
 wrapper.BootMargin<-function(CC, CE, EE, thr, reps, conf.level, delete, plot){
   if( !is.null(CE) & !is.null(EE)){
-    CC <- BTCgraphs_bootMargin(CC = CC, CE = CE, EE = EE)
+    CE <- BTCgraphs_bootMargin(CC = CC, CE = CE, EE = EE)
   }
-  if( missing(CC)){
+  if( missing(CE)){
     message("Parameter CC is missing, its required.")
     return(NULL)
   }
-  if( nrow(CC) == ncol(CC)){
-    nn              <- nrow(CC)
-    promFilas       <- data.frame(Var=rownames(CC[,,1]),Mean=0,LCI= 0,UCI=0,p.value=0)
-    promColumnas    <- data.frame(Var=colnames(CC[,,1]),Mean=0,LCI= 0,UCI=0,p.value=0)
+  if( nrow(CE) == ncol(CE)){
+    nn              <- nrow(CE)
+    promFilas       <- data.frame(Var=rownames(CE[,,1]),Mean=0,LCI= 0,UCI=0,p.value=0)
+    promColumnas    <- data.frame(Var=colnames(CE[,,1]),Mean=0,LCI= 0,UCI=0,p.value=0)
     for(i in 1:nn){
       # fila: take data by rows
-      filasExp      <- (CC[i,,])[-i,]
+      filasExp      <- (CE[i,,])[-i,]
       fila          <- rowMeans(filasExp, na.rm = TRUE)
       fila          <- na.omit(fila)
       fila.CI       <- boot.one.bca(fila, sample_mean, null.hyp = thr ,
@@ -82,7 +82,7 @@ wrapper.BootMargin<-function(CC, CE, EE, thr, reps, conf.level, delete, plot){
       fila.p_value  <- fila.CI$p.value
       #####################################
       # columna: take data by columns
-      columnaExp      <- t(CC[,i,])[,-i]
+      columnaExp      <- t(CE[,i,])[,-i]
       columna         <- rowMeans(columnaExp, na.rm = TRUE)
       columna         <- na.omit(columna)
       columna.CI      <- boot.one.bca(columna, sample_mean, null.hyp = thr,
@@ -104,11 +104,11 @@ wrapper.BootMargin<-function(CC, CE, EE, thr, reps, conf.level, delete, plot){
         message("All data has been deleted...")
         return(NULL)
       }
-      new_CC     <- CC[promFilas$Var, promColumnas$Var, , drop = FALSE]
+      new_CC     <- CE[promFilas$Var, promColumnas$Var, , drop = FALSE]
       dataOutput <- list(Data=new_CC,byRow =  promFilas,byCol = promColumnas)
       if(plot == TRUE){
         myPlot     <- plotBootMargin(dataOutput)
-        if( !is.null(CE) & !is.null(EE)){
+        if( !is.null(CC) & !is.null(EE)){
           allMatrix <- deconstructMatrix(dataSet = new_CC, AA= CC, AB= CE, BB= EE)
           return(list(CC=allMatrix$AA, CE =allMatrix$AB, EE = allMatrix$BB, byRow =  promFilas, byCol = promColumnas,plot = myPlot ))
         }
@@ -118,7 +118,7 @@ wrapper.BootMargin<-function(CC, CE, EE, thr, reps, conf.level, delete, plot){
                            plot = myPlot )
         return(dataOutput)
       }else{
-        if( !is.null(CE) & !is.null(EE)){
+        if( !is.null(CC) & !is.null(EE)){
           allMatrix <- deconstructMatrix(dataSet = new_CC, AA= CC, AB= CE, BB= EE)
           return(list(CC=allMatrix$AA, CE =allMatrix$AB, EE = allMatrix$BB, byRow =  promFilas, byCol = promColumnas))
         }
