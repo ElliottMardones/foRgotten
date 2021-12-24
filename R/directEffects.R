@@ -45,10 +45,10 @@
 #' @examples
 #' #' # For complete graphs only the CC parameter is used.
 #' # For instance:
-#' directEffects(CC = AA, thr = 0.5, conf.level=0.95, reps = 100, delete = FALSE)
+#' directEffects(CE = CE, thr = 0.5, conf.level=0.95, reps = 100, delete = FALSE)
 #' # For chain bipartite graphs the parameters CC, CE and EE are used.
 #' # For instance:
-#' directEffects(CC = AA, CE = AB, EE = BB, thr = 0.5, conf.level=0.95, reps = 100, delete = FALSE)
+#' directEffects(CC = CC, CE = CE, EE = EE, thr = 0.5, conf.level=0.95, reps = 100, delete = FALSE)
 directEffects <- function(CC=NULL, CE =NULL, EE=NULL, thr=0.5, conf.level=0.95, reps=10000, delete=FALSE){
   if( !is.null(CC) & !is.null(EE)){
     output <- wrapper.de.rect(CC = CC, CE = CE , EE = EE, thr =thr, conf.level =conf.level, reps =reps, delete =delete)

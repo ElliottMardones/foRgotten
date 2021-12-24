@@ -5,7 +5,7 @@
 \title{Significant Direct Effects For Complete and Chain Bipartite Graphs}
 \usage{
 directEffects(
-  CC,
+  CC = NULL,
   CE = NULL,
   EE = NULL,
   thr = 0.5,
@@ -59,10 +59,10 @@ If you use the full graph mode, make sure to keep the default values of the CE a
 \examples{
 #' # For complete graphs only the CC parameter is used.
 # For instance:
-directEffects(CC = AA, thr = 0.5, conf.level=0.95, reps = 100, delete = FALSE)
+directEffects(CE = CE, thr = 0.5, conf.level=0.95, reps = 100, delete = FALSE)
 # For chain bipartite graphs the parameters CC, CE and EE are used.
 # For instance:
-directEffects(CC = AA, CE = AB, EE = BB, thr = 0.5, conf.level=0.95, reps = 100, delete = FALSE)
+directEffects(CC = CC, CE = CE, EE = EE, thr = 0.5, conf.level=0.95, reps = 100, delete = FALSE)
 }
 \references{
 https://cran.r-project.org/web/packages/wBoot/index.html

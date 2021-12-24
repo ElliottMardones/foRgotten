@@ -81,7 +81,7 @@ The parallel and ncpus options are not available on Windows operating systems.
 # To perform the calculation of the forgotten effects for a chain bipartite graph with
 # a degree of truth equal to 0.5, maximum order of effects to be calculated equal to 2 and
 # 500 bootstrap replicas, use:
-FE( CC = AA, CE = AB, EE = BB, thr = 0.5, maxOrder = 2, reps = 500, parallel = "no", ncpus = 1)
+FE( CC = CC, CE = CE, EE = EE, thr = 0.5, maxOrder = 2, reps = 500, parallel = "no", ncpus = 1)
 }
 \references{
 Kaufmann, A., & Aluja, J. G. (1988). Modelos para la investigación de efectos olvidados. Milladoiro.

@@ -19,7 +19,9 @@
 #' and reflective incidence matrices. Each matrix represents a complete graph.
 #' By default EE = NULL.
 #'
-#' @param thr Real between [0,1]: Defines the degree of truth for which the incidence
+#' @param thr.cause Real between [0,1]: Defines the degree of truth for which the incidence
+#' is considered significant. By default thr = 0.5.
+#' @param thr.effect Real between [0,1]: Defines the degree of truth for which the incidence
 #' is considered significant. By default thr = 0.5.
 
 #' @param reps The number of bootstrap replicas. By befault reps = 10.000.
@@ -63,13 +65,10 @@
 #' @references
 #' https://cran.r-project.org/web/packages/wBoot/index.html
 #' @examples
-#' # For complete graphs only the CC parameter is used.
-#' # For instance:
-#' bootMargin(CC = AA, thr = 0.5, reps = 500)
 #' # For chain bipartite graphs the parameters CC, CE and EE are used.
 #' # For instance:
-#' bootMargin(CC = AA, CE = AB, EE = BB, thr = 0.5, reps = 500)
-bootMargin <-function(CC, CE= NULL, EE= NULL, thr.cause = 0.5, thr.effect = 0.5, reps=10000, conf.level = 0.95, delete=FALSE, plot = FALSE){
+#' bootMargin(CC = CC, CE = CE, EE = EE, thr.cause = 0.5, thr.effect = 0.5, reps = 500)
+bootMargin <-function(CC= NULL, CE= NULL, EE= NULL, thr.cause = 0.5, thr.effect = 0.5, reps=10000, conf.level = 0.95, delete=FALSE, plot = FALSE){
   #agregar thr.causes and thr.effect
   output <- wrapper.BootMargin(CC = CC, CE = CE, EE = EE, thr.cause = thr.cause, thr.effect = thr.effect, reps=reps, conf.level =conf.level, delete=delete, plot=plot)
 

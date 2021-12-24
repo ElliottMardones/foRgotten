@@ -81,9 +81,9 @@
 #' # To perform the calculation of the forgotten effects for a chain bipartite graph with
 #' # a degree of truth equal to 0.5, maximum order of effects to be calculated equal to 2 and
 #' # 500 bootstrap replicas, use:
-#' FE( CC = AA, CE = AB, EE = BB, thr = 0.5, maxOrder = 2, reps = 500, parallel = "no", ncpus = 1)
+#' FE( CC = CC, CE = CE, EE = EE, thr = 0.5, maxOrder = 2, reps = 500, parallel = "no", ncpus = 1)
 FE <- function(CC = NULL, CE = NULL, EE = NULL, thr = 0.5, maxOrder = 2, reps = 10000, parallel = c("multicore","snow","no"), ncpus = 1){
-    output <- wrapper.FE( CC =CC, CE = CE, EE =EE, thr = thr, maxOrder = maxOrder, reps =reps , parallel =parallel , ncpus = ncpus)
+    output <- wrapper.FE( CC = CC, CE = CE, EE =EE, thr = thr, maxOrder = maxOrder, reps =reps , parallel =parallel , ncpus = ncpus)
     return(output)
 }
 

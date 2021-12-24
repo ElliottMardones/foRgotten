@@ -1,5 +1,5 @@
 
-#' AA
+#' CC
 #'
 #'
 #' @title Public policy data on air pollution in the Valdivia commune, Chile.
@@ -30,9 +30,9 @@
 #' @references
 #' Nicolas, C., Rojas-Mora, J., & Valenzuela-Fernandez, L. (2020). Causal relationships between economic activity and the mining industry in Chile. Journal of Intelligent & Fuzzy Systems, 38(5), 5405-5412.
 #'
-"AA"
+"CC"
 
-#' AB
+#' CE
 #'
 #' @title Public policy data on air pollution in the Valdivia commune, Chile.
 
@@ -70,9 +70,9 @@
 #' @references
 #' Nicolas, C., Rojas-Mora, J., & Valenzuela-Fernandez, L. (2020). Causal relationships between economic activity and the mining industry in Chile. Journal of Intelligent & Fuzzy Systems, 38(5), 5405-5412.
 #'
-"AB"
+"CE"
 
-#' BB
+#' EE
 #'
 #' @title Public policy data on air pollution in the Valdivia commune, Chile.
 #'
@@ -90,6 +90,6 @@
 #' @references
 #' Nicolas, C., Rojas-Mora, J., & Valenzuela-Fernandez, L. (2020). Causal relationships between economic activity and the mining industry in Chile. Journal of Intelligent & Fuzzy Systems, 38(5), 5405-5412.
 #'
-"BB"
+"EE"
 
 

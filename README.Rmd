@@ -115,9 +115,9 @@ The data consists of 16 incentives, 4 behaviors and 10 key informants, where eac
 The book store presents the data with the average between the minimum and maximum value for each incidence, A being the equivalent to incentives and B to behaviors. For more details of the data you can consult:
 
 ```{r cars}
-help(AA)
-help(AB)
-help(BB)
+help(CC)
+help(CE)
+help(EE)
 ```
 
 ## Examples
@@ -130,7 +130,7 @@ The function contemplates two modalities, the first is focused on complete graph
 
 #### For complete graphs
 
-To calculate the significant direct effects of the incidence matrix `AA`, which is described in DataSet, we use the parameter `CC`, which allows us to enter a three-dimensional matrix, where each submatrix along the z-axis is a square incidence matrix and reflective, or a list of data.frame containing square and reflective incidence matrices. Each matrix represents a complete graph. The `CE` and `EE` parameters are used to perform the calculation with chain bipartite graphs, therefore it is necessary that these parameters are not used.
+To calculate the significant direct effects of the incidence matrix `CC`, which is described in DataSet, we use the parameter `CC`, which allows us to enter a three-dimensional matrix, where each submatrix along the z-axis is a square incidence matrix and reflective, or a list of data.frame containing square and reflective incidence matrices. Each matrix represents a complete graph. The `CE` and `EE` parameters are used to perform the calculation with chain bipartite graphs, therefore it is necessary that these parameters are not used.
 
 To define the degree of truth in which the incidence is considered significant, the parameter `thr` is used, which is defined between `[0,1]`. By default `thr = 0.5`.
 
@@ -139,7 +139,7 @@ The `directEffects()` function makes use of the `“boot.one.bca”` function of
 For example, let `thr = 0.5` and `reps = 1000`, we get:
 
 ```{r echo=TRUE}
-result <- directEffects(CC = AA, thr = 0.5, reps = 1000)
+result <- directEffects(CC = CC, thr = 0.5, reps = 1000)
 ```
 
 The function returns a list object with the `$DirectEffects` data subset that contains the following values:

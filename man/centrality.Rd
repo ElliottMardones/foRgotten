@@ -5,12 +5,12 @@
 \title{Centrality For Complete and Chain Bipartite Graphs}
 \usage{
 centrality(
-  CC,
+  CC = NULL,
   CE = NULL,
   EE = NULL,
-  model = c("conpl", "conlnorm", "median"),
+  model = c("conpl", "median"),
   reps = 10000,
-  conf = 0.95,
+  conf.level = 0.95,
   parallel = c("multicore", "snow", "no"),
   ncpus = 1
 )
@@ -36,7 +36,7 @@ By default Model = "median".}
 
 \item{reps}{The number of bootstrap replicas. By default reps = 10,000.}
 
-\item{conf}{Real: Indicates the confidence levels of the required intervals. By default conf = 0.95.}
+\item{conf.level}{Real: Indicates the confidence levels of the required intervals. By default conf = 0.95.}
 
 \item{parallel}{The type of parallel operation to use (if applicable). The options are "multicore", "snow" and "no". By default parallel = "no".}
 
@@ -70,10 +70,10 @@ The parallel and ncpus options are not available on Windows operating systems.
 \examples{
 # For complete graphs only the CC parameter is used.
 # For instance:
-centrality( CC = AA, model = "median", reps = 100, parallel = "no", ncpus = 1)
+centrality( CE = CC, model = "median", reps = 100, parallel = "no", ncpus = 1)
 # For chain bipartite graphs the parameters CC, CE and EE are used.
 # For instance:
-centrality( CC = AA, CE = AB, EE= BB, model = "median", reps = 100)
+centrality( CC = CC, CE = CE, EE= EE, model = "median", reps = 100)
 }
 \references{
 Canty A, Ripley BD (2021). boot: Bootstrap R (S-Plus) Functions. R package version 1.3-28.

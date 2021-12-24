@@ -25,7 +25,7 @@
 
 #' @param reps The number of bootstrap replicas. By default reps = 10,000.
 #'
-#' @param conf Real: Indicates the confidence levels of the required intervals. By default conf = 0.95.
+#' @param conf.level Real: Indicates the confidence levels of the required intervals. By default conf = 0.95.
 
 #' @param parallel The type of parallel operation to use (if applicable). The options are "multicore", "snow" and "no". By default parallel = "no".
 
@@ -56,11 +56,11 @@
 #' @examples
 #' # For complete graphs only the CC parameter is used.
 #' # For instance:
-#' centrality( CC = AA, model = "median", reps = 100, parallel = "no", ncpus = 1)
+#' centrality( CE = CC, model = "median", reps = 100, parallel = "no", ncpus = 1)
 #' # For chain bipartite graphs the parameters CC, CE and EE are used.
 #' # For instance:
-#' centrality( CC = AA, CE = AB, EE= BB, model = "median", reps = 100)
-centrality <- function(CC, CE = NULL, EE = NULL, model = c("conpl", "median") , reps = 10000, conf.level = 0.95, parallel=c("multicore","snow","no") , ncpus = 1){
+#' centrality( CC = CC, CE = CE, EE= EE, model = "median", reps = 100)
+centrality <- function(CC = NULL, CE = NULL, EE = NULL, model = c("conpl", "median") , reps = 10000, conf.level = 0.95, parallel=c("multicore","snow","no") , ncpus = 1){
 
     output <- bootCent( CC = CC, CE = CE, EE = EE, model = model, reps =reps, conf.level = conf.level, parallel = parallel, ncpus = ncpus)
 
