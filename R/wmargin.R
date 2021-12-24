@@ -4,9 +4,9 @@
 #' @import ggsci
 #' @import ggrepel
 plotBootMargin <-function(dataSet,axesLimits=""){
-  data <- list(Drivers =dataSet$byRow, Dependance =  dataSet$byCol)
-  data$Drivers$varname<- dataSet$byRow$Var
-  data$Dependance$varname<-dataSet$byCol$Var
+  data <- list(Drivers =dataSet$byCause, Dependance =  dataSet$byEffect)
+  data$Drivers$varname<- dataSet$byCause$Var
+  data$Dependance$varname<-dataSet$byEffect$Var
   myVar <- factor(paste(data$Drivers$varname ), levels=data$Dependance$varname)
   p<-ggplot2::ggplot()+
     ggplot2::geom_hline(aes(yintercept=0.5),lty=2)+geom_vline(aes(xintercept=0.5),lty=2)+
@@ -57,7 +57,7 @@ deconstructMatrix <- function(dataSet, AA, AB=NULL, BB=NULL){
   return(list(AA=AA, AB=AB, BB=BB))
 }
 
-wrapper.BootMargin<-function(CC, CE, EE, thr, reps, conf.level, delete, plot){
+wrapper.BootMargin<-function(CC, CE, EE, thr.cause, thr.effect, reps, conf.level, delete, plot){
   if( !is.null(CE) & !is.null(EE)){
     CE <- BTCgraphs_bootMargin(CC = CC, CE = CE, EE = EE)
   }
@@ -74,7 +74,7 @@ wrapper.BootMargin<-function(CC, CE, EE, thr, reps, conf.level, delete, plot){
       filasExp      <- (CE[i,,])[-i,]
       fila          <- rowMeans(filasExp, na.rm = TRUE)
       fila          <- na.omit(fila)
-      fila.CI       <- boot.one.bca(fila, sample_mean, null.hyp = thr ,
+      fila.CI       <- boot.one.bca(fila, sample_mean, null.hyp = thr.cause ,
                                     alternative = "two.sided", R=reps, conf.level = conf.level)
       fila.Mean     <- fila.CI$Mean
       fila.LCI      <- fila.CI$Confidence.limits[1]
@@ -85,18 +85,19 @@ wrapper.BootMargin<-function(CC, CE, EE, thr, reps, conf.level, delete, plot){
       columnaExp      <- t(CE[,i,])[,-i]
       columna         <- rowMeans(columnaExp, na.rm = TRUE)
       columna         <- na.omit(columna)
-      columna.CI      <- boot.one.bca(columna, sample_mean, null.hyp = thr,
+      columna.CI      <- boot.one.bca(columna, sample_mean, null.hyp = thr.effect,
                                       alternative =  "two.sided", R=reps, conf.level = conf.level)
       columna.Mean    <- columna.CI$Mean
       columna.LCI     <- columna.CI$Confidence.limits[1]
       columna.UCI     <- columna.CI$Confidence.limits[2]
       columna.p_value <- columna.CI$p.value
+      # unir las columnas
       promFilas[i,2:5]    <-cbind(fila.Mean, fila.LCI, fila.UCI, fila.p_value)
       promColumnas[i,2:5] <-cbind(columna.Mean ,columna.LCI, columna.UCI, columna.p_value)
     }
     if( delete ){
-      delete_in_rows     <- which( promFilas$UCI < thr | ( promFilas$Mean < thr & is.nan( promFilas$p.value)))
-      delete_in_cols     <- which( promColumnas$UCI < thr | ( promColumnas$Mean < thr & is.nan( promColumnas$p.value)))
+      delete_in_rows     <- which( promFilas$UCI < thr.cause | ( promFilas$Mean < thr.cause & is.nan( promFilas$p.value)))
+      delete_in_cols     <- which( promColumnas$UCI < thr.effect | ( promColumnas$Mean < thr.effect & is.nan( promColumnas$p.value)))
       which_delete       <- delete_in_rows %in% delete_in_cols
       if( sum(which_delete) != 0 ){ promFilas    <- (promFilas[ -delete_in_rows[which_delete], ])}
       if( sum(which_delete) != 0 ){ promColumnas <- (promColumnas[ -delete_in_rows[which_delete], ])}
@@ -105,31 +106,31 @@ wrapper.BootMargin<-function(CC, CE, EE, thr, reps, conf.level, delete, plot){
         return(NULL)
       }
       new_CC     <- CE[promFilas$Var, promColumnas$Var, , drop = FALSE]
-      dataOutput <- list(Data=new_CC,byRow =  promFilas,byCol = promColumnas)
+      dataOutput <- list(Data=new_CC,byCause =  promFilas,byEffect = promColumnas)
       if(plot == TRUE){
         myPlot     <- plotBootMargin(dataOutput)
         if( !is.null(CC) & !is.null(EE)){
           allMatrix <- deconstructMatrix(dataSet = new_CC, AA= CC, AB= CE, BB= EE)
-          return(list(CC=allMatrix$AA, CE =allMatrix$AB, EE = allMatrix$BB, byRow =  promFilas, byCol = promColumnas,plot = myPlot ))
+          return(list(CC=allMatrix$AA, CE =allMatrix$AB, EE = allMatrix$BB, byCause =  promFilas, byEffect = promColumnas,plot = myPlot ))
         }
         dataOutput <- list(Data  = new_CC,
-                           byRow = promFilas,
-                           byCol = promColumnas,
+                           byCause = promFilas,
+                           byEffect = promColumnas,
                            plot = myPlot )
         return(dataOutput)
       }else{
         if( !is.null(CC) & !is.null(EE)){
           allMatrix <- deconstructMatrix(dataSet = new_CC, AA= CC, AB= CE, BB= EE)
-          return(list(CC=allMatrix$AA, CE =allMatrix$AB, EE = allMatrix$BB, byRow =  promFilas, byCol = promColumnas))
+          return(list(CC=allMatrix$AA, CE =allMatrix$AB, EE = allMatrix$BB, byCause =  promFilas, byEffect = promColumnas))
         }
-        return(list(Data=new_CC, byRow =  promFilas, byCol = promColumnas))
+        return(list(Data=new_CC, byCause =  promFilas, byEffect = promColumnas))
       }
     }
-    dataOutput <- list(byRow = promFilas,byCol = promColumnas)
+    dataOutput <- list(byCause = promFilas,byEffect = promColumnas)
     if(plot == TRUE){
-      dataOutput <- list(byRow = promFilas, byCol = promColumnas)
+      dataOutput <- list(byCause = promFilas, byEffect = promColumnas)
       myPlot     <- plotBootMargin(dataOutput)
-      dataOutput <- list(byRow = promFilas, byCol = promColumnas, plot = myPlot )
+      dataOutput <- list(byCause = promFilas, byEffect = promColumnas, plot = myPlot )
       return(dataOutput)
     }else{
       return(dataOutput)

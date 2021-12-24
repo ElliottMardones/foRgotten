@@ -60,9 +60,9 @@
 #' # For chain bipartite graphs the parameters CC, CE and EE are used.
 #' # For instance:
 #' centrality( CC = AA, CE = AB, EE= BB, model = "median", reps = 100)
-centrality <- function(CC, CE = NULL, EE = NULL, model = c("conpl", "median") , reps = 10000, conf.BCa = 0.95, conf.pl =0.95, parallel=c("multicore","snow","no") , ncpus = 1){
+centrality <- function(CC, CE = NULL, EE = NULL, model = c("conpl", "median") , reps = 10000, conf.level = 0.95, parallel=c("multicore","snow","no") , ncpus = 1){
 
-    output <- bootCent( CC = CC, CE = CE, EE = EE, model = model, reps =reps, conf.BCa = conf.BCa, conf.pl = conf.pl, parallel = parallel, ncpus = ncpus)
+    output <- bootCent( CC = CC, CE = CE, EE = EE, model = model, reps =reps, conf.level = conf.level, parallel = parallel, ncpus = ncpus)
 
     return(output)
 }

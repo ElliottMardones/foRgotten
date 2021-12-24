@@ -24,7 +24,7 @@ validations_de_rect <- function(CC, CE, EE){
 
 wrapper.de.sq <- function(CE, thr, conf.level, reps, delete){
   if( missing(CE)){
-    message("Parameter CC is missing, its required.")
+    message("Parameter ce is missing, its required.")
     return(NULL)
   }else{
     if(is.list(CE)){
@@ -59,17 +59,17 @@ wrapper.de.sq <- function(CE, thr, conf.level, reps, delete){
         To <- temp[ii, 2]
         From <- which(rownamesData == From)
         To <- which(colnamesData == To)
-        CC[From, To, ] <- 0
+        CE[From, To, ] <- 0
       }
       if(length(borrar > 0)){
         message("deleting data...")
         bootCC <- bootCC[-borrar, ]
         rownames(bootCC) <- seq_len(nrow(bootCC))
-        return(list(Data=CC,DirectEffects=bootCC ))
+        return(list(Data=CE,DirectEffects=bootCC ))
       }else{
         message("There is no data to delete...")
         rownames(bootCC) <- seq_len(nrow(bootCC))
-        return(list(Data=CC,DirectEffects=bootCC ))
+        return(list(Data=CE,DirectEffects=bootCC ))
       }
 
     }else{
@@ -81,9 +81,9 @@ wrapper.de.sq <- function(CE, thr, conf.level, reps, delete){
 wrapper.de.rect <- function( CC, CE, EE, thr, conf.level, reps, delete){
   flag <- validations_de_rect(CC = CC, CE = CE, EE=EE)
   if( flag == TRUE){
-    CCdata <- wrapper.de.sq(CC= CC, reps= reps, conf.level =conf.level, thr=thr,delete =delete)
-    CEdata <- wrapper.de.sq(CC= CE, reps= reps, conf.level =conf.level, thr=thr,delete =delete)
-    EEdata <- wrapper.de.sq(CC= EE, reps= reps, conf.level =conf.level, thr=thr,delete =delete)
+    CCdata <- wrapper.de.sq(CE= CC, reps= reps, conf.level =conf.level, thr=thr,delete =delete)
+    CEdata <- wrapper.de.sq(CE= CE, reps= reps, conf.level =conf.level, thr=thr,delete =delete)
+    EEdata <- wrapper.de.sq(CE= EE, reps= reps, conf.level =conf.level, thr=thr,delete =delete)
     DirectEffects_CC <- CCdata$DirectEffects
     DirectEffects_CE <- CEdata$DirectEffects
     DirectEffects_EE <- EEdata$DirectEffects

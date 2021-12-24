@@ -69,9 +69,9 @@
 #' # For chain bipartite graphs the parameters CC, CE and EE are used.
 #' # For instance:
 #' bootMargin(CC = AA, CE = AB, EE = BB, thr = 0.5, reps = 500)
-bootMargin <-function(CC, CE= NULL, EE= NULL,  thr = 0.5, reps=10000, conf.level = 0.95, delete=FALSE, plot = FALSE){
-
-  output <- wrapper.BootMargin(CC = CC, CE = CE, EE = EE, thr=thr, reps=reps, conf.level =conf.level, delete=delete, plot=plot)
+bootMargin <-function(CC, CE= NULL, EE= NULL, thr.cause = 0.5, thr.effect = 0.5, reps=10000, conf.level = 0.95, delete=FALSE, plot = FALSE){
+  #agregar thr.causes and thr.effect
+  output <- wrapper.BootMargin(CC = CC, CE = CE, EE = EE, thr.cause = thr.cause, thr.effect = thr.effect, reps=reps, conf.level =conf.level, delete=delete, plot=plot)
 
   return(output)
 }
