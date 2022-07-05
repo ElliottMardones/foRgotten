@@ -28,329 +28,343 @@ NumericVector which_max_multiple(NumericVector d_o, NumericMatrix M1){
 }
 
 // [[Rcpp::export]]
-List fe(NumericMatrix threshold, NumericMatrix CC, NumericMatrix CE, NumericMatrix EE,NumericMatrix M3){
-    if(threshold.length() == 0 ){
-        return(R_NilValue);
+List fe(NumericMatrix threshold, NumericMatrix CC, NumericMatrix CE, NumericMatrix EE, NumericMatrix M3){
+    if(threshold.length() == 0){
+        return R_NilValue;
     }else{
-        // DECLARACION DE VECTORES
-        //DataFrame df;
-
-        CharacterVector M1_rowName = rownames(CC);  // Nombres de las Filas para la matriz M1
-        CharacterVector M1_colName = colnames(CC);  // Nombres de las Columnas para la matriz M1
-        CharacterVector M2_rowName = rownames(CE);
-        CharacterVector M2_colName = colnames(CE);  // Nombres de las Columnas para la matriz M2
-        CharacterVector M3_rowName = rownames(EE);  // Nombres de las Columnas para la matriz M1
-        CharacterVector M3_colName = colnames(EE);  // Nombres de las Columnas para la matriz M2
-
-        // Debo crear row -camino -destino y mu por izquierda y derecha
+        // 1) Obtener nombres de filas y columas de las matrices ingresadas
+        CharacterVector rownames_CC = rownames(CC);
+        CharacterVector colnames_CC = colnames(CC);
+        //
+        CharacterVector rownames_CE = rownames(CE);
+        CharacterVector colnames_CE = colnames(CE);
+        //
+        CharacterVector rownames_EE = rownames(EE);
+        CharacterVector colnames_EE = colnames(EE);
+        // 2) Crear vectores con el espacio de la maxima cantidad posible de soluciones.
+        // LEFT
+        // left_0 -> From, left_1 -> through, left_2 -> To, left_3 -> Mu
         int nrowCC = CC.nrow();
-        NumericVector from_left_o(     nrowCC*threshold.nrow(), NumericVector::get_na());
-        NumericVector throught_left_o( nrowCC*threshold.nrow(), NumericVector::get_na());
-        NumericVector to_left_o(       nrowCC*threshold.nrow(), NumericVector::get_na());
-        NumericVector mu_left_o(       nrowCC*threshold.nrow(), NumericVector::get_na());
-        // ahora por derecha
-        int nrowsCE = CE.nrow();
-        NumericVector from_right_o(     nrowsCE*threshold.nrow(), NumericVector::get_na());
-        NumericVector throught_right_o( nrowsCE*threshold.nrow(), NumericVector::get_na());
-        NumericVector to_right_o(       nrowsCE*threshold.nrow(), NumericVector::get_na());
-        NumericVector mu_right_o(       nrowsCE*threshold.nrow(), NumericVector::get_na());
+        int dim_left = nrowCC*threshold.nrow();
+        NumericVector left_0( dim_left, NumericVector::get_na() );
+        NumericVector left_1( dim_left, NumericVector::get_na() );
+        NumericVector left_2( dim_left, NumericVector::get_na() );
+        NumericVector left_3( dim_left, NumericVector::get_na() );
+        //
+        // RIGHT
+        // right_0 -> From, right_1 -> through, right_2 -> To, right_3 -> Mu
+        int nrowCE = CE.nrow();
+        int dim_right = nrowCE*threshold.nrow();
+        NumericVector right_0( dim_right, NumericVector::get_na() );
+        NumericVector right_1( dim_right, NumericVector::get_na() );
+        NumericVector right_2( dim_right, NumericVector::get_na() );
+        NumericVector right_3( dim_right, NumericVector::get_na() );
+        //
+        // Creacion de dos vectores logicos que todavia no explico bien como funcionan
         LogicalVector RES;
         LogicalVector RES2;
-        for( int x = 0; x < threshold.nrow() ; x++){
-            // para izquierda
-            double value_row_CC = threshold(x,0);
-            double value_col_CE = threshold(x,1);
-            // para derecha
-            double value_row_CE = threshold(x,0);
-            double value_col_EE = threshold(x,1);
+        //
+        // 3) Recorrer las filas de threshold para obtener los indices con los valores.
+        for( int x = 0; x < threshold.nrow(); x++ ){
             // Datos por izquierda
-            NumericVector fromRow_CC =  CC(value_row_CC - 1 ,_ );
-            NumericVector fromCol_CE =  CE(_, value_col_CE - 1 );
+            NumericVector row_CC = CC( (threshold(x,0) -1) , _ );
+            NumericVector col_CE = CE( _, (threshold(x,1) - 1)) ;
             // Datos por derecha
-            NumericVector fromRow_CE =  CE(value_row_CE - 1 ,_ );
-            NumericVector fromCol_EE =  EE(_, value_col_EE - 1 );
-            // Union de datos por izquierda
-            NumericMatrix left = cbindRcpp(fromRow_CC, fromCol_CE);
-            // Union de datos por derecha
-            NumericMatrix right = cbindRcpp(fromRow_CE, fromCol_EE);
-            // Encontrando el val maxmin por izquierda
-            NumericVector output_left(left.nrow());
-            for(int i = 0; i < left.nrow(); i++){
-                output_left[i] = min(left(i,_));
+            NumericVector row_CE = CE( (threshold(x,0) -1) , _ );
+            NumericVector col_EE = EE( _ , (threshold(x,1) -1) );
+            // 3.1) Preparacion para encontrar los caminos con maxmin multiple.
+            // IZQUIERDA
+            NumericMatrix left  = cbindRcpp(row_CC, col_CE);
+            // DERECHA
+            NumericMatrix right = cbindRcpp(row_CE, col_EE);
+            //
+            // maxmin multiple por izquierda
+            NumericVector left_min(left.nrow());
+            for(int i = 0; i < left.nrow(); i++ ){
+                left_min[i] = min(left( i , _ ));
             }
-            NumericVector maxmax_left = which_max_multiple(output_left, CC); //
-            // Encontrando el val maxmin por derecha
-            NumericVector output_right(right.nrow());
-            for(int i = 0; i < right.nrow(); i++){
-                output_right[i] = min(right(i,_));
+            NumericVector left_max = which_max_multiple(left_min, CC);
+            // maxmin multiple por derecha
+            NumericVector right_min(right.nrow());
+            for(int i = 0; i < right.nrow(); i ++ ){
+                right_min[i]  = min(right(i, _ ));
             }
-            NumericVector maxmax_right = which_max_multiple(output_right, CE); //
-            // si output_left[maxmax_left] > output_right[maxmax_right], se usan los caminos de CC
-            // y sino, se usan los de EE
-
-            NumericVector A = output_left[maxmax_left];
-            NumericVector B = output_right[maxmax_right];
-
-            //RES = (A > B);
-            //RES2 = (A < B);
+            NumericVector right_max = which_max_multiple(right_min, CE);
+            //
+            //
+            // IDENTIFICAR POR CUAL CAMINO SE FUERON LOS DATOS.
+            NumericVector A = left_min[left_max];
+            NumericVector B = right_min[right_max];
+            //
             RES = (A >= B);
             RES2 = (A <= B);
-            //print(output_left[maxmax_left]);
-            //print(output_right[maxmax_right]);
-            //print(A);
-            //print(RES);
-            //print(RES2);
-
-            if( RES[0] == TRUE ){
-                if( maxmax_left.size() > 1){
-                    for( int l = 0; l < maxmax_left.size(); l ++){
-                        from_left_o.push_back(value_row_CC);
-                        throught_left_o.push_back(maxmax_left[l]);
-                        to_left_o.push_back(value_col_CE);
-                        mu_left_o.push_back(M3((value_row_CC - 1), (value_col_CE - 1)));
+            if( RES[0] == TRUE){
+                if( left_max.size() > 1 ){
+                    for(int i = 0; i < left_max.size(); i++){
+                        left_0.push_back(threshold(x,0) -1);
+                        left_1.push_back(left_max[i]);
+                        left_2.push_back(threshold(x,1) -1);
+                        left_3.push_back(M3((threshold(x,0) - 1), (threshold(x,1) - 1)));
                     }
                 }else{
-                    from_left_o.push_back(value_row_CC);
-                    throught_left_o.push_back((maxmax_left[0] )); //push_fron? origipush_back
-                    to_left_o.push_back(value_col_CE);
-                    mu_left_o.push_back(M3((value_row_CC - 1), (value_col_CE - 1)));
+                    left_0.push_back(threshold(x,0) -1);
+                    left_1.push_back(left_max[0]);
+                    left_2.push_back(threshold(x,1) -1 );
+                    left_3.push_back(M3((threshold(x,0) - 1), (threshold(x,1) - 1)));
                 }
             }
-            if(RES2[0] == TRUE){
-                if( maxmax_right.size() > 1){
-                    for( int l = 0; l < maxmax_right.size(); l ++){
-                        from_right_o.push_back(value_row_CE);
-                        throught_right_o.push_back(maxmax_right[l]);
-                        to_right_o.push_back(value_col_EE);
-                        mu_right_o.push_back(M3((value_row_CE - 1), (value_col_EE - 1)));
+            else if( RES2[0] == TRUE){
+                if( right_max.size() > 1 ){
+                    for(int i = 0; i < right_max.size(); i++ ){
+                        right_0.push_back(threshold(x,0) -1);
+                        right_1.push_back(right_max[i]);
+                        right_2.push_back(threshold(x,1) -1 );
+                        right_3.push_back(M3((threshold(x,0) - 1), (threshold(x,1) - 1)));
                     }
                 }else{
-                    from_right_o.push_back(value_row_CE);
-                    throught_right_o.push_back((maxmax_right[0] )); //push_fron? origipush_back
-                    to_right_o.push_back(value_col_EE);
-                    mu_right_o.push_back(M3((value_row_CE - 1), (value_col_EE - 1)));
+                    right_0.push_back(threshold(x,0) -1 );
+                    right_1.push_back(right_max[0]);
+                    right_2.push_back(threshold(x,1) -1 );
+                    right_3.push_back(M3((threshold(x,0) - 1), (threshold(x,1) - 1)));
                 }
             }
         }
-        // datos por izquierda: Eliminando na values
-        from_left_o     = na_omit(from_left_o);
-        throught_left_o = na_omit(throught_left_o);
-        to_left_o       = na_omit(to_left_o);
-        mu_left_o       = na_omit(mu_left_o);
-        // Creando el vector para los datos de izquierda
-        //CharacterVector From_left(from_left_o.size());
-        //CharacterVector Through_left(throught_left_o.size());
-        //CharacterVector To_left(to_left_o.size());
-        //NumericVector Mu_left(mu_left_o.size());
-        CharacterVector From_left;
-        CharacterVector Through_left;
-        CharacterVector To_left;
-        NumericVector Mu_left;
-        for(int i = 0; i < from_left_o.size(); i++){
-            double from_left    = from_left_o[i] -1 ;
-            double throught_left  = throught_left_o[i] ;
-            double to_left      = to_left_o[i] -1 ;
-            double mu_left      = mu_left_o[i];
-            //From_left[i] =  M1_rowName[from_left];
-            //Through_left[i]= M2_rowName[throught_left];
-            //To_left[i] = M2_colName[to_left];
-            //Mu_left[i] = mu_left_o[i];
-            if(M1_rowName[from_left] != M2_rowName[throught_left]){
-                From_left.push_back(M1_rowName[from_left]);
-                Through_left.push_back(M2_rowName[throught_left]);
-                To_left.push_back(M2_colName[to_left]);
-                Mu_left.push_back(mu_left);
+        // 4) ORDENAR LOS DATOS EN SUS RESPECTIVAS SALIDAS
+        // 4.1) Primero por izquierda
+        left_0 = na_omit(left_0);
+        left_1 = na_omit(left_1);
+        left_2 = na_omit(left_2);
+        left_3 = na_omit(left_3);
+        // Preparando los row and col names
+        CharacterVector left_FROM;
+        CharacterVector left_THROUGH;
+        CharacterVector left_TO;
+        NumericVector left_MU;
+        for( int i = 0; i < left_0.size(); i++){
+            double from = left_0[i] ;
+            double thought = left_1[i];
+            double to = left_2[i] ;
+            double mu = left_3[i];
+            //
+            if(rownames_CC[from] != rownames_CE[thought]){
+                left_FROM.push_back(rownames_CC[from]);
+                left_THROUGH.push_back(rownames_CE[thought]);
+                left_TO.push_back(colnames_CE[to]);
+                left_MU.push_back(mu);
             }
         }
-        DataFrame df__LEFT = DataFrame::create( Named("From") = clone(na_omit(From_left)) ,
-                                                Named("Through") = clone(na_omit(Through_left)) ,
-                                                Named("To") = clone(na_omit(To_left)) ,
-                                                Named("Mu") = clone(na_omit(Mu_left)) );
+        DataFrame df__LEFT = DataFrame::create(
+            Named("From") = clone(na_omit(left_FROM)),
+            Named("Through") = clone(na_omit(left_THROUGH)),
+            Named("To") = clone(na_omit(left_TO)),
+            Named("Mu") = clone(na_omit(left_MU))
+        );
 
-        from_right_o     = na_omit(from_right_o);
-        throught_right_o = na_omit(throught_right_o);
-        to_right_o       = na_omit(to_right_o);
-        mu_right_o       = na_omit(mu_right_o);
-        // Creando el vector para los datos de izquierda
-        //CharacterVector From_right(from_right_o.size());
-        //CharacterVector Through_right(throught_right_o.size());
-        //CharacterVector To_right(to_right_o.size());
-        //CharacterVector Mu_right(mu_right_o.size());
-        CharacterVector From_right;
-        CharacterVector Through_right;
-        CharacterVector To_right;
-        NumericVector Mu_right;
-        for(int i = 0; i < from_right_o.size(); i++){
-            double from_right    = from_right_o[i] -1 ;
-            double throught_right   = throught_right_o[i] ;
-            double to_right       = to_right_o[i] -1 ;
-            double mu_right     = mu_right_o[i];
-            //asigando los valores
-            //From_right[i] =  M2_rowName[from_right];
-            //Through_right[i]= M2_colName[throught_right];
-            //To_right[i] = M3_colName[to_right];
-            //Mu_right[i] = mu_right_o[i];
-            if(M2_colName[throught_right] != M3_colName[to_right]){
-                From_right.push_back(M2_rowName[from_right]);
-                Through_right.push_back(M2_colName[throught_right]);
-                To_right.push_back(M3_colName[to_right]);
-                Mu_right.push_back(mu_right);
+        ////////////////////////////////////////////////////////////////////////////
+        // RIGHT
+        ////////////////////////////////////////////////////////////////////////////
+        // 4) ORDENAR LOS DATOS EN SUS RESPECTIVAS SALIDAS
+        right_0 = na_omit(right_0);
+        right_1 = na_omit(right_1);
+        right_2 = na_omit(right_2);
+        right_3 = na_omit(right_3);
+        // Preparando los row and col names
+        CharacterVector right_FROM;
+        CharacterVector right_THROUGH;
+        CharacterVector right_TO;
+        NumericVector right_MU;
+        for( int i = 0; i < right_0.size(); i++){
+            double from = right_0[i] ;
+            double thought = right_1[i];
+            double to = right_2[i] ;
+            double mu = right_3[i];
+            //
+            if(colnames_CE[thought] != colnames_EE[to]){
+                right_FROM.push_back(rownames_CE[from]);
+                right_THROUGH.push_back(colnames_CE[thought]);
+                right_TO.push_back(colnames_EE[to]);
+                right_MU.push_back(mu);
             }
         }
-        DataFrame df__RIGHT = DataFrame::create( Named("From") = clone(na_omit(From_right)) ,
-                                                 Named("Through") = clone(na_omit(Through_right)) ,
-                                                 Named("To") = clone(na_omit(To_right)) ,
-                                                 Named("Mu") = clone(na_omit(Mu_right)) );
-
+        DataFrame df__RIGHT = DataFrame::create(
+            Named("From") = clone(na_omit(right_FROM)),
+            Named("Through") = clone(na_omit(right_THROUGH)),
+            Named("To") = clone(na_omit(right_TO)),
+            Named("Mu") = clone(na_omit(right_MU))
+        );
         List L = List::create(Named("left") = df__LEFT , _["right"] = df__RIGHT);
         return(L);
     }
 }
 
 // [[Rcpp::export]]
-DataFrame fe_left(NumericMatrix valueOverThreshold, NumericMatrix M1, NumericMatrix M2,NumericMatrix M3){
-    if( valueOverThreshold.length() == 0 ){
+DataFrame fe_left(NumericMatrix threshold, NumericMatrix CC, NumericMatrix CE,NumericMatrix M3){
+    if( threshold.length() == 0 ){
         return(R_NilValue);
     }else {
-        // DECLARACION DE VECTORES
-        int nrowsM1 = M1.nrow();
-        CharacterVector M1_rowName = rownames(M1);
-        CharacterVector M1_colName = colnames(M1);
-        CharacterVector M2_colName = colnames(M2);
-        CharacterVector M2_rowName = rownames(M2);
-        CharacterVector M3_rowName = rownames(M3);
-        CharacterVector M3_colName = colnames(M3);
-        NumericVector values_row_output(nrowsM1*valueOverThreshold.nrow(), NumericVector::get_na());
-        NumericVector caminos(nrowsM1*valueOverThreshold.nrow(), NumericVector::get_na());
-        NumericVector values_col_output(nrowsM1*valueOverThreshold.nrow(), NumericVector::get_na());
-        NumericVector values_M3_result(nrowsM1*valueOverThreshold.nrow(), NumericVector::get_na());
-        for( int x = 0; x < valueOverThreshold.nrow() ; x++){
-            double values_row = valueOverThreshold(x,0);
-            double values_col = valueOverThreshold(x,1);
-            NumericVector fromRow =  M1(values_row-1 ,_ );
-            NumericVector fromCol =  M2(_, values_col-1 );
-            // Cbind de las 2 variables anteriores
-            NumericMatrix data = cbindRcpp(fromRow, fromCol);
-            // Calculo del valor minimo
-            NumericVector output(data.nrow());
-            for(int i = 0; i < data.nrow(); i++){
-                output[i] = min(data(i,_));
+        // 1) Obtener nombres de filas y columas de las matrices ingresadas
+        CharacterVector rownames_CC = rownames(CC);
+        CharacterVector colnames_CC = colnames(CC);
+        //
+        CharacterVector rownames_CE = rownames(CE);
+        CharacterVector colnames_CE = colnames(CE);
+        // 2) Crear vectores con el espacio de la maxima cantidad posible de soluciones.
+        // LEFT
+        // left_0 -> From, left_1 -> through, left_2 -> To, left_3 -> Mu
+        int nrowCC = CC.nrow();
+        int dim_left = nrowCC*threshold.nrow();
+        NumericVector left_0( dim_left, NumericVector::get_na() );
+        NumericVector left_1( dim_left, NumericVector::get_na() );
+        NumericVector left_2( dim_left, NumericVector::get_na() );
+        NumericVector left_3( dim_left, NumericVector::get_na() );
+        // Creacion de dos vectores logicos que todavia no explico bien como funcionan
+        LogicalVector RES;
+        LogicalVector RES2;
+        //
+        // 3) Recorrer las filas de threshold para obtener los indices con los valores.
+        for( int x = 0; x < threshold.nrow(); x++ ){
+            // Datos por izquierda
+            NumericVector row_CC = CC( (threshold(x,0) -1) , _ );
+            NumericVector col_CE = CE( _, (threshold(x,1) - 1)) ;
+
+            // 3.1) Preparacion para encontrar los caminos con maxmin multiple.
+            // IZQUIERDA
+            NumericMatrix left  = cbindRcpp(row_CC, col_CE);
+            //
+            // maxmin multiple por izquierda
+            NumericVector left_min(left.nrow());
+            for(int i = 0; i < left.nrow(); i++ ){
+                left_min[i] = min(left( i , _ ));
             }
-            // Funcion which_max_multiple para encontrar la posicion del elemento mas grande
-            NumericVector maxmax = which_max_multiple(output, M1); //
-            if( maxmax.size() > 1){
-                for( int l = 0; l < maxmax.size(); l ++){
-                    values_row_output.push_back(values_row);
-                    caminos.push_back(maxmax[l]);
-                    values_col_output.push_back(values_col);
-                    values_M3_result.push_back(M3((values_row - 1), (values_col - 1)));
+            NumericVector left_max = which_max_multiple(left_min, CC);
+            // IDENTIFICAR POR CUAL CAMINO SE FUERON LOS DATOS.
+            if( left_max.size() > 1 ){
+                for(int i = 0; i < left_max.size(); i++){
+                    left_0.push_back(threshold(x,0) -1);
+                    left_1.push_back(left_max[i]);
+                    left_2.push_back(threshold(x,1) -1);
+                    left_3.push_back(M3((threshold(x,0) - 1), (threshold(x,1) - 1)));
                 }
             }else{
-                values_row_output.push_back(values_row);
-                caminos.push_back((maxmax[0] ));
-                values_col_output.push_back(values_col);
-                values_M3_result.push_back(M3((values_row - 1), (values_col - 1)));
+                left_0.push_back(threshold(x,0) -1);
+                left_1.push_back(left_max[0]);
+                left_2.push_back(threshold(x,1) -1 );
+                left_3.push_back(M3((threshold(x,0) - 1), (threshold(x,1) - 1)));
             }
         }
-
-        values_row_output = na_omit(values_row_output);
-        caminos = na_omit(caminos);
-        values_col_output = na_omit(values_col_output);
-        values_M3_result = na_omit(values_M3_result);
-        // Vecteros para la salida por DataFrame
-        CharacterVector From(values_row_output.size());
-        CharacterVector Through(caminos.size());
-        CharacterVector To(values_col_output.size());
-        CharacterVector newMu(values_M3_result.size());
-
-        for(int i = 0; i < values_row_output.size(); i++){
-            double rowdata = values_row_output[i] -1 ;
-            double caminos_d = caminos[i] ;
-            double values_col = values_col_output[i] -1 ;
-            From[i] =  M1_rowName[rowdata];
-            Through[i]= M2_rowName[caminos_d];
-            To[i] = M2_colName[values_col];
-            newMu[i] = values_M3_result[i];
-
+        // 4) ORDENAR LOS DATOS EN SUS RESPECTIVAS SALIDAS
+        // 4.1) Primero por izquierda
+        left_0 = na_omit(left_0);
+        left_1 = na_omit(left_1);
+        left_2 = na_omit(left_2);
+        left_3 = na_omit(left_3);
+        // Preparando los row and col names
+        CharacterVector left_FROM;
+        CharacterVector left_THROUGH;
+        CharacterVector left_TO;
+        NumericVector left_MU;
+        for( int i = 0; i < left_0.size(); i++){
+            double from = left_0[i] ;
+            double thought = left_1[i];
+            double to = left_2[i] ;
+            double mu = left_3[i];
+            //
+            if(rownames_CC[from] != rownames_CE[thought]){
+                left_FROM.push_back(rownames_CC[from]);
+                left_THROUGH.push_back(rownames_CE[thought]);
+                left_TO.push_back(colnames_CE[to]);
+                left_MU.push_back(mu);
+            }
         }
-        DataFrame df = DataFrame::create( Named("From") = clone(na_omit(From)) ,
-                                          Named("Through") = clone(na_omit(Through)) ,
-                                          Named("To") = clone(na_omit(To)) ,
-                                          Named("Mu") = clone(na_omit(newMu)) );
-        return(df);
+        DataFrame df__LEFT = DataFrame::create(
+            Named("From") = clone(na_omit(left_FROM)),
+            Named("Through") = clone(na_omit(left_THROUGH)),
+            Named("To") = clone(na_omit(left_TO)),
+            Named("Mu") = clone(na_omit(left_MU))
+        );
+        return(df__LEFT);
     }
 }
-
-
 // [[Rcpp::export]]
-DataFrame fe_right(NumericMatrix valueOverThreshold, NumericMatrix M1, NumericMatrix M2,NumericMatrix M3){
-    if( valueOverThreshold.length() == 0 ){
-        return(R_NilValue);
-    }else {
-        // DECLARACION DE VECTORES
-        int nrowsM1 = M1.nrow();
-        CharacterVector M1_rowName = rownames(M1);
-        CharacterVector M1_colName = colnames(M1);
-        CharacterVector M2_colName = colnames(M2);
-        CharacterVector M2_rowName = rownames(M2);
-        CharacterVector M3_rowName = rownames(M3);
-        CharacterVector M3_colName = colnames(M3);
-        NumericVector values_row_output(nrowsM1*valueOverThreshold.nrow(), NumericVector::get_na());
-        NumericVector caminos(nrowsM1*valueOverThreshold.nrow(), NumericVector::get_na());
-        NumericVector values_col_output(nrowsM1*valueOverThreshold.nrow(), NumericVector::get_na());
-        NumericVector values_M3_result(nrowsM1*valueOverThreshold.nrow(), NumericVector::get_na());
-        for( int x = 0; x < valueOverThreshold.nrow() ; x++){
-            double values_row = valueOverThreshold(x,0);
-            double values_col = valueOverThreshold(x,1);
-            NumericVector fromRow =  M1(values_row-1 ,_ );
-            NumericVector fromCol =  M2(_, values_col-1 );
-            // Cbind de las 2 variables anteriores
-            NumericMatrix data = cbindRcpp(fromRow, fromCol);
-            // ESTO ES UN APPLY en R: apply( vector, fila = 1, funcion = min() )
-            NumericVector output(data.nrow());
-            for(int i = 0; i < data.nrow(); i++){
-                output[i] = min(data(i,_));
+DataFrame fe_right(NumericMatrix threshold, NumericMatrix CE, NumericMatrix EE,NumericMatrix M3){
+    if(threshold.length() == 0){
+        return R_NilValue;
+    }else{
+        // 1) Obtener nombres de filas y columas de las matrices ingresadas
+        CharacterVector rownames_CE = rownames(CE);
+        CharacterVector colnames_CE = colnames(CE);
+        //
+        CharacterVector rownames_EE = rownames(EE);
+        CharacterVector colnames_EE = colnames(EE);
+        // RIGHT
+        // right_0 -> From, right_1 -> through, right_2 -> To, right_3 -> Mu
+        int nrowCE = CE.nrow();
+        int dim_right = nrowCE*threshold.nrow();
+        NumericVector right_0( dim_right, NumericVector::get_na() );
+        NumericVector right_1( dim_right, NumericVector::get_na() );
+        NumericVector right_2( dim_right, NumericVector::get_na() );
+        NumericVector right_3( dim_right, NumericVector::get_na() );
+        //
+        for( int x = 0; x < threshold.nrow(); x++ ){
+            // Datos por derecha
+            NumericVector row_CE = CE( (threshold(x,0) -1) , _ );
+            NumericVector col_EE = EE( _ , (threshold(x,1) -1) );
+            // 3.1) Preparacion para encontrar los caminos con maxmin multiple.
+            // DERECHA
+            NumericMatrix right = cbindRcpp(row_CE, col_EE);
+            // maxmin multiple por derecha
+            NumericVector right_min(right.nrow());
+            for(int i = 0; i < right.nrow(); i ++ ){
+                right_min[i]  = min(right(i, _ ));
             }
-            // Funcion which_max_multiple para encontrar la posicion del elemento mas grande
-            NumericVector maxmax = which_max_multiple(output, M1); // solo 1 y si son 2 iguales?
-            if( maxmax.size() > 1){
-                for( int l = 0; l < maxmax.size(); l ++){
-                    values_row_output.push_back(values_row);
-                    caminos.push_back(maxmax[l]);
-                    values_col_output.push_back(values_col);
-                    values_M3_result.push_back(M3((values_row - 1), (values_col - 1)));
+            NumericVector right_max = which_max_multiple(right_min, CE);
+
+            if( right_max.size() > 1 ){
+                for(int i = 0; i < right_max.size(); i++ ){
+                    right_0.push_back(threshold(x,0) -1);
+                    right_1.push_back(right_max[i]);
+                    right_2.push_back(threshold(x,1) -1 );
+                    right_3.push_back(M3((threshold(x,0) - 1), (threshold(x,1) - 1)));
                 }
             }else{
-                values_row_output.push_back(values_row);
-                caminos.push_back((maxmax[0] ));
-                values_col_output.push_back(values_col);
-                values_M3_result.push_back(M3((values_row - 1), (values_col - 1)));
+                right_0.push_back(threshold(x,0) -1 );
+                right_1.push_back(right_max[0]);
+                right_2.push_back(threshold(x,1) -1 );
+                right_3.push_back(M3((threshold(x,0) - 1), (threshold(x,1) - 1)));
             }
         }
-        values_row_output = na_omit(values_row_output);
-        caminos = na_omit(caminos);
-        values_col_output = na_omit(values_col_output);
-        values_M3_result = na_omit(values_M3_result);
-        // Vecteros para la salida por DataFrame
-        CharacterVector From(values_row_output.size());
-        CharacterVector Through(caminos.size());
-        CharacterVector To(values_col_output.size());
-        CharacterVector newMu(values_M3_result.size());
-        for(int i = 0; i < values_row_output.size(); i++){
-            double rowdata = values_row_output[i] -1 ;
-            double caminos_d = caminos[i] ;
-            double values_col = values_col_output[i] -1 ;
-            // Almacenamiento de nombres de fila y columna para cada tipo de salida.
-            From[i] =  M1_rowName[rowdata];
-            Through[i]= M2_rowName[caminos_d];
-            To[i] = M1_colName[values_col];
-            newMu[i] = values_M3_result[i];
+        ////////////////////////////////////////////////////////////////////////////
+        // RIGHT
+        ////////////////////////////////////////////////////////////////////////////
+        // 4) ORDENAR LOS DATOS EN SUS RESPECTIVAS SALIDAS
+        right_0 = na_omit(right_0);
+        right_1 = na_omit(right_1);
+        right_2 = na_omit(right_2);
+        right_3 = na_omit(right_3);
+        // Preparando los row and col names
+        CharacterVector right_FROM;
+        CharacterVector right_THROUGH;
+        CharacterVector right_TO;
+        NumericVector right_MU;
+        for( int i = 0; i < right_0.size(); i++){
+            double from = right_0[i] ;
+            double thought = right_1[i];
+            double to = right_2[i] ;
+            double mu = right_3[i];
+            //
+            if(colnames_CE[thought] != colnames_EE[to]){
+                right_FROM.push_back(rownames_CE[from]);
+                right_THROUGH.push_back(colnames_CE[thought]);
+                right_TO.push_back(colnames_EE[to]);
+                right_MU.push_back(mu);
+            }
         }
-        // CREACION Y SALIDA DE UN DATAFRAME
-        DataFrame df = DataFrame::create( Named("From") = clone(na_omit(From)) ,
-                                          Named("Through") = clone(na_omit(Through)) ,
-                                          Named("To") = clone(na_omit(To)) ,
-                                          Named("Mu") = clone(na_omit(newMu)) );
-        return(df);
+        DataFrame df__RIGHT = DataFrame::create(
+            Named("From") = clone(na_omit(right_FROM)),
+            Named("Through") = clone(na_omit(right_THROUGH)),
+            Named("To") = clone(na_omit(right_TO)),
+            Named("Mu") = clone(na_omit(right_MU))
+        );
+        return(df__RIGHT);
     }
 }

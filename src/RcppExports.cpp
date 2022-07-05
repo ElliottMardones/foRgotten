@@ -26,30 +26,30 @@ BEGIN_RCPP
 END_RCPP
 }
 // fe_left
-DataFrame fe_left(NumericMatrix valueOverThreshold, NumericMatrix M1, NumericMatrix M2, NumericMatrix M3);
-RcppExport SEXP _foRgotten_fe_left(SEXP valueOverThresholdSEXP, SEXP M1SEXP, SEXP M2SEXP, SEXP M3SEXP) {
+DataFrame fe_left(NumericMatrix threshold, NumericMatrix CC, NumericMatrix CE, NumericMatrix M3);
+RcppExport SEXP _foRgotten_fe_left(SEXP thresholdSEXP, SEXP CCSEXP, SEXP CESEXP, SEXP M3SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type valueOverThreshold(valueOverThresholdSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type M1(M1SEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type M2(M2SEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type threshold(thresholdSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type CC(CCSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type CE(CESEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type M3(M3SEXP);
-    rcpp_result_gen = Rcpp::wrap(fe_left(valueOverThreshold, M1, M2, M3));
+    rcpp_result_gen = Rcpp::wrap(fe_left(threshold, CC, CE, M3));
     return rcpp_result_gen;
 END_RCPP
 }
 // fe_right
-DataFrame fe_right(NumericMatrix valueOverThreshold, NumericMatrix M1, NumericMatrix M2, NumericMatrix M3);
-RcppExport SEXP _foRgotten_fe_right(SEXP valueOverThresholdSEXP, SEXP M1SEXP, SEXP M2SEXP, SEXP M3SEXP) {
+DataFrame fe_right(NumericMatrix threshold, NumericMatrix CE, NumericMatrix EE, NumericMatrix M3);
+RcppExport SEXP _foRgotten_fe_right(SEXP thresholdSEXP, SEXP CESEXP, SEXP EESEXP, SEXP M3SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type valueOverThreshold(valueOverThresholdSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type M1(M1SEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type M2(M2SEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type threshold(thresholdSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type CE(CESEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type EE(EESEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type M3(M3SEXP);
-    rcpp_result_gen = Rcpp::wrap(fe_right(valueOverThreshold, M1, M2, M3));
+    rcpp_result_gen = Rcpp::wrap(fe_right(threshold, CE, EE, M3));
     return rcpp_result_gen;
 END_RCPP
 }

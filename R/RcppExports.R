@@ -5,12 +5,12 @@ fe <- function(threshold, CC, CE, EE, M3) {
     .Call(`_foRgotten_fe`, threshold, CC, CE, EE, M3)
 }
 
-fe_left <- function(valueOverThreshold, M1, M2, M3) {
-    .Call(`_foRgotten_fe_left`, valueOverThreshold, M1, M2, M3)
+fe_left <- function(threshold, CC, CE, M3) {
+    .Call(`_foRgotten_fe_left`, threshold, CC, CE, M3)
 }
 
-fe_right <- function(valueOverThreshold, M1, M2, M3) {
-    .Call(`_foRgotten_fe_right`, valueOverThreshold, M1, M2, M3)
+fe_right <- function(threshold, CE, EE, M3) {
+    .Call(`_foRgotten_fe_right`, threshold, CE, EE, M3)
 }
 
 #' @useDynLib foRgotten, .registration=TRUE
