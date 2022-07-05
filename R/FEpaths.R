@@ -26,13 +26,19 @@ leftHandPath <- function(data_set, original_matrix){
                     }
                 }
             }
-            columnNames                <- list()
-            lengthColumnNames          <- (length(colnames(newDataList)) -3)
-            str                        <- sprintf("Through_%d", seq(lengthColumnNames))
-            standardFormat             <- c("From", "To", "Mu")
-            columnNames                <- rbind(columnNames, append(standardFormat, str, after = 1))
-            names(newDataList)         <- columnNames
-            data_set[[nextGeneration]] <- newDataList
+            if( length(colnames(newDataList)) != 0){
+                columnNames                <- list()
+                lengthColumnNames          <- (length(colnames(newDataList)) -3)
+                str                        <- sprintf("Through_%d", seq(lengthColumnNames))
+                standardFormat             <- c("From", "To", "Mu")
+                columnNames                <- rbind(columnNames, append(standardFormat, str, after = 1))
+                names(newDataList)         <- columnNames
+                data_set[[nextGeneration]] <- newDataList
+            }else{
+                # si los valores no coinciden rellenar este espacio con NULL
+                # replicar esta solucion en rightHandPath. Documentar esta solucion y explicar
+                data_set[[nextGeneration]] <- NULL
+            }
         }
     }
     return(data_set)
@@ -65,13 +71,20 @@ rightHandPath <- function(data_set, original_matrix){
                     }
                 }
             }
-            columnNames                <- list()
-            lengthColumnNames          <- (length(colnames(newDataList)) -3)
-            str                        <- sprintf("Through_%d",seq(lengthColumnNames))
-            standardFormat             <- c("From", "To", "Mu")
-            columnNames                <- rbind(columnNames, append(standardFormat, str, after = 1))
-            names(newDataList)         <- columnNames
-            data_set[[nextGeneration]] <- newDataList
+            if( length(colnames(newDataList)) != 0){
+                columnNames                <- list()
+                lengthColumnNames          <- (length(colnames(newDataList)) -3)
+                str                        <- sprintf("Through_%d",seq(lengthColumnNames))
+                standardFormat             <- c("From", "To", "Mu")
+                columnNames                <- rbind(columnNames, append(standardFormat, str, after = 1))
+                names(newDataList)         <- columnNames
+                data_set[[nextGeneration]] <- newDataList
+            }else{
+                # si los valores no coinciden rellenar este espacio con NULL
+                # replicar esta solucion en rightHandPath. Documentar esta solucion y explicar
+                data_set[[nextGeneration]] <- NULL
+            }
+
         }
     }
     return(data_set)

@@ -91,8 +91,15 @@ List fe(NumericMatrix threshold, NumericMatrix CC, NumericMatrix CE, NumericMatr
             NumericVector A = output_left[maxmax_left];
             NumericVector B = output_right[maxmax_right];
 
+            //RES = (A > B);
+            //RES2 = (A < B);
             RES = (A >= B);
             RES2 = (A <= B);
+            //print(output_left[maxmax_left]);
+            //print(output_right[maxmax_right]);
+            //print(A);
+            //print(RES);
+            //print(RES2);
 
             if( RES[0] == TRUE ){
                 if( maxmax_left.size() > 1){
