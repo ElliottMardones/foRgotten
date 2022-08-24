@@ -3,13 +3,13 @@
 #' @import ggplot2
 #' @import ggsci
 #' @import ggrepel
-plotBootMargin <-function(dataSet,axesLimits=""){
+plotBootMargin <-function(dataSet,axesLimits="", thr.cause, thr.effect){
   data <- list(Drivers =dataSet$byCause, Dependance =  dataSet$byEffect)
   data$Drivers$varname<- dataSet$byCause$Var
   data$Dependance$varname<-dataSet$byEffect$Var
   myVar <- factor(paste(data$Drivers$varname ), levels=data$Dependance$varname)
   p<-ggplot2::ggplot()+
-    ggplot2::geom_hline(aes(yintercept=0.5),lty=2)+geom_vline(aes(xintercept=0.5),lty=2)+
+    ggplot2::geom_hline(aes(yintercept=thr.cause),lty=2)+geom_vline(aes(xintercept=thr.effect),lty=2)+
     #geom_abline(lty=4)+
     ggplot2::geom_point(aes(x=data$Dependance$Mean,y=data$Drivers$Mean,col=myVar),size=2)+
     ggplot2::geom_linerange(aes(y=data$Drivers$Mean,xmin=data$Dependance$LCI,xmax=data$Dependance$UCI,
@@ -108,7 +108,7 @@ wrapper.BootMargin<-function(CC, CE, EE, thr.cause, thr.effect, reps, conf.level
       new_CC     <- CE[promFilas$Var, promColumnas$Var, , drop = FALSE]
       dataOutput <- list(Data=new_CC,byCause =  promFilas,byEffect = promColumnas)
       if(plot == TRUE){
-        myPlot     <- plotBootMargin(dataOutput)
+        myPlot     <- plotBootMargin(dataSet=dataOutput, thr.cause=thr.cause, thr.effect=thr.effect)
         if( !is.null(CC) & !is.null(EE)){
           allMatrix <- deconstructMatrix(dataSet = new_CC, AA= CC, AB= CE, BB= EE)
           return(list(CC=allMatrix$AA, CE =allMatrix$AB, EE = allMatrix$BB, byCause =  promFilas, byEffect = promColumnas,plot = myPlot ))
@@ -129,7 +129,7 @@ wrapper.BootMargin<-function(CC, CE, EE, thr.cause, thr.effect, reps, conf.level
     dataOutput <- list(byCause = promFilas,byEffect = promColumnas)
     if(plot == TRUE){
       dataOutput <- list(byCause = promFilas, byEffect = promColumnas)
-      myPlot     <- plotBootMargin(dataOutput)
+      myPlot     <- plotBootMargin(dataSet=dataOutput, thr.cause=thr.cause, thr.effect=thr.effect)
       dataOutput <- list(byCause = promFilas, byEffect = promColumnas, plot = myPlot )
       return(dataOutput)
     }else{

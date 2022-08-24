@@ -59,7 +59,7 @@ FE.recursive <- function( CC, CE, EE, THR, maxOrder, CE_N){
         }
         # poner aca un condicional para saber cuando es por izq o derecha
         if(  is.null(EE) ){
-            print("IZQUIERDA")
+            #print("IZQUIERDA")
             CE_n_x <- CE
             CE_n_1 <- maxmin_rcpp(CC, CE_n_x)
             CE_N   <- CE_n_1 - CE
@@ -71,7 +71,7 @@ FE.recursive <- function( CC, CE, EE, THR, maxOrder, CE_N){
             dataList[[counter_one]] <- fe_left( threshold, CC, CE_n_x, CE_N)
             assign_global("dataList", dataList)
         }else if(  is.null(CC) ){
-            print("DERECHA")
+            #print("DERECHA")
             CE_n_x <- CE
             CE_n_1 <- maxmin_rcpp(CE_n_x, EE)
             CE_N   <- CE_n_1 - CE_n_x
@@ -85,7 +85,7 @@ FE.recursive <- function( CC, CE, EE, THR, maxOrder, CE_N){
             assign_global("dataList", dataList)
         }else{
             # ACA PARA LOS EFECTOS CONJUGADOS
-            print("EFECTOS CONJUGADOS")
+            #print("EFECTOS CONJUGADOS")
             CE_n_x <- CE
             CE_n_1 <- maxmin_rcpp(maxmin_rcpp(CC, CE_n_x), EE)
             CE_N   <- CE_n_1 - CE_n_x
