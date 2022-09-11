@@ -1,4 +1,3 @@
-#' @import wBoot
 #' @import boot
 #' @import ggplot2
 #' @import ggsci
@@ -74,7 +73,8 @@ wrapper.BootMargin<-function(CC, CE, EE, thr.cause, thr.effect, reps, conf.level
       filasExp      <- (CE[i,,])[-i,]
       fila          <- rowMeans(filasExp, na.rm = TRUE)
       fila          <- na.omit(fila)
-      fila.CI       <- boot.one.bca(fila, sample_mean, null.hyp = thr.cause ,
+      # change boot.one.bca by bootOneBCa
+      fila.CI       <- bootOneBCa(fila, sample_mean, null.hyp = thr.cause ,
                                     alternative = "two.sided", R=reps, conf.level = conf.level)
       fila.Mean     <- fila.CI$Mean
       fila.LCI      <- fila.CI$Confidence.limits[1]
@@ -85,7 +85,7 @@ wrapper.BootMargin<-function(CC, CE, EE, thr.cause, thr.effect, reps, conf.level
       columnaExp      <- t(CE[,i,])[,-i]
       columna         <- rowMeans(columnaExp, na.rm = TRUE)
       columna         <- na.omit(columna)
-      columna.CI      <- boot.one.bca(columna, sample_mean, null.hyp = thr.effect,
+      columna.CI      <- bootOneBCa(columna, sample_mean, null.hyp = thr.effect,
                                       alternative =  "two.sided", R=reps, conf.level = conf.level)
       columna.Mean    <- columna.CI$Mean
       columna.LCI     <- columna.CI$Confidence.limits[1]

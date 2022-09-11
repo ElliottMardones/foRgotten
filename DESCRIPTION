@@ -2,17 +2,17 @@ Package: foRgotten
 Type: Package
 Title: foRgotten
 Version: 0.1.0
-Authors@R: c(person("Elliott", "Mardones", email = "emardones2016@alu.uct.cl", role = c("aut", "cre")),
-              person("Julio", "Rojas-Mora", email = "jrojas@inf.uct.cl", role = "aut"))
+Authors@R: c(person("Elliott", "Mardones", email = "elliott.mardones@uct.cl", role = c("aut", "cre")),
+              person("Julio", "Rojas-Mora", email = "julio.rojas@uct.cl", role = "aut"))
 Description: The foRgotten library extends the theory of forgotten effects with the aggregation of 
             multiple key informants for complete graphs and chained bipartite graphs. 
             Provides analysis tools for direct effects and forgotten effects.
+Maintainer: Elliott Mardones <elliott.mardones@uct.cl>
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports: Rcpp (>= 1.0.3), igraph, wBoot, poweRlaw, boot, ggplot2, ggsci,ggrepel, stats
+Imports: Rcpp (>= 1.0.3), igraph, poweRlaw, boot, ggplot2, ggsci,ggrepel, stats
 LinkingTo: Rcpp
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 Depends: 
     R (>= 2.10)
-

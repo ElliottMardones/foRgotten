@@ -39,8 +39,6 @@
 #'the three-dimensional matrices entered in the parameters CC, CE and EE, but assigning
 #'0 to the non-significant edges.
 #' @export
-#' @references
-#' https://cran.r-project.org/web/packages/wBoot/index.html
 #'
 #' @examples
 #' #' # For complete graphs only the CC parameter is used.

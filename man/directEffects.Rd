@@ -64,6 +64,3 @@ directEffects(CE = CE, thr = 0.5, conf.level=0.95, reps = 100, delete = FALSE)
 # For instance:
 directEffects(CC = CC, CE = CE, EE = EE, thr = 0.5, conf.level=0.95, reps = 100, delete = FALSE)
 }
-\references{
-https://cran.r-project.org/web/packages/wBoot/index.html
-}

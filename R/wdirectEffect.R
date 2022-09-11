@@ -1,4 +1,3 @@
-#' @import wBoot
 
 validations_de_rect <- function(CC, CE, EE){
   A <- if( missing(CC))( warning("Parameter CC is missing, its required."))else(flag <- "Ok")
@@ -40,7 +39,8 @@ wrapper.de.sq <- function(CE, thr, conf.level, reps, delete){
         if( x != y){
           vector_Value <- CE[x,y,]
           valuesFromArrays <- (as.numeric(vector_Value))
-          Data.CI<- boot.one.bca(valuesFromArrays,mean,null.hyp = thr, alternative = "less",R=reps, conf.level = conf.level)#agrege conf.level a boot.one.bca
+          # change boot.one.bca by bootOneBCa
+          Data.CI<- bootOneBCa(valuesFromArrays,mean,null.hyp = thr, alternative = "less",R=reps, conf.level = conf.level)#agrege conf.level a boot.one.bca
           bootCC <- rbind( bootCC, data.frame(From = rownamesData[x],
                                               To = colnamesData[y],
                                               Mean = mean(valuesFromArrays),
