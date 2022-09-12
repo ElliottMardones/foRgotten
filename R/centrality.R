@@ -49,8 +49,11 @@
 #' @export
 #' @references
 #' Canty A, Ripley BD (2021). boot: Bootstrap R (S-Plus) Functions. R package version 1.3-28.
-#' Csardi G, Nepusz T (2006). “The igraph software package for complex network research.” InterJournal, Complex Systems, 1695
-#' Gillespie CS (2015). “Fitting Heavy Tailed Distributions: The poweRlaw Package.” Journal of Statistical Software, 64(2), 1–16.
+#'
+#' Csardi G, Nepusz T (2006). "The igraph software package for complex network research." InterJournal, Complex Systems, 1695.
+#'
+#' Gillespie CS (2015). "Fitting Heavy Tailed Distributions: The poweRlaw Package." Journal of Statistical Software, 64(2), 1-16.
+#'
 #' Newman, M. E. (2005). Power laws, Pareto distributions and Zipf's law. Contemporary physics, 46(5), 323-351.
 #'
 #' @examples

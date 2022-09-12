@@ -17,8 +17,7 @@
 #' @param delete Logical: If delete = TRUE, zeroes are assigned to edges whose incidences are significantly less than thr to the p-value set in conf.level. By default delete = FALSE.
 #'
 #' @details
-#' The function implements "boot.one.bca" from the wBoot package to get the UCI and the p-value.
-#'The function contemplates two modalities, the first is focused on complete graphs and the second for chain bipartite graphs.
+#' p.value
 
 #'If you use the full graph mode, make sure to keep the default values of the CE and EE parameters.
 

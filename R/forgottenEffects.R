@@ -71,7 +71,7 @@
 #'
 #' Csardi G, Nepusz T (2006). "The igraph software package for complex network research." InterJournal, Complex Systems, 1695
 #'
-#' Eddelbuettel D, François R (2011). "Rcpp: Seamless R and C++ Integration." Journal of Statistical Software, 40(8), 1–18.
+#' Eddelbuettel D, Francois R (2011). "Rcpp: Seamless R and C++ Integration." Journal of Statistical Software, 40(8), 1-18.
 #'
 #' Eddelbuettel D (2013). Seamless R and C++ Integration with Rcpp. Springer, New York.
 #'

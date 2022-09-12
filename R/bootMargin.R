@@ -62,8 +62,6 @@
 #'
 #' @export
 #'
-#' @references
-#' https://cran.r-project.org/web/packages/wBoot/index.html
 #' @examples
 #' # For chain bipartite graphs the parameters CC, CE and EE are used.
 #' # For instance:

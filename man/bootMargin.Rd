@@ -86,6 +86,3 @@ If you use the full graph mode, make sure to keep the default values of the CE a
 # For instance:
 bootMargin(CC = CC, CE = CE, EE = EE, thr.cause = 0.5, thr.effect = 0.5, reps = 500)
 }
-\references{
-https://cran.r-project.org/web/packages/wBoot/index.html
-}
