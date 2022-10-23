@@ -19,6 +19,7 @@
 #' and reflective incidence matrices. Each matrix represents a complete graph.
 #' By default EE = NULL.
 #'
+#' @param no.zeros no.zeros TRUE or FALSE
 #' @param thr.cause Real between [0,1]: Defines the degree of truth for which the incidence
 #' is considered significant. By default thr = 0.5.
 #' @param thr.effect Real between [0,1]: Defines the degree of truth for which the incidence
@@ -66,9 +67,9 @@
 #' # For chain bipartite graphs the parameters CC, CE and EE are used.
 #' # For instance:
 #' bootMargin(CC = CC, CE = CE, EE = EE, thr.cause = 0.5, thr.effect = 0.5, reps = 500)
-bootMargin <-function(CC= NULL, CE= NULL, EE= NULL, thr.cause = 0.5, thr.effect = 0.5, reps=10000, conf.level = 0.95, delete=FALSE, plot = FALSE){
+bootMargin <-function(CC= NULL, CE= NULL, EE= NULL, no.zeros = TRUE,thr.cause = 0.5, thr.effect = 0.5, reps=10000, conf.level = 0.95, delete=FALSE, plot = FALSE){
   #agregar thr.causes and thr.effect
-  output <- wrapper.BootMargin(CC = CC, CE = CE, EE = EE, thr.cause = thr.cause, thr.effect = thr.effect, reps=reps, conf.level =conf.level, delete=delete, plot=plot)
+  output <- wrapper.BootMargin(CC = CC, CE = CE, EE = EE, no.zeros = no.zeros,thr.cause = thr.cause, thr.effect = thr.effect, reps=reps, conf.level =conf.level, delete=delete, plot=plot)
 
   return(output)
 }
