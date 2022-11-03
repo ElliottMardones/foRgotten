@@ -31,6 +31,9 @@ BTCgraphs_centrality <- function( CC, CE, EE){
     nexp <- dim(CC)[3]
     data_output <- array(rep(2,nFilas*nColumnas*nexp), dim = c(nFilas,nColumnas,nexp))
     for( i in seq_len(dim(CC)[3])){
+      diag(CC[,,i]) <- NA
+      diag(CE[,,i]) <- NA
+      diag(EE[,,i]) <- NA
       CCs <- as.data.frame(CC[,,i])
       CEs <- as.data.frame(CE[,,i])
       EEs <- as.data.frame(EE[,,i])
@@ -63,6 +66,9 @@ BTCgraphs_bootMargin <- function( CC, CE, EE){
     nexp <- dim(CC)[3]
     data_output <- array(rep(NA,nFilas*nColumnas*nexp), dim = c(nFilas,nColumnas,nexp))
     for( i in seq_len(dim(CC)[3])){
+      diag(CC[,,i]) <- NA
+      diag(CE[,,i]) <- NA
+      diag(EE[,,i]) <- NA
       CCs <- as.data.frame(CC[,,i])
       CEs <- as.data.frame(CE[,,i])
       EEs <- as.data.frame(EE[,,i])
