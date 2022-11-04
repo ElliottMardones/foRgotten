@@ -41,18 +41,19 @@ wrapper.de.sq <- function(CE, thr, conf.level, reps, delete){
           valuesFromArrays <- (as.numeric(vector_Value))
           # change boot.one.bca by bootOneBCa
           Data.CI<- bootOneBCa(valuesFromArrays,mean,null.hyp = thr, alternative = "less",R=reps, conf.level = conf.level)#agrege conf.level a boot.one.bca
+          pv <- ifelse( is.nan(Data.CI$p.value), NA, Data.CI$p.value)
           bootCC <- rbind( bootCC, data.frame(From = rownamesData[x],
                                               To = colnamesData[y],
                                               Mean = mean(valuesFromArrays),
                                               UCI= Data.CI$Confidence.limits[1],
-                                              p.value = Data.CI$p.value))
+                                              p.value = pv))
 
         }
       }
     }
     if( delete){
       conf.level <- 1 - conf.level
-      borrar <-  which(bootCC$p.value < conf.level | ( bootCC$Mean < thr & is.nan(bootCC$p.value)))
+      borrar <-  which(bootCC$p.value < conf.level | ( bootCC$Mean < thr & is.na(bootCC$p.value)))
       temp <- bootCC[borrar, ]
       for( ii in seq_len(nrow(temp)) ){
         From <- temp[ii, 1]

@@ -78,10 +78,8 @@ wrapper.BootMargin<-function(CC, CE, EE, no.zeros,  thr.cause, thr.effect, reps,
             }
         }
     }
-    #
     for(i in 1:nn){
       # nuevo parametro no.zeros
-      #browser()
       if(no.zeros == TRUE){
           filasExp      <- (CE[i,,])[-i,]
           filasExp[filasExp==0] <- NA
@@ -101,14 +99,14 @@ wrapper.BootMargin<-function(CC, CE, EE, no.zeros,  thr.cause, thr.effect, reps,
               fila.Mean     <- fila.CI$Mean
               fila.LCI      <- fila.CI$Confidence.limits[1]
               fila.UCI      <- fila.CI$Confidence.limits[2]
-              fila.p_value  <- fila.CI$p.value
+              fila.p_value  <- ifelse( is.nan(fila.CI$p.value), NA, fila.CI$p.value)
 
               columna.CI      <- bootOneBCa(columna, sample_mean, null.hyp = thr.effect,
                                             alternative =  "two.sided", R=reps, conf.level = conf.level)
               columna.Mean    <- columna.CI$Mean
               columna.LCI     <- columna.CI$Confidence.limits[1]
               columna.UCI     <- columna.CI$Confidence.limits[2]
-              columna.p_value <- columna.CI$p.value
+              columna.p_value <- ifelse( is.nan(columna.CI$p.value), NA, columna.CI$p.value)
               # unir las columnas
               promFilas[i,2:5]    <-cbind(fila.Mean, fila.LCI, fila.UCI, fila.p_value)
               promColumnas[i,2:5] <-cbind(columna.Mean ,columna.LCI, columna.UCI, columna.p_value)
@@ -123,7 +121,7 @@ wrapper.BootMargin<-function(CC, CE, EE, no.zeros,  thr.cause, thr.effect, reps,
           fila.Mean     <- fila.CI$Mean
           fila.LCI      <- fila.CI$Confidence.limits[1]
           fila.UCI      <- fila.CI$Confidence.limits[2]
-          fila.p_value  <- fila.CI$p.value
+          fila.p_value  <- ifelse( is.nan(fila.CI$p.value), NA, fila.CI$p.value)
           #####################################
           # columna: take data by columns
           columnaExp      <- t(CE[,i,])[,-i]
@@ -135,7 +133,8 @@ wrapper.BootMargin<-function(CC, CE, EE, no.zeros,  thr.cause, thr.effect, reps,
           columna.Mean    <- columna.CI$Mean
           columna.LCI     <- columna.CI$Confidence.limits[1]
           columna.UCI     <- columna.CI$Confidence.limits[2]
-          columna.p_value <- columna.CI$p.value
+
+          columna.p_value <- ifelse( is.nan(columna.CI$p.value), NA, columna.CI$p.value)
           # unir las columnas
           promFilas[i,2:5]    <-cbind(fila.Mean, fila.LCI, fila.UCI, fila.p_value)
           promColumnas[i,2:5] <-cbind(columna.Mean ,columna.LCI, columna.UCI, columna.p_value)
