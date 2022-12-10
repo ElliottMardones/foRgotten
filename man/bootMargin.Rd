@@ -8,6 +8,7 @@ bootMargin(
   CC = NULL,
   CE = NULL,
   EE = NULL,
+  no.zeros = TRUE,
   thr.cause = 0.5,
   thr.effect = 0.5,
   reps = 10000,
@@ -30,6 +31,8 @@ rectangular incidence matrix, or a list of data.frames containing rectangular
 square and reflective incidence matrix, or a list of data.frames containing square
 and reflective incidence matrices. Each matrix represents a complete graph.
 By default EE = NULL.}
+
+\item{no.zeros}{no.zeros TRUE or FALSE}
 
 \item{thr.cause}{Real between [0,1]: Defines the degree of truth for which the incidence
 is considered significant. By default thr = 0.5.}

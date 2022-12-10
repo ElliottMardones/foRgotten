@@ -39,14 +39,23 @@ wrapper.de.sq <- function(CE, thr, conf.level, reps, delete){
         if( x != y){
           vector_Value <- CE[x,y,]
           valuesFromArrays <- (as.numeric(vector_Value))
-          # change boot.one.bca by bootOneBCa
-          Data.CI<- bootOneBCa(valuesFromArrays,mean,null.hyp = thr, alternative = "less",R=reps, conf.level = conf.level)#agrege conf.level a boot.one.bca
-          pv <- ifelse( is.nan(Data.CI$p.value), NA, Data.CI$p.value)
-          bootCC <- rbind( bootCC, data.frame(From = rownamesData[x],
-                                              To = colnamesData[y],
-                                              Mean = mean(valuesFromArrays),
-                                              UCI= Data.CI$Confidence.limits[1],
-                                              p.value = pv))
+          #
+          if( length(unique(valuesFromArrays)) == 1 ){
+              bootCC <- rbind( bootCC, data.frame(From = rownamesData[x],
+                                                  To = colnamesData[y],
+                                                  Mean = valuesFromArrays[1],
+                                                  UCI= NA,
+                                                  p.value = NA))
+          }else{
+              Data.CI<- MKinfer::boot.t.test(x = valuesFromArrays , alternative = "less", mu = thr, R = reps)
+
+              #pv <- ifelse( is.nan(Data.CI$boot.p.value), NA, Data.CI$boot.p.value)
+              bootCC <- rbind( bootCC, data.frame(From = rownamesData[x],
+                                                  To = colnamesData[y],
+                                                  Mean = mean(valuesFromArrays),
+                                                  UCI= as.numeric(Data.CI$boot.conf.int)[2],
+                                                  p.value = Data.CI$boot.p.value))
+          }
 
         }
       }

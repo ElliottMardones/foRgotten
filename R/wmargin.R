@@ -2,6 +2,7 @@
 #' @import ggplot2
 #' @import ggsci
 #' @import ggrepel
+#' @import MKinfer
 plotBootMargin <-function(dataSet,axesLimits="", thr.cause, thr.effect){
   data <- list(Drivers =dataSet$byCause, Dependance =  dataSet$byEffect)
   data$Drivers$varname<- dataSet$byCause$Var
@@ -79,72 +80,105 @@ wrapper.BootMargin<-function(CC, CE, EE, no.zeros,  thr.cause, thr.effect, reps,
         }
     }
     for(i in 1:nn){
-      # nuevo parametro no.zeros
-      if(no.zeros == TRUE){
-          filasExp      <- (CE[i,,])[-i,]
-          filasExp[filasExp==0] <- NA
-          fila          <- rowMeans(filasExp, na.rm = TRUE)
-          fila          <- na.omit(fila)
-          #####################################
-          # columna: take data by columns
-          columnaExp      <- t(CE[,i,])[,-i]
-          columna         <- rowMeans(columnaExp, na.rm = TRUE)
-          # nuevo parametro no.zeros
-          columna[columna==0] <- NA
-          columna         <- na.omit(columna)
-          if( !all(is.na(fila)) && !all(is.na(columna)) ){
-              # change boot.one.bca by bootOneBCa
-              fila.CI       <- bootOneBCa(fila, sample_mean, null.hyp = thr.cause ,
-                                          alternative = "two.sided", R=reps, conf.level = conf.level)
-              fila.Mean     <- fila.CI$Mean
-              fila.LCI      <- fila.CI$Confidence.limits[1]
-              fila.UCI      <- fila.CI$Confidence.limits[2]
-              fila.p_value  <- ifelse( is.nan(fila.CI$p.value), NA, fila.CI$p.value)
+        # nuevo parametro no.zeros
+        if(no.zeros == TRUE){
+            filasExp      <- (CE[i,,])[-i,]
+            filasExp[filasExp==0] <- NA
+            fila          <- rowMeans(filasExp, na.rm = TRUE)
+            fila          <- na.omit(fila)
+            #####################################
+            # columna: take data by columns
+            columnaExp      <- t(CE[,i,])[,-i]
+            columnaExp[columnaExp==0] <- NA
+            columna         <- rowMeans(columnaExp, na.rm = TRUE)
+            columna         <- na.omit(columna)
+            if( !all(is.na(fila)) && !all(is.na(columna)) ){
 
-              columna.CI      <- bootOneBCa(columna, sample_mean, null.hyp = thr.effect,
-                                            alternative =  "two.sided", R=reps, conf.level = conf.level)
-              columna.Mean    <- columna.CI$Mean
-              columna.LCI     <- columna.CI$Confidence.limits[1]
-              columna.UCI     <- columna.CI$Confidence.limits[2]
-              columna.p_value <- ifelse( is.nan(columna.CI$p.value), NA, columna.CI$p.value)
-              # unir las columnas
-              promFilas[i,2:5]    <-cbind(fila.Mean, fila.LCI, fila.UCI, fila.p_value)
-              promColumnas[i,2:5] <-cbind(columna.Mean ,columna.LCI, columna.UCI, columna.p_value)
-          }
-      }
-      else{
-          fila          <- rowMeans(filasExp, na.rm = TRUE)
-          fila          <- na.omit(fila)
-          # change boot.one.bca by bootOneBCa
-          fila.CI       <- bootOneBCa(fila, sample_mean, null.hyp = thr.cause ,
-                                      alternative = "two.sided", R=reps, conf.level = conf.level)
-          fila.Mean     <- fila.CI$Mean
-          fila.LCI      <- fila.CI$Confidence.limits[1]
-          fila.UCI      <- fila.CI$Confidence.limits[2]
-          fila.p_value  <- ifelse( is.nan(fila.CI$p.value), NA, fila.CI$p.value)
-          #####################################
-          # columna: take data by columns
-          columnaExp      <- t(CE[,i,])[,-i]
-          columna         <- rowMeans(columnaExp, na.rm = TRUE)
-          # nuevo parametro no.zeros
-          columna         <- na.omit(columna)
-          columna.CI      <- bootOneBCa(columna, sample_mean, null.hyp = thr.effect,
-                                        alternative =  "two.sided", R=reps, conf.level = conf.level)
-          columna.Mean    <- columna.CI$Mean
-          columna.LCI     <- columna.CI$Confidence.limits[1]
-          columna.UCI     <- columna.CI$Confidence.limits[2]
+                #browser()
+                if( length(unique(fila)) == 1 ){
+                    #fila.CI       <- boot.t.test(x = fila , alternative = "two.sided", mu = thr.cause, R = reps)
+                    fila.Mean     <- fila[1]
+                    fila.LCI      <- NA
+                    fila.UCI      <- NA
+                    fila.p_value  <- NA
+                }
+                if(length(unique(fila)) != 1){
+                    fila.CI       <- boot.t.test(x = fila , alternative = "two.sided", mu = thr.cause, R = reps)
+                    fila.Mean     <- fila.CI$boot.estimate
+                    fila.LCI      <- as.numeric(fila.CI$boot.conf.int)[1]
+                    fila.UCI      <- as.numeric(fila.CI$boot.conf.int)[2]
+                    fila.p_value  <- fila.CI$boot.p.value
+                }
+                if( length(unique(columna)) == 1 ){
+                    #columna.CI      <- boot.t.test(x = columna , alternative = "two.sided", mu = thr.effect, R = reps)
+                    columna.Mean    <- columna[1]
+                    columna.LCI     <- NA
+                    columna.UCI     <- NA
+                    columna.p_value <- NA
+                }
+                if(length(unique(columna)) != 1){
+                    columna.CI      <- boot.t.test(x = columna , alternative = "two.sided", mu = thr.effect, R = reps)
+                    columna.Mean    <- columna.CI$boot.estimate
+                    columna.LCI     <- as.numeric(columna.CI$boot.conf.int)[1]
+                    columna.UCI     <- as.numeric(columna.CI$boot.conf.int)[2]
+                    columna.p_value <- columna.CI$boot.p.value
+                }
+                # unir las columnas
+                promFilas[i,2:5]    <-cbind(fila.Mean, fila.LCI, fila.UCI, fila.p_value)
+                promColumnas[i,2:5] <-cbind(columna.Mean ,columna.LCI, columna.UCI, columna.p_value)
+            }
+        }
+        else{
+            filasExp      <- (CE[i,,])[-i,]
+            #filasExp[filasExp==0] <- NA
+            fila          <- rowMeans(filasExp, na.rm = TRUE)
+            fila          <- na.omit(fila)
+            #####################################
+            # columna: take data by columns
+            columnaExp      <- t(CE[,i,])[,-i]
+            #columnaExp[columnaExp==0] <- NA
+            columna         <- rowMeans(columnaExp, na.rm = TRUE)
+            columna         <- na.omit(columna)
 
-          columna.p_value <- ifelse( is.nan(columna.CI$p.value), NA, columna.CI$p.value)
-          # unir las columnas
-          promFilas[i,2:5]    <-cbind(fila.Mean, fila.LCI, fila.UCI, fila.p_value)
-          promColumnas[i,2:5] <-cbind(columna.Mean ,columna.LCI, columna.UCI, columna.p_value)
-      }
+            if( length(unique(fila)) == 1 ){
+                #fila.CI       <- boot.t.test(x = fila , alternative = "two.sided", mu = thr.cause, R = reps)
+                fila.Mean     <- fila[1]
+                fila.LCI      <- NA
+                fila.UCI      <- NA
+                fila.p_value  <- NA
+            }
+            if(length(unique(fila)) != 1){
+                fila.CI       <- boot.t.test(x = fila , alternative = "two.sided", mu = thr.cause, R = reps)
+                fila.Mean     <- fila.CI$boot.estimate
+                fila.LCI      <- as.numeric(fila.CI$boot.conf.int)[1]
+                fila.UCI      <- as.numeric(fila.CI$boot.conf.int)[2]
+                fila.p_value  <- fila.CI$boot.p.value
+            }
+            if( length(unique(columna)) == 1 ){
+                #columna.CI      <- boot.t.test(x = columna , alternative = "two.sided", mu = thr.effect, R = reps)
+                columna.Mean    <- columna[1]
+                columna.LCI     <- NA
+                columna.UCI     <- NA
+                columna.p_value <- NA
+            }
+            if(length(unique(columna)) != 1){
+                columna.CI      <- boot.t.test(x = columna , alternative = "two.sided", mu = thr.effect, R = reps)
+                columna.Mean    <- columna.CI$boot.estimate
+                columna.LCI     <- as.numeric(columna.CI$boot.conf.int)[1]
+                columna.UCI     <- as.numeric(columna.CI$boot.conf.int)[2]
+                columna.p_value <- columna.CI$boot.p.value
+            }
+            # unir las columnas
+            promFilas[i,2:5]    <-cbind(fila.Mean, fila.LCI, fila.UCI, fila.p_value)
+            promColumnas[i,2:5] <-cbind(columna.Mean ,columna.LCI, columna.UCI, columna.p_value)
+        }
 
     }
     if( delete ){
-      delete_in_rows     <- which( promFilas$UCI < thr.cause | ( promFilas$Mean < thr.cause & is.nan( promFilas$p.value)))
-      delete_in_cols     <- which( promColumnas$UCI < thr.effect | ( promColumnas$Mean < thr.effect & is.nan( promColumnas$p.value)))
+      delete_in_rows     <- which( promFilas$UCI < thr.cause | ( promFilas$Mean < thr.cause & is.na( promFilas$p.value)))
+      delete_in_cols     <- which( promColumnas$UCI < thr.effect | ( promColumnas$Mean < thr.effect & is.na( promColumnas$p.value)))
       which_delete       <- delete_in_rows %in% delete_in_cols
+      #which_delete       <- delete_in_cols %in% delete_in_rows
       if( sum(which_delete) != 0 ){ promFilas    <- (promFilas[ -delete_in_rows[which_delete], ])}
       if( sum(which_delete) != 0 ){ promColumnas <- (promColumnas[ -delete_in_rows[which_delete], ])}
       if( length(promFilas) == 0 ){
