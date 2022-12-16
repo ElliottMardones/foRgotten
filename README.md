@@ -476,7 +476,7 @@ graph generated from the subsets `$byCause` and `$byEffect`. On the
 x-axis are the “Dependence” associated with `$byEffect` and on the
 y-axis the “Influence” is associated with `$byCause`.
 
-### centralitry()
+### centrality()
 
 The `centrality()` function calculates the median betweenness
 centrality, confidence intervals, and the selected method for
