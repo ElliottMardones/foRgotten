@@ -74,7 +74,7 @@ The package provides four functions:
 
 Computes the mean incidence, left one-sided confidence interval, and
 p-value with multiple key informants for complete graphs and chained
-bipartite graphs. For more details, see help (de.sq).
+bipartite graphs. For more details, see help(directEffects).
 
 ``` r
 ?bootMargin
