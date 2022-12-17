@@ -153,7 +153,7 @@ significant, the parameter `thr` is used, which is defined between
 `[0,1]`. By default `thr = 0.5`.
 
 The `directEffects()` uses the bootstrap method with BCa adjusted boot
-and with a left one-sided hypothesis test based on the Z-test. The
+and with a left one-sided hypothesis test based on the t-test. The
 `conf.level` parameter defines the confidence level and `reps` the
 number of bootstrap replicas. By default `conf.level = 0.95` and
 `reps = 10000`.
@@ -188,7 +188,7 @@ head(result$DirectEffects)
 #> 6   I1 I7 0.815 0.8750   1.000
 ```
 
-If any of the occurrences have `"NA"` and `"NaN"` values in the UCI and
+If any of the occurrences have `"NA"` values in the UCI and
 p.value fields, it indicates that the values for that occurrence have
 repeated values. This prevents bootstrapping.
 
@@ -264,16 +264,16 @@ bipartite graphs, therefore it is necessary that these parameters are
 not used.
 
 To define the degree of truth in which the incidence is considered
-significant, the parameter `thr` is used, which is defined between
-`[0,1]`. By default `thr = 0.5`.
+significant, the parameter `thr.cause` and `thr.effect` is used, which is defined between
+`[0,1]`. By default `thr.cause = 0.5` and `thr.effect = 0.5`.
 
 The `bootMargin()` uses the bootstrap method with BCa adjusted boot and
-with a left one-sided hypothesis test based on the Z-test. The
+with a left one-sided hypothesis test based on the t-test. The
 `conf.level` parameter defines the confidence level and `reps` the
 number of bootstrap replicas. By default `conf.level = 0.95` and
 `reps = 10000`.
 
-For example, let `thr = 0.6` and `reps = 1000` we get:
+For example, let `thr.cause = 0.6`, `thr.effect = 0.6` and `reps = 1000` we get:
 
 ``` r
 result <- bootMargin(CE = CC, thr.cause = 0.6,thr.effect =  0.6, reps = 1000)
@@ -339,7 +339,7 @@ result$byEffect
 ```
 
 The function allows eliminating causes and effects whose average
-incidence is not significant at the set `thr` parameter. For example,
+incidence is not significant at the set `thr.cause` and `thr.effect` parameter. For example,
 for `delete = TRUE`, the number of significant variables decreased.
 
 ``` r
@@ -402,7 +402,7 @@ matrix, where each submatrix along the z-axis is a square incidence
 matrix and reflective, or a list of data.frame containing square and
 reflective incidence matrices. Each matrix represents a bipartite graph.
 
-For example, let `thr = 0.5` and `reps = 1000`, you get:
+For example, let `thr.cause = 0.5`, `thr.effect = 0.5` and `reps = 1000`, you get:
 
 ``` r
 result <- bootMargin(CC = CC, CE = CE, EE = EE, thr.cause = 0.6,thr.effect =  0.6, reps = 1000)
@@ -732,9 +732,9 @@ processors to be used in the `paralell`implementation is defined in the
 The `parallel`and `ncpus`options are not available on Windows operating
 systems.
 
-### fe.sq()
+### FE()
 
-The function `fe.sq()`, calculates the forgotten effects (Kaufmann & Gil
+The function `FE()`, calculates the forgotten effects (Kaufmann & Gil
 Aluja, 1988) with multiple experts for complete graphs, with calculation
 of the frequency of appearance of the forgotten effects, mean incidence,
 confidence intervals and standard error
