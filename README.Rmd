@@ -33,21 +33,9 @@ The package allows for:
 
 ## Authors
 
-**Elliott Jamil Mardones Arias** \
-    School of Computer Science \
-    Universidad Católica de Temuco \
-    Rudecindo Ortega 02351 \
-    Temuco, Chile \
-    elliott.mardones@uct.cl
+**Elliott Jamil Mardones Arias** School of Computer Science Universidad Católica de Temuco Rudecindo Ortega 02351 Temuco, Chile [elliott.mardones\@uct.cl](mailto:elliott.mardones@uct.cl)
 
-**Julio Rojas-Mora**
-    Department of Computer Science \
-    Universidad Católica de Temuco \
-    Rudecindo Ortega 02351 Temuco, Chile \
-    and Centro de Políticas Públicas \
-    Universidad Católica de Temuco \
-    Temuco, Chile \
-    julio.rojas@uct.cl
+**Julio Rojas-Mora** Department of Computer Science Universidad Católica de Temuco Rudecindo Ortega 02351 Temuco, Chile and Centro de Políticas Públicas Universidad Católica de Temuco Temuco, Chile [julio.rojas\@uct.cl](mailto:julio.rojas@uct.cl)
 
 ## Installation
 
@@ -100,7 +88,6 @@ Performs the computation of median betweenness centrality with multiple key info
 
 Performs the forgotten effects calculation proposed by Kaufman and Gil-Aluja (1988) with multiple experts. The parameters allow you to specify the significant degree of truth and the order of incidence that is required to be calculated for chained bipartite graphs For more details, see help(FE).
 
-
 ## DataSet
 
 The library provides 3 three-dimensional incidence matrices which are called `CC`, `CE` and `EE`. The data are those used in the study "Application of the Forgotten Effects Theory For Assessing the Public Policy on Air Pollution Of the Commune of Valdivia, Chile" developed by Manna, E. M et al (2018).
@@ -119,99 +106,72 @@ help(EE)
 
 ### **directEffects()**
 
-The `directEffects()` function calculates the mean incidence, left one-sided confidence interval, and p-value with multiple key informants for complete graphs and chain bipartite graphs.
+The `directEffects()` function calculates the mean incidence, left-sided confidence interval, and p-value for complete graphs and chained bipartite graphs using multiple key informants. This function uses the bootstrap method with adjusted BCa and a left-sided hypothesis test based on the t-test.
 
-The function contemplates two modalities, the first is focused on complete graphs and the second for chain bipartite graphs.
+The `thr` parameter defines the degree of truth in which the incidence is considered significant within the range [0,1], while `conf.level` defines the confidence level, and `reps` specify the number of bootstrap replicas. By default, `thr = 0.5`, `conf.level = 0.95` and `reps = 10000`.
 
-#### For complete graphs
+The `CE` parameter allows you to enter a three-dimensional incidence array, where each submatrix along the z-axis is a square or rectangular incidence matrix. To calculate with complete graphs the matrices must be square. To compute with chained bipartite graphs the matrices must be rectangular, and the parameters `CC` and `EE` must be used, which allows entering three-dimensional incidence arrays where each submatrix along the z-axis is a square and reflective incidence matrix.
 
-To calculate the significant direct effects of the incidence matrix `CC`, which is described in DataSet, we use the parameter `CE`, which allows us to enter a three-dimensional matrix, where each sub-matrix along the z-axis is a rectangular incidence matrix or a list of data.frame containing rectangular incidence matrices. Each matrix represents a complete graph. The `CC` and `EE` parameters are used to perform the calculation with chain bipartite graphs, therefore it is necessary that these parameters are not used.
-
-
-To define the degree of truth in which the incidence is considered significant, the parameter `thr` is used, which is defined between `[0,1]`. By default `thr = 0.5`.
-
-The `directEffects()` uses the bootstrap method with BCa adjusted boot and with a left one-sided hypothesis test based on the Z-test. The `conf.level` parameter defines the confidence level and `reps` the number of bootstrap replicas. By default `conf.level = 0.95` and `reps = 10000`.
-
-For example, let `thr = 0.5` and `reps = 1000`, we get:
+Implementation example:
 
 ```{r echo=TRUE}
 result <- directEffects(CE = CC, thr = 0.5, reps = 1000)
 ```
 
-The function returns a list object with the `$DirectEffects` data subset that contains the following values:
+The function returns a list object with the subset of data `$DirectEffects` that includes the following information:
 
--   From: Origin of the incident
--   To: Destination of the incident
--   Mean: Average incidence
--   UCI: Upper Confidence Interval
--   p.value: the calculated p-value
+-   From: Origin of the incident.
+-   To: Destination of the incident.
+-   Mean: Average incidence.
+-   UCI: Upper Confidence Interval.
+-   p.value: The calculated p-value.
 
-The results obtained correspond to 240 first-order incidents. Equivalent to the number of edges minus the incidence on itself of each edge. The first 6 values are:
+In this case, the results correspond to 240 first-order incidences. The first six values are:
 
 ```{r}
 head(result$DirectEffects)
 
 ```
 
-If any of the occurrences have `"NA"` and `"NaN"` values in the UCI and p.value fields, it indicates that the values for that occurrence have repeated values. This prevents bootstrapping.
+Any result containing a NA value in the UCI and p.value fields indicates that all incidences are the same or that the value is unique. Therefore, bootstrapping is not done.
 
-The `delete` parameter allows assigning zeros to edges whose incidences are significantly less than `thr` to the p-value set in the `conf.level` parameter. Also, this allows you to remove non-significant results from the `$DirectEffects` subset.
+The `delete` parameter allows you to assign zeros to edges whose incidences are significantly less than `thr` at the p-value set in the `conf.level` parameter. In addition, this allows you to remove non-significant results from the `$DirectEffects` set.
 
-For example, let `thr = 0.5` and `conf.level = 0.95`, mean incidences less than `0.5` or incidents with p.value less than `1 - conf.level` will be eliminated.
+For example, to remove mean incidences less than 0.5 or incidences with a p-value less than 1- `conf.level`:
 
 ```{r echo=TRUE, warning=TRUE}
 result <- directEffects(CE = CC, thr = 0.5, reps = 1000, delete = TRUE)
 ```
 
-The function reports by console when significant edges have been removed. The number of significant direct effects decreased from 240 to 205 for `delete = TRUE`.
+Significant direct effects decreased from 240 to 205 with `delete = TRUE`.
 
-**Note:** However, this does not guarantee that a non-significant variable in 1st order does not generate 2nd order effects, since they are extracted from the empirical distribution of the key informants.
+Note: However, this does not guarantee that a non-significant first-order variable will not generate second-order effects since the data is obtained from its empirical distribution.
 
-For `delete = TRUE`, the function returns `$Data`, the three-dimensional matrix entered in the `CE` parameter but assigning 0 to the non-significant edges.
-
-#### For chain bipartite graphs
-To calculate the significant direct effects of the incidence matrices `CC`, `CE` and `EE`, which are described in DataSet, we make use of the already described parameter `CE`. The `EE` parameter is equivalent to the `CC` parameter. The `CC` parameter allows us to enter a three-dimensional matrix, where each submatrix along the z-axis is a square incidence matrix and reflective, or a list of data.frame containing square and reflective incidence matrices. Each matrix represents a bipartite graph.
-
-For example, let `thr = 0.5` and `reps = 1000`, you get:
-
-```{r}
-result <- directEffects(CC = CC, CE = CE, EE = EE, reps = 1000)
-```
-
-The results obtained correspond to 312 first-order incidents. Using the `delete = TRUE` parameter, the number of first-order significant occurrences was reduced to 271.
-
-For `delete = TRUE`, the function returns `$CC`, `$CE`, and `$EE`, which are the three-dimensional matrices entered in the parameters `CC`, `CE`, and `EE`, but assigning 0 to the non-significant edges.
-
+For `delete = TRUE`, the function returns `$Data`, the three-dimensional incidence array entered in the `CE` parameter but assigning 0 to non-significant edges.
 
 ### bootMargin()
 
-The `bootMargin()` function calculates the mean incidence of each cause and each effect, confidence intervals, and p-value with multiple experts for complete graphs and chain bipartite graphs.
+The `bootMargin()` function calculates the mean incidence of each cause and each effect, confidence intervals, and p-values for complete graphs and chained bipartite graphs using multiple key informants. This function uses the bootstrap method with adjusted BCa and a bilateral hypothesis test based on the t-test.
 
-The function contemplates two modalities, the first is focused on complete graphs and the second for chain bipartite graphs.
+The `thr.cause` and `thr.effect` parameters define the degree of truth in which the incidence is considered significant within the range [0,1], while `conf.level` defines the confidence level, and `reps` specify the number of bootstrap replicates. By default, `thr.cause = 0.5`, `the.effect = 0.5`, `conf.level = 0.95` and `reps = 10000`.
 
-#### **For complete graphs**
+The `CE` parameter allows you to enter a three-dimensional incidence array, where each submatrix along the z-axis is a square or rectangular incidence matrix. To calculate with complete graphs the matrices must be square. To compute with chained bipartite graphs the matrices must be rectangular, and the parameters `CC` and `EE` must be used, which allows entering three-dimensional incidence arrays where each submatrix along the z-axis is a square and reflective incidence matrix.
 
-To calculate the average incidence of each cause and each effect of the `CC` incidence matrix, which is described in DataSet, we use the `CE` parameter, which allows us to enter a three-dimensional matrix, where each sub-matrix along the z-axis is a rectangular incidence matrix or a list of data.frame containing rectangular incidence matrices. The `CC` and `EE` parameters are used to perform the calculation with chain bipartite graphs, therefore it is necessary that these parameters are not used.
-
-To define the degree of truth in which the incidence is considered significant, the parameter `thr` is used, which is defined between `[0,1]`. By default `thr = 0.5`.
-
-The `bootMargin()` uses the bootstrap method with BCa adjusted boot and with a left one-sided hypothesis test based on the Z-test. The `conf.level` parameter defines the confidence level and `reps` the number of bootstrap replicas. By default `conf.level = 0.95` and `reps = 10000`.
-
-For example, let `thr = 0.6` and `reps = 1000` we get:
+Implementation example:
 
 ```{r}
 result <- bootMargin(CE = CC, thr.cause = 0.6,thr.effect =  0.6, reps = 1000)
 ```
 
-The function returns a list object with the data subsets `$byCause` and `$byEffect`, each of these subsets of data contains the following values:
+The function returns a list object with the `$byCause` and `$byEffect` subset of data, which includes the following information:
 
--   Var: Variable name
--   Mean: Calculated mean.
--   LCI: Lower Confidence Interval
--   ICU: Upper Confidence Interval
--   p.value: the calculated p-value.
+-   Var: Variable name.
+-   Mean: Average incidence.
+-   LCI: Lower Confidence Interval.
+-   ICU: Upper Confidence Interval.
+-   p.value: The calculated p-value.
 
-The `bootMargin()` function allows you to analyze by node or by variable. The results obtained are:
+The obtained results are:
 
 For `$byCause`
 
@@ -227,7 +187,7 @@ result$byEffect
 
 ```
 
-The function allows eliminating causes and effects whose average incidence is not significant at the set `thr` parameter. For example, for `delete = TRUE`, the number of significant variables decreased.
+For `delete = TRUE`, the function allows you to delete causes and effects whose incidences are insignificant at `thr.cause` and `thr.effect` parameters. For example:
 
 ```{r}
 result <- bootMargin(CE = CC, thr.cause = 0.6,thr.effect =  0.6, reps = 1000, delete = TRUE)
@@ -246,45 +206,15 @@ result$byEffect
 
 ```
 
-For `delete = TRUE`, the function returns`$Data`, the matrix entered in the `CC`parameter, but with the non-significant rows and columns removed.
+Additionally, with `delete = TRUE`, the function returns `$Data`, the three-dimensional incidence array entered in the `CE` parameter, but with the rows and columns deleted from each matrix along the z-axis of the three-dimensional array.
 
-For `plot = TRUE`, the function returns `$plot`, which contains the graph generated from the subsets `$byCause` and `$byEffect`. On the x-axis are the "Dependence" associated with `$byEffect` and on the y-axis the "Influence" is associated with `$byCause`.
+For `plot = TRUE`, the function returns `$plot`, which contains a graph generated with the `$byCause` and `$byEffect` subsets. The "Dependence" associated with `$byEffect` is on the x-axis, and the "Influence" associated with `$byCause` is on the y-axis.
 
 ```{r}
 result <- bootMargin(CE = CC, thr.cause = 0.6,thr.effect =  0.6, reps = 1000, delete = TRUE, plot = TRUE)
 result$plot
 
 ```
-
-#### **For chain bipartite graphs**
-
-To calculate the average incidence of each cause and each effect of the incidence matrices `CC`, `CE`and `EE`, which are described in DataSet, we make use of parameter `CC`. The `EE`parameter is equivalent to the `CC`parameter. The `CC` parameter allows us to enter a three-dimensional matrix, where each submatrix along the z-axis is a square incidence matrix and reflective, or a list of data.frame containing square and reflective incidence matrices. Each matrix represents a bipartite graph.
-
-For example, let `thr = 0.5` and `reps = 1000`, you get:
-
-```{r}
-result <- bootMargin(CC = CC, CE = CE, EE = EE, thr.cause = 0.6,thr.effect =  0.6, reps = 1000)
-```
-
-The results obtained correspond to all the nodes or variables found in the entered matrices.
-
-The results for `$byCause` and `$byEffect` are:
-
-For `$byCause`
-
-```{r}
-result$byCause
-```
-
-For `$byEffect`
-
-```{r}
-result$byEffect
-```
-
-For `delete = TRUE`, the function returns `$CC`, `$CE`, and `$EE`, which are the three-dimensional arrays entered in the `CC`, `CE`, and `EE` parameters, but with the rows and columns removed.
-
-For `plot = TRUE`, the function returns `$plot`, which contains the graph generated from the subsets `$byCause` and `$byEffect`. On the x-axis are the "Dependence" associated with `$byEffect` and on the y-axis the "Influence" is associated with `$byCause`.
 
 ### centralitry()
 
@@ -294,19 +224,16 @@ The function contemplates two modalities, the first is focused on complete graph
 
 #### For complete graphs
 
-To calculate the median betweenness centrality of the incidence matrix `CC`, which is described in DataSet, we use the parameter `CC`, which allows us to enter a three-dimensional matrix, where each submatrix along the z-axis is a square incidence matrix and reflective, or a list of data.frame containing square and reflective incidence matrices. Each matrix represents a complete graph. The `CE`and `EE`parameters are used to perform the calculation with chain bipartite graphs, therefore it is necessary that these parameters are not used.
+The `centrality()` function calculates the median betweenness centrality, confidence intervals, and centrality distribution for complete graphs and chained bipartite graphs using multiple key informants. This function uses the bootstrap method with adjusted BCa.
 
-The `centrality()` function makes use of the `“boot”` function from the boot package (Canty A, Ripley BD, 2021) to implement the bootstrap method with BCa tight boot. The number of bootstrap replicas is defined in the `reps`parameter. By default `reps = 10000`.
-
-The model parameter allows bootstrapping with some of the following statistics: mediate.
+The model parameter allows you to perform bootstrapping with any of the following statistics:
 
 -   `median`.
 -   `conpl`: Calculate the median of a power distribution according to Newman M.E (2005).
--   `conlnorm`: Calculates the median of a power distribution according to Gillespie CS (2015).
 
-The objective of the model parameter is to determine to which heavy-tailed distribution the variables or nodes of the entered parameter correspond.
+The goal of the `model` parameter is to determine which heavy-tailed distribution the entered variables or nodes correspond. The parameter `conf.level` defines the confidence level, and `reps` specify the number of bootstrap replicas. By default, `model = median`, `conf.level = 0.95` and `reps = 10000`.
 
-For example, let `model = "median"` and `reps = 300`, we will obtain:
+The `CE` parameter allows you to enter a three-dimensional incidence array, where each submatrix along the z-axis is a square or rectangular incidence matrix. To calculate with complete graphs the matrices must be square. To compute with chained bipartite graphs the matrices must be rectangular, and the parameters `CC` and `EE` must be used, which allows entering three-dimensional incidence arrays where each submatrix along the z-axis is a square and reflective incidence matrix.
 
 ```{r}
 result <- centrality(CE = CC, model = "median", reps = 300)
@@ -320,7 +247,7 @@ The returned object of type data.frame contains the following components:
 -   ICU: Upper Confidence Interval.
 -   Method: Statistical method used associated with the model parameter.
 
-If the median calculated for any of the betweenness centrality has a median equal to 0, the LCI and UCI fields will have a value equal to 0. This is reported with a warning per console.
+If the median for betweenness centralities is 0, the function will set the LCI and UCI fields to 0 and display a warning on the console.
 
 The results are:
 
@@ -335,66 +262,45 @@ result <- centrality(CE = CC, model = "conpl", reps = 300)
 result
 ```
 
-**Note:** If the calculation cannot be performed with `model = "conpl"` in some node, the function will perform the calculation with `"median"`. This change is indicated in the Method field.
+**Note:** If `model="conpl"` cannot be used to calculate on any node, the function will perform the calculation with the `model="median"`.
 
-**Note:** If the calculation cannot be performed with `model = "conlnorm"` in some node, the function will perform the calculation with "median". This change is indicated in the Method field
+The `centrality()` function implements the parallel function from the boot package. The `parallel` parameter allows you to set the type of parallel operation required. The options are `"multicore"`, `"snow"` and `"no"`. By default `parallel = "no"`. The `ncpus` parameter defines the number of cores to be used. By default, `ncpus = 1`.
 
-**IMPORTANT:** The best statistic to use in the model parameter will depend on the data and the number of bootstrap replicas that you deem appropriate.
+The `parallel` and `ncpus`options are not available on Windows operating systems.
 
-The `centrality()` function implements the parallel function from the boot package. The `parallel`parameter allows you to set the type of parallel operation that is required. The options are `"multicore"`, `"snow"` and `"no"`. By default `parallel = "no"`. The number of processors to be used in the paralell implementation is defined in the `ncpus`parameter. By default `ncpus = 1`.
+### FE()
 
-The `parallel`and `ncpus`options are not available on Windows operating systems.
+The `FE()` function calculates forgotten effects, the frequency of their occurrence, the average incidence, confidence intervals, and standard error for complete graphs and chained bipartite graphs using multiple key informants. This function uses the bootstrap method with adjusted BCa.
 
-**For chain bipartite graphs**
+The `thr` parameter defines the degree of truth in which the incidence is considered significant within the range [0,1]. In contrast, `maxOrder` defines the limit of forgotten effects to be calculated (if any), and `reps` specify the number of bootstrap replicates. By default, `thr = 0.5`, `maxOrder = 2` and `reps = 10000`.
 
-To calculate the median betweenness centrality of the incidence matrices `AA`, `AB`and `BB`, which are described in DataSet, we make use of the already described parameter `CC`. The `EE`parameter is equivalent to the `CC`parameter. The `CE`parameter allows you to enter a three-dimensional matrix, where each sub-matrix along the z-axis is a rectangular incidence matrix, or a list of data.frame containing rectangular incidence matrices. Each matrix represents a bipartite graph.
+The `CE` parameter allows you to enter a three-dimensional incidence array, where each submatrix along the z-axis is a square or rectangular incidence matrix. To calculate with complete graphs the matrices must be square. To compute with chained bipartite graphs the matrices must be rectangular, and the parameters `CC` and `EE` must be used, which allows entering three-dimensional incidence arrays where each submatrix along the z-axis is a square and reflective incidence matrix.
 
-For example, let `model = "conpl"` and `reps = 300`, you get:
+Implementation example:
 
 ```{r}
-result <- centrality(CC = CC, CE = CE, EE = EE, model = "conpl", reps = 300)
-result
+result <- FE(CE = CE, thr = 0.5, maxOrder = 2, reps = 1000)
+
 ```
 
-The `centrality()` function implements the parallel function from the `boot`package. The `parallel`parameter allows you to set the type of parallel operation that is required. The options are `"multicore"`, `"snow"` and `"no"`. By default `parallel = "no"`. The number of processors to be used in the `paralell`implementation is defined in the `ncpus`parameter. By default `ncpus = 1`.
-
-The `parallel`and `ncpus`options are not available on Windows operating systems.
-
-### fe.sq()
-
-The function `fe.sq()`, calculates the forgotten effects (Kaufmann & Gil Aluja, 1988) with multiple experts for complete graphs, with calculation of the frequency of appearance of the forgotten effects, mean incidence, confidence intervals and standard error
-
-For example, to perform the calculation using the incidence matrix `AA`, described in DATASET, we use the parameter `CC`, which allows us to enter a three-dimensional matrix, where each sub-matrix along the z axis is a square and reflective incidence matrix , or a list of data.frame containing square and reflective incidence matrices. Each matrix represents a complete graph.
-
-To define the degree of truth in which the incidence is considered significant, the parameter `thr`is used, which is defined between `[0,1]`. By default `thr = 0.5`.
-
-To define the maximum order of the forgotten effects, use the `maxOrder`parameter. By default `maxOrder = 2`.
-
-The `fe.sq()` function makes use of the `“boot”` function from the boot package (Canty A, Ripley BD, 2021) to implement bootstrap with BCa tight boot. The number of bootstrap replicas is defined in the `reps` parameter. By default `reps = 10000`.
-
-For example, let `thr = 0.5`, `maxOrder = 3` and `reps = 1000`, you get:
-
-
-
-The returned object of type list contains two subsets of data. The `$boot` data subset is a list of data.frame where each data.frame represents the order of the calculated forgotten effect, the components are:
+The function returns a list object with the `$boot` subset of data, which includes the following information:
 
 -   From: Indicates the origin of the forgotten effects relationships.
--   Through_x: Dynamic field that represents the intermediate relationships of the forgotten effects. For example, for order n there will be "though_1" up to "though\_ \<n-1>".
+-   Through_x: Dynamic field that represents the intermediate relationships of the forgotten effects. For example, for order n there will be "though_1" up to "though\_ \<n-1\>".
 -   To: Indicates the end of the forgotten effects relationships.
--   Count: Number of times the forgotten effect was repeated.
+-   Count: Frequency of forgotten effect.
 -   Mean: Mean effect of the forgotten effect
 -   LCI: Lower Confidence Intervals.
 -   UCI: Upper Confidence Intervals.
 -   SE: Standard error.
 
-The `$byExperts` data subset is a list of `data.frame` where each `data.frame` represents the order of the forgotten effect calculated with its associated incidence value for each expert, the components are:
+The second list object that the function returns is `$byExpert`, which includes the following information:
 
 -   From: Indicates the origin of the forgotten effects relationships.
--   Through_x: Dynamic field that represents the intermediate relationships of the forgotten effects. For example, for order n there will be "though_1" up to "though\_ \<n-1>".
--   To: Indicates the end of the forgotten effects relationships.
+-   Through_x: Dynamic field that represents the intermediate relationships of the forgotten effects. For example, for order n there will be "though_1" up to "though\_ \<n-1\>".
+-   To: Indicates the end of the forgotten effects of relationships.
 -   Count: Number of times the forgotten effect was repeated.
 -   Expert_x: Dynamic field that represents each of the entered experts.
--   
 
 If we look at the data in the `$boot$Order_2` data subset, we find 706 2nd order effects and 611 of these effects are unique. The first 6 are:
 
@@ -402,38 +308,11 @@ If we look at the data in the `$boot$Order_2` data subset, we find 706 2nd order
 head(result$boot$Order_2)
 ```
 
-The relations I8 -> I11 -> I10 appeared 4 times. To know exactly in which expert these relationships were found, there is the `$byExperts` data subset. If we look at the first row of `$byExperts$order_2` we can identify the experts who provided this information.
+Any result containing a NA value in the UCI and p.value fields indicates that all incidences are the same or that the value is unique. Therefore bootstrapping is not done.
 
-```{r}
-head(result$byExperts$Order_2)
-```
-
-**IMPORTANT**: If any of the `$boot` values shows `"NA"` in LCI, UCI and SE, it indicates that the values of the incidents per expert are the same or the value is unique. That prevents implementing bootstrap.
-
-The `fe.sq()` function implements the parallel function from the boot package. The parallel parameter allows you to set the type of parallel operation that is required. The options are `"multicore"`, `"snow"` and `"no"`. By default `parallel = "no"`. The number of processors to be used in the `paralell`implementation is defined in the `ncpus`parameter. By default `ncpus = 1`.
+The `FE()` function implements the parallel function from the boot package. The `parallel` parameter allows you to set the type of parallel operation required. The options are `"multicore"`, `"snow"` and `"no"`. By default `parallel = "no"`. The `ncpus` parameter defines the number of cores to be used. By default, `ncpus = 1`.
 
 The `parallel` and `ncpus`options are not available on Windows operating systems.
-
-### fe.rect()
-
-The function `fe.rect()`, calculates the forgotten effects (Kaufmann & Gil Aluja, 1988) with multiple key informants for chain bipartite graphs, with calculation of the frequency of appearance of the forgotten effects, mean incidence, confidence intervals and standard error.
-
-To perform the calculation using the incidence matrices `AA`, `AB`and `BB`, which are described in DataSet, we make use of the already described parameter `CC`. The `EE` parameter is equivalent to the `CC` parameter. The `CE` parameter allows you to enter a three-dimensional matrix, where each sub-matrix along the z-axis is a rectangular incidence matrix, or a list of data.frame containing rectangular incidence matrices. Each matrix represents a bipartite graph.
-
-To define the degree of truth in which the incidence is considered significant, the parameter `thr` is used, which is defined between `[0,1]`. By default `thr = 0.5`.
-
-To define the maximum order of the forgotten effects, use the `maxOrder`parameter. By default `maxOrder = 2`.
-
-The `fe.rect()` function makes use of the `“boot”` function from the boot package (Canty A, Ripley BD, 2021) to implement bootstrap with BCa tight boot.. The number of bootstrap replicas is defined in the `reps` parameter. By default `reps = 10000`.
-
-For example, let `thr = 0.5`, `maxOrder = 3` and `reps = 1000`, you get:
-
-
-**MPORTANT:** If any of the `$boot` values shows `"NA"` in LCI, UCI and SE, it indicates that the values of the incidents per expert are the same or the value is unique. That prevents implementing bootstrap.
-
-The `fe.sq()` function implements the parallel function from the boot package. The `parallel`parameter allows you to set the type of parallel operation that is required. The options are `"multicore"`, `"snow"` and `"no"`. By default `parallel = "no"`. The number of processors to be used in the `paralell` implementation is defined in the `ncpus` parameter. By default `ncpus = 1`.
-
-The `parallel` and `ncpus` options are not available on Windows operating systems.
 
 ## References
 
@@ -453,4 +332,4 @@ The `parallel` and `ncpus` options are not available on Windows operating system
 
 8.  Gillespie, C. S. (2014). Fitting heavy tailed distributions: the poweRlaw package. arXiv preprint arXiv:1407.3492.
 
-9.  <https://cran.r-project.org/web/packages/wBoot/index.html>
+9.  Kohl, M., & Kohl, M. M. (2020). Package ‘MKinfer’.
