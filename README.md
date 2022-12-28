@@ -122,7 +122,7 @@ help(EE)
 
 ## Examples
 
-### **directEffects()**
+## **directEffects()**
 
 The `directEffects()` function calculates the mean incidence, left-sided
 confidence interval, and p-value for complete and chained bipartite
@@ -132,11 +132,11 @@ with left one-sided contrast via bootstrap BCa.
 The function returns a list object with the subset of data
 `$DirectEffects` that includes the following information:
 
--   From: Origin of the incidence.
--   To: Destination of the incidence.
--   Mean: Average incidence.
--   UCI: Upper confidence interval.
--   p.value: Calculated p-value.
+-   **From**: Origin of the incidence.
+-   **To**: Destination of the incidence.
+-   **Mean**: Average incidence.
+-   **UCI**: Upper confidence interval.
+-   **p.value**: Calculated p-value.
 
 ### Parameters
 
@@ -160,65 +160,83 @@ The function returns a list object with the subset of data
 -   **delete**: Removes the non-significant results from the
     `$DirectEffects` set and returns the entered three-dimensional
     incidence arrays by assigning zeros to the edges whose incidences
-    are significantly lower than thr at the p-value set in the
+    are significantly lower than `thr` at the p-value set in the
     `conf.level` parameter. By default, `delete = FALSE`.
-
-#### Example: Complete Graphs
-
-For complete graphs, only the `CE` parameter is used. For example:
-
-``` r
-result <- directEffects( CE = CC, thr = 0.5, reps = 1000)
-```
-
-The results obtained correspond to 240 first-order incidences. The first
-six values are:
-
-``` r
-head(result$DirectEffects)
-#>   From To  Mean   UCI p.value
-#> 1   I1 I2 0.525 0.655   0.587
-#> 2   I1 I3 0.450 0.585   0.320
-#> 3   I1 I4 0.525 0.665   0.619
-#> 4   I1 I5 0.465 0.635   0.381
-#> 5   I1 I6 0.645 0.810   0.868
-#> 6   I1 I7 0.815 0.875   1.000
-```
-
-Any result that contains an NA value in the UCI and p.value fields
-indicates that all incidences are equal or that the value is unique.
-Therefore, no bootstrapping is performed.
-
-The parameter `delete = TRUE` removes non-significant incidents. For
-example:
-
-``` r
-result <- directEffects( CE = CC, thr = 0.5, reps = 1000, delete = TRUE)
-#> deleting data...
-```
-
-The number of significant incidences decreased from 240 to 217. For
-`delete = TRUE`, the function returns the entered three-dimensional
-incidence array but assigns zero to the non-significant edges.
 
 #### Example: Chained bipartite graphs
 
-The `CC`, `CE`, and `EE` parameters are used for chained bipartite
-graphs. The other parameters maintain their functionality except for the
-`delete` parameter, which now returns the three entered
-three-dimensional incidence arrays but assigns zero to the
-non-significant edges.
+For example, to calculate the average incidence for each edge of the
+three-dimensional incidence arrays `CC`, `CE`, and `EE`, with the
+parameters `thr = 0.5` and `reps = 1000`, we use the `directEffects()`
+function:
 
 ``` r
-result <- directEffects( CC = CC, CE = CE, EE = EE, thr = 0.5, reps = 1000, delete = TRUE)
+result <- directEffects(CC = CC, CE = CE, EE = EE, thr = 0.5, reps = 1000)
+```
+
+The result obtained is a data.frame of 312 rows. The first ten items are
+displayed.
+
+``` r
+result$DirectEffects[1:10,]
+#>    From  To  Mean     UCI p.value
+#> 1    I1  I2 0.525 0.64500   0.617
+#> 2    I1  I3 0.450 0.59000   0.284
+#> 3    I1  I4 0.525 0.67000   0.627
+#> 4    I1  I5 0.465 0.64500   0.363
+#> 5    I1  I6 0.645 0.80000   0.856
+#> 6    I1  I7 0.815 0.88000   1.000
+#> 7    I1  I8 0.580 0.69025   0.858
+#> 8    I1  I9 0.490 0.63525   0.503
+#> 9    I1 I10 0.560 0.71000   0.719
+#> 10   I1 I11 0.525 0.70000   0.557
+```
+
+Any result that contains a NA value in the UCI and p.value fields
+indicates that all occurrences are equal or that the value is unique.
+Therefore, bootstrapping is not done.
+
+The `delete` parameter allows assigning zeros to the edges whose
+incidences are non-significant.
+
+``` r
+result <- directEffects(CC = CC, CE = CE, EE = EE, thr = 0.5, reps = 1000, delete = TRUE)
 #> deleting data...
 #> deleting data...
 #> There is no data to delete...
+```
+
+The number of average incidences decreased from 312 to 283.
+Additionally, for `delete = TRUE`, the function returns the
+three-dimensional incidence arrays entered but assigns zero to
+insignificant edges.
+
+``` r
 names(result)
 #> [1] "CC"            "CE"            "EE"            "DirectEffects"
 ```
 
-### bootMargin()
+#### Example: Complete Graphs
+
+Complete graphs only make use of the `CE` parameter. Here is an example:
+
+``` r
+result <- directEffects(CE = CC, thr = 0.5, reps = 1000)
+result$DirectEffects[1:10,]
+#>    From  To  Mean   UCI p.value
+#> 1    I1  I2 0.525 0.655   0.603
+#> 2    I1  I3 0.450 0.590   0.317
+#> 3    I1  I4 0.525 0.660   0.627
+#> 4    I1  I5 0.465 0.640   0.364
+#> 5    I1  I6 0.645 0.805   0.851
+#> 6    I1  I7 0.815 0.875   1.000
+#> 7    I1  I8 0.580 0.690   0.858
+#> 8    I1  I9 0.490 0.625   0.449
+#> 9    I1 I10 0.560 0.705   0.717
+#> 10   I1 I11 0.525 0.695   0.607
+```
+
+## bootMargin()
 
 The `bootMargin()` function calculates the mean incidence of each cause
 and each effect, confidence intervals, and p-value for complete and
@@ -228,15 +246,11 @@ performs a t-test with bilateral contrast via bootstrap BCa.
 The function returns a list object with the subset of data `$byCause`
 and `$byEffect`, which includes the following information:
 
--   Var: Name of the variable.
-
--   Mean: Average incidence.
-
--   LCI: Lower confidence interval.
-
--   UCI: Upper confidence interval.
-
--   p.value: calculated p-value.
+-   **Var**: Name of the variable.
+-   **Mean**: Average incidence.
+-   **LCI**: Lower confidence interval.
+-   **UCI**: Upper confidence interval.
+-   **p.value**: calculated p-value.
 
 ### Parameters
 
@@ -272,131 +286,115 @@ and `$byEffect`, which includes the following information:
     `$byEffect` is on the X-axis, and the “Influence” associated with
     `$byCause` is on the Y-axis.
 
-#### Example: Complete Graphs
-
-For complete graphs, only the `CE` parameter is used. For example:
-
-``` r
-result <- bootMargin( CE = CC, thr.cause = 0.5, thr.effect = 0.5, reps = 1000)
-```
-
-The results are:
-
-``` r
-result$byCause
-#>    Var      Mean       LCI       UCI p.value
-#> 1   I1 0.5361074 0.4799528 0.5943500   0.248
-#> 2   I2 0.6037840 0.5508833 0.6553389   0.002
-#> 3   I3 0.4386533 0.3851188 0.4894924   0.014
-#> 4   I4 0.4995099 0.4363028 0.5529426   0.994
-#> 5   I5 0.5491052 0.4914324 0.6100389   0.148
-#> 6   I6 0.5577080 0.4933324 0.6222333   0.134
-#> 7   I7 0.5382447 0.4901028 0.5890231   0.160
-#> 8   I8 0.5474007 0.4793704 0.6099324   0.210
-#> 9   I9 0.4688709 0.4070389 0.5269333   0.292
-#> 10 I10 0.4932108 0.4222954 0.5613435   0.802
-#> 11 I11 0.6102947 0.5643565 0.6623380   0.002
-#> 12 I12 0.4688296 0.4183437 0.5145213   0.258
-#> 13 I13 0.5573677 0.4732083 0.6402333   0.202
-#> 14 I14 0.3269370 0.2868803 0.3653884   0.000
-#> 15 I15 0.5016655 0.4572932 0.5512369   0.914
-#> 16 I16 0.5370107 0.4880917 0.5876713   0.184
-```
-
-``` r
-result$byEffect
-#>    Var      Mean       LCI       UCI p.value
-#> 1   I1 0.5038559 0.3877680 0.6213438   0.910
-#> 2   I2 0.5614833 0.4462788 0.6680167   0.354
-#> 3   I3 0.4453305 0.3419870 0.5497582   0.356
-#> 4   I4 0.4890874 0.3672171 0.6061345   0.920
-#> 5   I5 0.4854016 0.3841333 0.5794530   0.720
-#> 6   I6 0.6119258 0.4710655 0.7186107   0.332
-#> 7   I7 0.5700365 0.4666846 0.6679455   0.298
-#> 8   I8 0.5889510 0.5261345 0.6559714   0.024
-#> 9   I9 0.4629239 0.3609226 0.5714935   0.574
-#> 10 I10 0.5000000 0.3990186 0.5999256   0.898
-#> 11 I11 0.5973439 0.4530193 0.7227229   0.306
-#> 12 I12 0.4748612 0.3672819 0.5934269   0.668
-#> 13 I13 0.5687019 0.4959404 0.6350083   0.124
-#> 14 I14 0.3425826 0.2292110 0.4590419   0.036
-#> 15 I15 0.4848626 0.3581631 0.6082242   0.766
-#> 16 I16 0.6243822 0.5436709 0.7044103   0.012
-```
-
-The parameter `delete = TRUE` removes non-significant incidents. For
-example:
-
-``` r
-result <- bootMargin( CE = CC, thr.cause = 0.5, thr.effect = 0.5, reps = 1000, delete = TRUE)
-```
-
-The I14 variable was removed due to not being significant.
-
-``` r
-result$byCause
-#>    Var      Mean       LCI       UCI p.value
-#> 1   I1 0.5348258 0.4836417 0.5929139   0.208
-#> 2   I2 0.6041581 0.5516556 0.6560250   0.000
-#> 3   I3 0.4397077 0.3859486 0.4905806   0.014
-#> 4   I4 0.5000030 0.4381093 0.5565935   0.974
-#> 5   I5 0.5474336 0.4891454 0.6040417   0.136
-#> 6   I6 0.5568240 0.4917324 0.6215583   0.108
-#> 7   I7 0.5389350 0.4912935 0.5914500   0.168
-#> 8   I8 0.5489056 0.4775148 0.6202926   0.254
-#> 9   I9 0.4697811 0.4157287 0.5244833   0.252
-#> 10 I10 0.4920433 0.4214782 0.5569296   0.810
-#> 11 I11 0.6097542 0.5674417 0.6542611   0.000
-#> 12 I12 0.4700890 0.4197444 0.5180454   0.198
-#> 13 I13 0.5557363 0.4763333 0.6399583   0.194
-#> 15 I15 0.5022127 0.4571814 0.5496354   0.916
-#> 16 I16 0.5357146 0.4857083 0.5876678   0.180
-```
-
-``` r
-result$byEffect
-#>    Var      Mean       LCI       UCI p.value
-#> 1   I1 0.5047513 0.3916036 0.6109237   0.960
-#> 2   I2 0.5656963 0.4613186 0.6673417   0.390
-#> 3   I3 0.4472846 0.3481754 0.5498090   0.336
-#> 4   I4 0.4948566 0.3697909 0.6177810   0.828
-#> 5   I5 0.4854418 0.3874294 0.5744887   0.728
-#> 6   I6 0.6108640 0.4849792 0.7198132   0.350
-#> 7   I7 0.5695489 0.4659705 0.6723391   0.260
-#> 8   I8 0.5867202 0.5196884 0.6525744   0.018
-#> 9   I9 0.4626974 0.3579464 0.5673637   0.576
-#> 10 I10 0.5008330 0.4007876 0.6110000   0.944
-#> 11 I11 0.5948503 0.4578358 0.7235189   0.240
-#> 12 I12 0.4726680 0.3597669 0.5845672   0.722
-#> 13 I13 0.5689810 0.4921891 0.6423071   0.156
-#> 15 I15 0.4844942 0.3571560 0.6062154   0.810
-#> 16 I16 0.6237961 0.5452120 0.7032617   0.018
-```
-
-The `plot = TRUE` parameter allows for the generation of the
-Dependence-Influence plot.
-
-``` r
-result <- bootMargin( CE = CC, thr.cause = 0.5, thr.effect = 0.5, reps = 1000, delete = TRUE, plot = TRUE)
-result$plot
-```
-
-<img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
+#### 
 
 #### Example: Chained bipartite graphs
 
-The `CC`, `CE`, and `EE` parameters are used for chained bipartite
-graphs. The other parameters maintain their functionality except for the
-delete parameter, which now returns the three entered three-dimensional
-incidence arrays but assigns zero to the non-significant edges.
+For example, to calculate the mean incidence of each cause and effect of
+the three-dimensional incidence arrays `CC`, `CE`, and `EE`, with the
+parameters `thr.cause = 0.5`, `thr.effect = 0.5`, `reps = 1000`, and
+`plot = TRUE`, we use the `bootMargin()` function.
 
 ``` r
-result <- bootMargin( CC = CC, CE = CE, EE = EE, thr.cause = 0.5, thr.effect = 0.5, reps = 1000, delete = TRUE)
-names(result)
-#> [1] "CC"       "CE"       "EE"       "byCause"  "byEffect"
+result <- bootMargin(CC = CC, CE = CE, EE = EE, thr.cause = 0.5, thr.effect = 0.5, reps = 1000, plot = TRUE)
 ```
 
-### centralitry()
+The results obtained are the data.frame `$byCause` and `$byEffect`,
+their values are:
+
+``` r
+result$byCause
+#>    Var      Mean       LCI       UCI p.value
+#> 1   I1 0.5344403 0.4894637 0.5824707   0.170
+#> 2   I2 0.6246119 0.5779167 0.6727824   0.000
+#> 3   I3 0.4688188 0.4110062 0.5268596   0.406
+#> 4   I4 0.5266332 0.4656732 0.5820674   0.462
+#> 5   I5 0.5611994 0.5098801 0.6137814   0.050
+#> 6   I6 0.5983170 0.5281961 0.6642284   0.014
+#> 7   I7 0.5857729 0.5321235 0.6453224   0.006
+#> 8   I8 0.5784649 0.5140241 0.6374072   0.038
+#> 9   I9 0.4910885 0.4307104 0.5485110   0.694
+#> 10 I10 0.5306063 0.4599819 0.6053319   0.382
+#> 11 I11 0.6717057 0.6100855 0.7384298   0.000
+#> 12 I12 0.4905552 0.4379604 0.5454718   0.808
+#> 13 I13 0.6267604 0.5415526 0.7121228   0.010
+#> 14 I14 0.3123828 0.2755847 0.3490051   0.000
+#> 15 I15 0.5226334 0.4796857 0.5634025   0.292
+#> 16 I16 0.5596988 0.5150342 0.6072908   0.030
+#> 17  B1 0.6778250 0.6000000 0.7200000   0.552
+#> 18  B2 0.6792400 0.5700000 0.7950000   0.060
+#> 19  B3 0.6756533 0.5500000 0.8350000   0.072
+#> 20  B4 0.8086000 0.8000000 0.8200000   0.100
+result$byEffect
+#>    Var      Mean       LCI       UCI p.value
+#> 1   I1 0.5024615 0.3824958 0.6156561   0.884
+#> 2   I2 0.5640027 0.4442705 0.6653468   0.350
+#> 3   I3 0.4433597 0.3355601 0.5483549   0.398
+#> 4   I4 0.4878667 0.3635532 0.6107974   0.934
+#> 5   I5 0.4854466 0.3850044 0.5707173   0.672
+#> 6   I6 0.6090961 0.4743073 0.7200202   0.364
+#> 7   I7 0.5722871 0.4642429 0.6749083   0.278
+#> 8   I8 0.5895937 0.5259429 0.6509571   0.028
+#> 9   I9 0.4641093 0.3583798 0.5740179   0.554
+#> 10 I10 0.5029641 0.3964024 0.6017194   0.972
+#> 11 I11 0.5954759 0.4640645 0.7278897   0.248
+#> 12 I12 0.4747316 0.3589484 0.5948389   0.668
+#> 13 I13 0.5682206 0.4947917 0.6395737   0.140
+#> 14 I14 0.3423612 0.2344928 0.4532773   0.018
+#> 15 I15 0.4841656 0.3611408 0.6100500   0.810
+#> 16 I16 0.6240185 0.5453637 0.7072252   0.024
+#> 17  B1 0.6221087 0.5256010 0.7202580   0.032
+#> 18  B2 0.6963302 0.6383530 0.7584641   0.000
+#> 19  B3 0.7084529 0.6528889 0.7728403   0.000
+#> 20  B4 0.6572781 0.5754530 0.7466806   0.000
+```
+
+The parameter `plot = TRUE` generates the Dependency-Influence plane
+based on the results obtained.
+
+``` r
+result$plot
+```
+
+<img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
+
+The parameter `delete = TRUE` eliminates the causes and effects whose
+average incidences are non-significant to the parameters `thr.cause` and
+`thr.effect` set.
+
+``` r
+result <- bootMargin(CC = CC, CE = CE, EE = EE, thr.cause = 0.5, thr.effect = 0.5, reps = 1000, plot = TRUE, delete = TRUE)
+```
+
+The variable I14 was removed from the new Dependence-Influence plane.
+
+``` r
+result$plot
+```
+
+<img src="man/figures/README-unnamed-chunk-16-1.png" width="100%" />
+
+Also, for `delete = TRUE`, the function returns the three-dimensional
+incidence matrices entered but removed non-significant causes and
+effects.
+
+``` r
+names(result)
+#> [1] "CC"       "CE"       "EE"       "byCause"  "byEffect" "plot"
+```
+
+#### Example: Complete Graphs
+
+Complete graphs only make use of the `CE` parameter. Here is an example:
+
+``` r
+result <- bootMargin(CE = CC, thr.cause = 0.5, thr.effect = 0.5, reps = 1000, plot = TRUE)
+result$plot
+```
+
+<img src="man/figures/README-unnamed-chunk-18-1.png" width="100%" />
+
+## centralitry()
 
 The `centrality()` function calculates the median betweenness
 centrality, confidence intervals, and the selected method for
@@ -430,73 +428,80 @@ following components:
     `conf.level = 0.95`.
 -   **reps**: Defines the number of bootstrap replicates. By default,
     `reps = 10000`.
--   **parallel:** Establece el tipo de operación en paralelo requerida.
-    Las opciones son “multinúcleo”, “snow” y “no”. Por defecto
-    `paralelo = "no"`.
--   **ncpus:** Define el número de núcleos a utilizar. Por defecto
+-   **parallel:** Sets the type of parallel operation required. The
+    options are “multicore”, “snow”, and “no”. By default,
+    `parallel = "no"`.
+-   **ncpus:** Defines the number of cores to use. By default,
     `ncpus = 1`.
-
-#### Example: Complete graphs
-
-``` r
-result <- centrality(CE = CC, model = "median", reps = 300)
-#> Warning in norm.inter(t, adj.alpha): extreme order statistics used as endpoints
-
-#> Warning in norm.inter(t, adj.alpha): extreme order statistics used as endpoints
-
-#> Warning in norm.inter(t, adj.alpha): extreme order statistics used as endpoints
-
-#> Warning in norm.inter(t, adj.alpha): extreme order statistics used as endpoints
-result
-#>    Var    Median       LCI      UCI Method pValue
-#> 1   I1 20.000000 7.2916667 41.50000 median     NA
-#> 2   I2 14.500000 2.5000000 24.77778 median     NA
-#> 3   I3  6.851190 0.3250000 12.58333 median     NA
-#> 4   I4  2.079167 0.8333333 21.58333 median     NA
-#> 5   I5  7.833333 0.6666667  9.00000 median     NA
-#> 6   I6 28.391667 1.0029755 30.11723 median     NA
-#> 7   I7 11.500000 2.0000000 41.33333 median     NA
-#> 8   I8  7.416667 2.1666667 19.68810 median     NA
-#> 9   I9  5.200000 3.1500000 13.50000 median     NA
-#> 10 I10  4.250000 1.2500000 12.00000 median     NA
-#> 11 I11 22.000000 0.7500000 23.66667 median     NA
-#> 12 I12 12.516667 0.5000000 15.36667 median     NA
-#> 13 I13  6.208333 2.0000000 12.37500 median     NA
-#> 14 I14  0.000000 0.0000000  0.00000      0     NA
-#> 15 I15  6.958333 2.0000000 51.60417 median     NA
-#> 16 I16 16.166667 9.7051587 59.25000 median     NA
-```
 
 #### Example: Chained bipartite graphs
 
+For example, to calculate the median betweenness centrality of each node
+of the three-dimensional incidence arrays `CC`, `CE`, and `EE`, with the
+parameters `model = "conpl"` and `reps = 100`, we use the `centrality()`
+function.
+
 ``` r
-result <- centrality(CC = CC, CE = CE, EE = EE, model = "median", reps = 300)
-#> Warning in norm.inter(t, adj.alpha): extreme order statistics used as endpoints
-result
-#>    Var    Median        LCI       UCI Method pValue
-#> 1   I1 22.000000  7.1666667 46.000000 median     NA
-#> 2   I2 13.112500  2.1666667 25.611111 median     NA
-#> 3   I3  8.142857  1.1000000 14.100000 median     NA
-#> 4   I4  1.791667  0.8333333 25.950000 median     NA
-#> 5   I5  7.833333  0.7069133 11.666667 median     NA
-#> 6   I6 29.177381  8.3380952 55.083333 median     NA
-#> 7   I7 14.450000  3.9166667 46.166667 median     NA
-#> 8   I8  8.786905  2.1666667 15.366667 median     NA
-#> 9   I9  3.825000  0.2678571  8.750000 median     NA
-#> 10 I10  1.642857  0.5145485 12.250000 median     NA
-#> 11 I11 18.991667  4.3333333 39.750000 median     NA
-#> 12 I12  5.916667  0.5000000 15.866667 median     NA
-#> 13 I13  5.866667  1.7202381 14.916667 median     NA
-#> 14 I14  0.000000  0.0000000  0.000000      0     NA
-#> 15 I15  5.500000  0.2790226 25.045238 median     NA
-#> 16 I16 21.166667 14.8103175 67.333333 median     NA
-#> 17  B1  3.500000  1.4166667  4.500000 median     NA
-#> 18  B2  3.833333  3.0000000  8.777672 median     NA
-#> 19  B3  2.238095  1.2500000  3.791667 median     NA
-#> 20  B4  5.666667  1.0000000  7.083333 median     NA
+result <- centrality(CC = CC, CE = CE, EE = EE, model = "conpl", reps = 100)
 ```
 
-### FE()
+The results obtained are:
+
+``` r
+result
+#>    Var     Median        LCI       UCI Method pValue
+#> 1   I1 14.5928488 13.7531602 20.224670  conpl   0.87
+#> 2   I2 14.3563883  6.6227684 16.422475  conpl   0.60
+#> 3   I3  8.1428571  1.1000000 14.100000 median     NA
+#> 4   I4  0.6304530  0.1276141  1.384851  conpl   0.49
+#> 5   I5  4.9851140  0.7192610  7.192021  conpl   0.20
+#> 6   I6 13.5131265  5.6222274 32.179891  conpl   0.12
+#> 7   I7 24.9878131 24.7864512 25.333211  conpl   0.72
+#> 8   I8  5.0604244  3.0700063 10.166433  conpl   0.72
+#> 9   I9  3.8250000  0.5000000  9.350000 median     NA
+#> 10 I10  0.4667305  0.1283549  5.606901  conpl   0.07
+#> 11 I11 21.2412358 19.4734602 21.297942  conpl   0.70
+#> 12 I12  7.3106674  4.4658410  7.696587  conpl   0.79
+#> 13 I13  2.3886553  0.5117197  7.250244  conpl   0.45
+#> 14 I14  0.0000000  0.0000000  0.000000 median     NA
+#> 15 I15  2.7760383  0.2050457  6.789980  conpl   0.81
+#> 16 I16 10.0007456  3.7347183 13.148209  conpl   0.75
+#> 17  B1  3.5000000  1.4166667  4.500000 median     NA
+#> 18  B2  1.8957816  0.7001335  2.295426  conpl   0.37
+#> 19  B3  0.8308252  0.3593943  1.551632  conpl   0.44
+#> 20  B4  3.4524972  0.7298709  4.381147  conpl   0.86
+```
+
+If any variable cannot be calculated with `model = "conpl"` it will be
+calculated with `model = "median"`.
+
+#### Example: Complete graphs
+
+Complete graphs only make use of the `CE` parameter. Here is an example:
+
+``` r
+result <- centrality(CE = CC, model = "median", reps = 500)
+result
+#>    Var    Median       LCI      UCI Method pValue
+#> 1   I1 20.000000 7.1666667 41.50000 median     NA
+#> 2   I2 14.500000 2.5000000 24.77778 median     NA
+#> 3   I3  6.851190 0.3250000 12.58333 median     NA
+#> 4   I4  2.079167 0.8333333 23.41667 median     NA
+#> 5   I5  7.833333 0.5087116  9.00000 median     NA
+#> 6   I6 28.391667 8.3380952 36.83333 median     NA
+#> 7   I7 11.500000 2.0000000 41.33333 median     NA
+#> 8   I8  7.416667 2.1666667 19.68810 median     NA
+#> 9   I9  5.200000 3.1500000  5.20000 median     NA
+#> 10 I10  4.250000 1.2500000 12.00000 median     NA
+#> 11 I11 22.000000 4.3333333 30.75000 median     NA
+#> 12 I12 12.516667 0.5000000 15.36667 median     NA
+#> 13 I13  6.208333 2.0000000 12.37500 median     NA
+#> 14 I14  0.000000 0.0000000  0.00000      0     NA
+#> 15 I15  6.958333 2.0000000 44.45833 median     NA
+#> 16 I16 16.166667 8.5769841 43.85417 median     NA
+```
+
+## FE()
 
 The `FE()` function calculates the forgotten effects, the frequency of
 their occurrence, the mean incidence, the confidence intervals, and the
@@ -507,9 +512,9 @@ The function returns two list-type objects. The first is `$boot`, which
 contains the following information:
 
 -   From: Indicates the origin of the forgotten effects relationships.
--   Through_x: Dynamic field that represents the intermediate
+-   \$Through\_{x}\$: Dynamic field that represents the intermediate
     relationships of the forgotten effects. For example, for order n
-    there will be “though_1” up to “though\_ \<n-1\>”.
+    there will be \$though\_{1}\$ up to \$though\_{n-1}\$.
 -   To: Indicates the end of the forgotten effects relationships.
 -   Count: Number of times the forgotten effect was repeated.
 -   Mean: Mean effect of the forgotten effect
@@ -529,7 +534,7 @@ And the second is `$byExpert`, which contains the following information:
 
 ### 
 
-Parameters
+#### Parameters
 
 -   **CC:** It allows for entering a three-dimensional incidence array,
     with each submatrix along the z-axis being a square incidence
@@ -554,21 +559,63 @@ Parameters
 -   **ncpus:** Defines the number of cores to use. By default,
     `ncpus = 1`.
 
-#### Example: Complete graphs
-
-``` r
-result <- FE(CE = CC, thr = 0.5, maxOrder = 3, reps = 1000)
-```
-
 #### Example: Chained bipartite graphs
 
+For example, to calculate the forgotten effects of three-dimensional
+incidence arrays `CC`, `CE`, and `EE`, with `thr = 0.5`, `maxOrder = 3`,
+and `reps = 1000`, we use the `FE()` function.
+
 ``` r
-result <- FE(CC = CC, CE = CE, EE = EE, thr = 0.5, maxOrder = 4, reps = 1000)
+result <- FE(CC = CC, CE = CE, EE = EE, thr = 0.5, maxOrder = 3, reps = 1000)
 #> Warning in wrapper.FE(CC = CC, CE = CE, EE = EE, thr = thr, maxOrder =
 #> maxOrder, : Expert number 7 has no 2nd maxOrder or higher effects.
 ```
 
-### 
+The results are in the `$boot` list, which contains the forgotten
+effects sorted in order.
+
+``` r
+names(result$boot)
+#> [1] "Order_2"
+```
+
+The results of the forgotten effects of the second order are:
+
+``` r
+head(result$boot$Order_2)
+#>   From Through_1 To Count  Mean LCI   UCI         SE
+#> 1   I1       I11 B1     2 0.800 0.6 1.000 0.14349226
+#> 2   I8        I7 B1     2 0.725 0.6 0.725 0.08893908
+#> 3  I14       I15 B2     2 0.725 0.7 0.725 0.01780987
+#> 4  I10       I11 B3     2 0.600  NA    NA         NA
+#> 5  I14       I15 B3     2 0.725 0.7 0.750 0.01819177
+#> 6   I9        B3 B1     2 0.725 0.7 0.725 0.01743686
+```
+
+Any result containing an NA value in the LCI, UCI, and SE fields
+indicates that all incidences are the same or that the value is unique.
+Therefore, bootstrapping is not done.
+
+The `$byExpert` list indicates in which expert the forgotten effect is
+generated.
+
+#### 
+
+Example: Complete graphs
+
+Complete graphs only make use of the `CE` parameter. Here is an example:
+
+``` r
+result <- FE(CE = CC, thr = 0.5, maxOrder = 3, reps = 1000)
+head(result$boot$Order_2)
+#>   From Through_1  To Count      Mean    LCI       UCI         SE
+#> 1   I8       I11 I10     4 0.6125000 0.5625 0.6750000 0.02683132
+#> 2   I5       I11 I10     3 0.6166667 0.5500 0.6666667 0.03655508
+#> 3   I6       I11 I14     3 0.6833333 0.6000 0.7666667 0.06732223
+#> 4  I13       I11 I14     3 0.5833333 0.5500 0.6000000 0.01359166
+#> 5  I13        I6  I1     3 0.6333333 0.6000 0.6666667 0.02705128
+#> 6  I13       I16  I1     3 0.6333333 0.6000 0.6666667 0.02671867
+```
 
 ## References
 
