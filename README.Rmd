@@ -21,25 +21,38 @@ knitr::opts_chunk$set(
 
 ## Description
 
-The foRgotten library extends the theory of forgotten effects with the aggregation of multiple key informants for complete graphs and chain bipartite graphs. Provides analysis tools for direct effects and forgotten effects.
+The **foRgotten** library extends the theory of forgotten effects by aggregating multiple key informants for complete and chained bipartite graphs. 
 
-The package allows for:
+The package allows for the following:
 
 -   Calculation of the average incidence by edges for direct effects.
--   Calculation of the average incidence per row and column for direct effects.
+-   Calculation of the average incidence per cause and effect for direct effects.
 -   Calculation of the median betweenness centrality per node for direct effects.
 -   Calculation of the forgotten effects.
 -   Use of complete graphs and chain bipartite graphs.
 
 ## Authors
 
-**Elliott Jamil Mardones Arias** School of Computer Science Universidad Católica de Temuco Rudecindo Ortega 02351 Temuco, Chile [elliott.mardones\@uct.cl](mailto:elliott.mardones@uct.cl)
+**Elliott Jamil Mardones Arias**   
+School of Computer Science  
+Universidad Católica de Temuco   
+Rudecindo Ortega 02351   
+Temuco, Chile  
+[elliott.mardones\@uct.cl](mailto:elliott.mardones@uct.cl)
 
-**Julio Rojas-Mora** Department of Computer Science Universidad Católica de Temuco Rudecindo Ortega 02351 Temuco, Chile and Centro de Políticas Públicas Universidad Católica de Temuco Temuco, Chile [julio.rojas\@uct.cl](mailto:julio.rojas@uct.cl)
+**Julio Rojas-Mora**   
+Department of Computer Science   
+Universidad Católica de Temuco   
+Rudecindo Ortega 02351   
+Temuco, Chile   
+and   
+Centro de Políticas Públicas Universidad Católica de Temuco   
+Temuco, Chile   
+[julio.rojas\@uct.cl](mailto:julio.rojas@uct.cl)
 
 ## Installation
 
-You can install the stable version of foRgotten from CRAN with:
+You can install the stable version of **foRgotten** from CRAN with:
 
 ``` r
 # install.packages(“foRgotten”)
@@ -64,39 +77,41 @@ library(foRgotten)
 
 The package provides four functions:
 
-```{r echo=TRUE}
-?directEffects
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+?directEffects()
 ```
 
-Computes the mean incidence, left one-sided confidence interval, and p-value with multiple key informants for complete graphs and chained bipartite graphs. For more details, see help (de.sq).
+Using multiple key informants, it calculates the mean incidence, left-sided confidence interval, and p-value for complete and chained bipartite graphs. For more details, see help(directEffects).
 
 ```{r echo=TRUE}
-?bootMargin
+?bootMargin()
 ```
 
-Computes the mean incidence for each cause and each effect, confidence intervals, and p-value with multiple key informants for complete graphs and chain bipartite graphs. For more details, see help(bootMargin).
+Using multiple key informants, it calculates the mean incidence, left-sided confidence interval, and p-value for complete and chained bipartite graphs. For more details, see help(bootMargin).
 
 ```{r echo=TRUE}
-?centrality
+?centrality()
 ```
 
-Performs the computation of median betweenness centrality with multiple key informants for complete graphs and chain bipartite graphs. For more details, see help(centrality).
+Using multiple key informants, it calculates the median betweenness centrality, confidence intervals, and the selected method for calculating the centrality distribution for complete and chained bipartite graphs. For more details, see help(centrality).
 
 ```{r echo=TRUE}
-?FE
+?FE()
 ```
 
-Performs the forgotten effects calculation proposed by Kaufman and Gil-Aluja (1988) with multiple experts. The parameters allow you to specify the significant degree of truth and the order of incidence that is required to be calculated for chained bipartite graphs For more details, see help(FE).
+Using multiple key informants, it calculates the forgotten effects, the frequency of their occurrence, the mean incidence, the confidence intervals, and the standard error for complete and chained bipartite graphs. For more details, see help(FE).
 
 ## DataSet
 
-The library provides 3 three-dimensional incidence matrices which are called `CC`, `CE` and `EE`. The data are those used in the study "Application of the Forgotten Effects Theory For Assessing the Public Policy on Air Pollution Of the Commune of Valdivia, Chile" developed by Manna, E. M et al (2018).
+The library provides three three-dimensional incidence matrices: `CC`, `CE`, and `EE`. The data are those used in the study "Application of the Forgotten Effects Theory For Assessing the Public Policy on Air Pollution Of the Commune of Valdivia, Chile" developed by Manna, E. M et al. (2018).
 
-The data consists of 16 incentives, 4 behaviors and 10 key informants, where each of the key informants presented the data with a minimum and maximum value for each incident. The description of the data can be seen in Tables 1 and 2 of Manna, E. M et al (2018).
+The data consists of 16 incentives, four behaviors, and ten key informants, where each of the key informants presented the data with a minimum and maximum value for each incident. The data description can be seen in Tables 1 and 2 of Manna, E. M et al. (2018).
 
-The book store presents the data with the average between the minimum and maximum value for each incidence, A being the equivalent to incentives and B to behaviors. For more details of the data you can consult:
+The **foRgotten** library presents the data with the average between the minimum and maximum value for each incidence, C being the equivalent to incentives and E to behaviors.
 
-```{r cars}
+The examples in this document make use of this data. For more details, you can consult the following:
+
+```{r}
 help(CC)
 help(CE)
 help(EE)
@@ -239,19 +254,17 @@ result <- bootMargin(CE = CC, thr.cause = 0.5, thr.effect = 0.5, reps = 1000, pl
 result$plot
 ```
 
-  
-
 ## centralitry()
 
 The `centrality()` function calculates the median betweenness centrality, confidence intervals, and the selected method for calculating the centrality distribution for complete and chained bipartite graphs using multiple key informants.
 
 The function returns an object of type data.frame that contains the following components:
 
--   Var: Name of the variable.
--   Median: Median calculated.
--   LCI: Lower Confidence Interval.
--   UCI: Upper Confidence Interval.
--   Method: Statistical method used associated with the model parameter.
+-   **Var**: Name of the variable.
+-   **Median**: Median calculated.
+-   **LCI**: Lower Confidence Interval.
+-   **UCI**: Upper Confidence Interval.
+-   **Method**: Statistical method used associated with the model parameter.
 
 ### Parameters
 
@@ -295,22 +308,22 @@ The `FE()` function calculates the forgotten effects, the frequency of their occ
 
 The function returns two list-type objects. The first is `$boot`, which contains the following information:
 
--   From: Indicates the origin of the forgotten effects relationships.
--   \$Through\_{x}\$: Dynamic field that represents the intermediate relationships of the forgotten effects. For example, for order n there will be \$though\_{1}\$ up to \$though\_{n-1}\$.
--   To: Indicates the end of the forgotten effects relationships.
--   Count: Number of times the forgotten effect was repeated.
--   Mean: Mean effect of the forgotten effect
--   LCI: Lower Confidence Intervals.
--   UCI: Upper Confidence Intervals.
--   SE: Standard error.
+-   **From**: Indicates the origin of the forgotten effects relationships.
+-   **\$Through\_{x}\$**: Dynamic field that represents the intermediate relationships of the forgotten effects. For example, for order n there will be \$Though\_{1}\$ up to \$Though\_{n-1}\$.
+-   **To**: Indicates the end of the forgotten effects relationships.
+-   **Count**: Number of times the forgotten effect was repeated.
+-   **Mean**: Mean effect of the forgotten effect
+-   **LCI**: Lower Confidence Intervals.
+-   **UCI**: Upper Confidence Intervals.
+-   **SE**: Standard error.
 
 And the second is `$byExpert`, which contains the following information:
 
--   From: Indicates the origin of the forgotten effects relationships.
--   Through_x: Dynamic field that represents the intermediate relationships of the forgotten effects. For example, for order n there will be “though_1” up to “though\_ \<n-1\>”.
--   To: Indicates the end of the forgotten effects relationships.
--   Count: Number of times the forgotten effect was repeated.
--   Expert_x: Dynamic field that represents each of the entered experts.
+-   **From**: Indicates the origin of the forgotten effects relationships.
+-   $Through_{x}$: Dynamic field that represents the intermediate relationships of the forgotten effects. For example, for order n there will be $Though_{1}$ up to $Though_{n-1}$.
+-   **To**: Indicates the end of the forgotten effects relationships.
+-   **Count**: Number of times the forgotten effect was repeated.
+-   $Expert_x$: Dynamic field that represents each of the entered experts.
 
 ### 
 
@@ -350,7 +363,8 @@ Any result containing an NA value in the LCI, UCI, and SE fields indicates that 
 The `$byExpert` list indicates in which expert the forgotten effect is generated.
 
 #### 
-Example: Complete graphs
+
+#### Example: Complete graphs
 
 Complete graphs only make use of the `CE` parameter. Here is an example:
 
