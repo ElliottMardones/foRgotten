@@ -33,21 +33,21 @@ The package allows for the following:
 
 ## Authors
 
-**Elliott Jamil Mardones Arias**   
+**Elliott Jamil Mardones Arias**  
 School of Computer Science  
-Universidad Católica de Temuco   
-Rudecindo Ortega 02351   
+Universidad Católica de Temuco  
+Rudecindo Ortega 02351  
 Temuco, Chile  
 [elliott.mardones\@uct.cl](mailto:elliott.mardones@uct.cl)
 
-**Julio Rojas-Mora**   
-Department of Computer Science   
-Universidad Católica de Temuco   
-Rudecindo Ortega 02351   
-Temuco, Chile   
-and   
-Centro de Políticas Públicas Universidad Católica de Temuco   
-Temuco, Chile   
+**Julio Rojas-Mora**  
+Department of Computer Science  
+Universidad Católica de Temuco  
+Rudecindo Ortega 02351  
+Temuco, Chile  
+and  
+Centro de Políticas Públicas Universidad Católica de Temuco  
+Temuco, Chile  
 [julio.rojas\@uct.cl](mailto:julio.rojas@uct.cl)
 
 ## Installation
