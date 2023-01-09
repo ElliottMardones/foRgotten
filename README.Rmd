@@ -392,3 +392,9 @@ head(result$boot$Order_2)
 8.  Gillespie, C. S. (2014). Fitting heavy tailed distributions: the poweRlaw package. arXiv preprint arXiv:1407.3492.
 
 9.  Kohl, M., & Kohl, M. M. (2020). Package ‘MKinfer’.
+
+## Citation
+
+```{r}
+citation("foRgotten")
+```

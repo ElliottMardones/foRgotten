@@ -1,0 +1,14 @@
+citHeader("To cite foRgotten in publications use:")
+
+
+citEntry(
+  entry    = "Manual" ,
+  title    = "foRgotten",
+  author   = personList(as.person("Elliott Mardones-Arias"),
+                   as.person("Julio Rojas-Mora")),
+  year     = "2022",
+  note = "R package version 1.1.0",
+  url      = "https://github.com/ElliottMardones/foRgotten",
+  textVersion  = "Mardones-Arias, E.; Rojas-Mora, J. foRgotten. https://github.com/ElliottMardones/foRgotten"
+
+)
