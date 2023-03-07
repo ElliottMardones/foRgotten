@@ -29,37 +29,49 @@ wrapper.de.sq <- function(CE, thr, conf.level, reps, delete){
     if(is.list(CE)){
       CE <- listo_to_Array3D(CE)
     }
-    bootCC <- data.frame(From = character(), To = character(), Mean = numeric(), UCI= numeric(), p.value = numeric())
-    numdim  <- (dim(CE)[1] * dim(CE)[2] - dim(CE)[2] ) * dim(CE)[3]
+    #
+    # bootCC <- data.frame(From = character(), To = character(), Mean = numeric(), UCI= numeric(), p.value = numeric())
+    # numdim  <- (dim(CE)[1] * dim(CE)[2] - dim(CE)[2] ) * dim(CE)[3]
+    # rownamesData <- rownames(CE[,,1])
+    # colnamesData <- colnames(CE[,,1])
+    # vector_Value  <- numeric()
+    # for(x in seq_len(dim(CE)[1]) ){
+    #   for( y in seq_len(dim(CE)[2]) ){
+    #     if( x != y){
+    #       vector_Value <- CE[x,y,]
+    #       valuesFromArrays <- (as.numeric(vector_Value))
+    #       #
+    #       if( length(unique(valuesFromArrays)) == 1 ){
+    #           bootCC <- rbind( bootCC, data.frame(From = rownamesData[x],
+    #                                               To = colnamesData[y],
+    #                                               Mean = valuesFromArrays[1],
+    #                                               UCI= NA,
+    #                                               p.value = NA))
+    #       }else{
+    #           Data.CI<- MKinfer::boot.t.test(x = valuesFromArrays , alternative = "less", mu = thr, R = reps)
+    #
+    #           #pv <- ifelse( is.nan(Data.CI$boot.p.value), NA, Data.CI$boot.p.value)
+    #           bootCC <- rbind( bootCC, data.frame(From = rownamesData[x],
+    #                                               To = colnamesData[y],
+    #                                               Mean = mean(valuesFromArrays),
+    #                                               UCI= as.numeric(Data.CI$boot.conf.int)[2],
+    #                                               p.value = Data.CI$boot.p.value))
+    #       }
+    #
+    #     }
+    #   }
+    # }
+    #
     rownamesData <- rownames(CE[,,1])
     colnamesData <- colnames(CE[,,1])
-    vector_Value  <- numeric()
-    for(x in seq_len(dim(CE)[1]) ){
-      for( y in seq_len(dim(CE)[2]) ){
-        if( x != y){
-          vector_Value <- CE[x,y,]
-          valuesFromArrays <- (as.numeric(vector_Value))
-          #
-          if( length(unique(valuesFromArrays)) == 1 ){
-              bootCC <- rbind( bootCC, data.frame(From = rownamesData[x],
-                                                  To = colnamesData[y],
-                                                  Mean = valuesFromArrays[1],
-                                                  UCI= NA,
-                                                  p.value = NA))
-          }else{
-              Data.CI<- MKinfer::boot.t.test(x = valuesFromArrays , alternative = "less", mu = thr, R = reps)
+    result <- Rcpp_directEffects(CE, rownamesData , colnamesData ,thr, reps)
 
-              #pv <- ifelse( is.nan(Data.CI$boot.p.value), NA, Data.CI$boot.p.value)
-              bootCC <- rbind( bootCC, data.frame(From = rownamesData[x],
-                                                  To = colnamesData[y],
-                                                  Mean = mean(valuesFromArrays),
-                                                  UCI= as.numeric(Data.CI$boot.conf.int)[2],
-                                                  p.value = Data.CI$boot.p.value))
-          }
+    bootCC <- data.frame("From" = result$From,
+                       "To" = result$To,
+                       "Mean" = result$Mean,
+                       "UCI" = result$UCI,
+                       "p.value" = result$p.value )
 
-        }
-      }
-    }
     if( delete){
       conf.level <- 1 - conf.level
       borrar <-  which(bootCC$p.value < conf.level | ( bootCC$Mean < thr & is.na(bootCC$p.value)))

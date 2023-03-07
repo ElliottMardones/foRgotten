@@ -18,3 +18,7 @@ maxmin_rcpp <- function(matrix_1, matrix_2) {
     .Call(`_foRgotten_maxmin_rcpp`, matrix_1, matrix_2)
 }
 
+Rcpp_directEffects <- function(M, rownamesData, colnamesData, thr, reps) {
+    .Call(`_foRgotten_Rcpp_directEffects`, M, rownamesData, colnamesData, thr, reps)
+}
+
