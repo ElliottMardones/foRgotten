@@ -3,7 +3,7 @@
 #' @import ggsci
 #' @import ggrepel
 #' @import MKinfer
-plotBootMargin <-function(dataSet,axesLimits="", thr.cause, thr.effect){
+plotBootMargin <-function(dataSet,axesLimits="auto", thr.cause, thr.effect){
   data <- list(Drivers =dataSet$byCause, Dependance =  dataSet$byEffect)
   data$Drivers$varname<- dataSet$byCause$Var
   data$Dependance$varname<-dataSet$byEffect$Var
