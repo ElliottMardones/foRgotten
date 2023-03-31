@@ -3,7 +3,7 @@
 #' @import ggsci
 #' @import ggrepel
 #' @import MKinfer
-plotBootMargin <-function(dataSet,axesLimits="auto", thr.cause, thr.effect){
+plotBootMargin <-function(dataSet, thr.cause, thr.effect){
   data <- list(Drivers =dataSet$byCause, Dependance =  dataSet$byEffect)
   data$Drivers$varname<- dataSet$byCause$Var
   data$Dependance$varname<-dataSet$byEffect$Var
@@ -22,11 +22,7 @@ plotBootMargin <-function(dataSet,axesLimits="auto", thr.cause, thr.effect){
     ggplot2::labs(x="Dependence",y="Influence")#+
   #theme_dark()+
   #theme(legend.position = "none")
-  if(axesLimits=="auto"){
-    p
-  } else{
-    p+xlim(0,1)+ylim(0,1)
-  }
+    p+xlim(c(0,1)) + ylim(c(0,1))
 }
 deconstructMatrix <- function(dataSet, AA, AB=NULL, BB=NULL){
   rownames_AA <- rownames(AA)
