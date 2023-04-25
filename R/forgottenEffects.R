@@ -20,6 +20,8 @@
 #' and reflective incidence matrix, or a list of data.frames containing square and reflective
 #' incidence matrices. Each matrix represents a complete graph.
 #'
+#' @param mode Use empirical method or bootstrap method.
+#'
 #' @param thr Real between [0,1]: Defines the degree of truth for which the incidence
 #' is considered significant. By default thr = 0.5.
 
@@ -77,13 +79,8 @@
 #'
 #' Eddelbuettel D, Balamuta JJ (2018). "Extending extitR with extitC++: A Brief Introduction to extitRcpp." The American Statistician, 72(1), 28-36.6.
 #'
-#' @examples
-#' # To perform the calculation of the forgotten effects for a chain bipartite graph with
-#' # a degree of truth equal to 0.5, maximum order of effects to be calculated equal to 2 and
-#' # 500 bootstrap replicas, use:
-#' FE( CC = CC, CE = CE, EE = EE, thr = 0.5, maxOrder = 2, reps = 500, parallel = "no", ncpus = 1)
-FE <- function(CC = NULL, CE = NULL, EE = NULL, thr = 0.5, maxOrder = 2, reps = 10000, parallel = c("multicore","snow","no"), ncpus = 1){
-    output <- wrapper.FE( CC = CC, CE = CE, EE =EE, thr = thr, maxOrder = maxOrder, reps =reps , parallel =parallel , ncpus = ncpus)
+FE <- function(CC = NULL, CE = NULL, EE = NULL, mode = c("Empirical", "Bootstrap"), thr = 0.5, maxOrder = 2, reps = 10000, parallel = c("multicore","snow","no"), ncpus = 1){
+    output <- wrapper.FE( CC = CC, CE = CE, EE =EE, mode = mode, thr = thr, maxOrder = maxOrder, reps =reps , parallel =parallel , ncpus = ncpus)
     return(output)
 }
 

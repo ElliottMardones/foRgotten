@@ -1,5 +1,5 @@
 #' @import stats
-wrapper.FE <- function( CC, CE, EE, thr, maxOrder, reps, parallel, ncpus ){
+FE_bootstrap <- function( CC, CE, EE, thr, maxOrder, reps, parallel, ncpus ){
     # agregar valicaciones
     # agregar validacion para parallel y ncpus
     parallel <- ifelse( length(parallel) != 1, "no", parallel)
@@ -152,3 +152,17 @@ wrapper.FE <- function( CC, CE, EE, thr, maxOrder, reps, parallel, ncpus ){
         return(list( boot= IE_list, byExperts = res_strsplit))
     }
 }
+
+wrapper.FE <- function(CC, CE, EE, mode, thr, maxOrder, reps, parallel, ncpus){
+    if(mode == 'Empirical'){
+        parallel <- NULL
+        ncpus <- NULL
+        output <- FE_empirical(CC = CC, CE = CE, EE= EE, reps = reps, THR = thr, maxOrder = maxOrder, CE_N = CE)
+        return(output)
+    }else if (mode == 'Bootstrap'){
+        output <- FE_bootstrap( CC = CC, CE = CE, EE = EE, thr = thr, maxOrder = maxOrder, reps = reps, parallel = parallel, ncpus = ncpus )
+        return(output)
+    }
+}
+
+
