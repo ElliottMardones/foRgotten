@@ -154,6 +154,7 @@ FE_bootstrap <- function( CC, CE, EE, thr, maxOrder, reps, parallel, ncpus ){
 }
 
 wrapper.FE <- function(CC, CE, EE, mode, thr, maxOrder, reps, parallel, ncpus){
+
     if(mode == 'Empirical'){
         parallel <- NULL
         ncpus <- NULL

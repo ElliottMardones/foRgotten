@@ -35,7 +35,7 @@ tolist <- function(ll) {
             rownames(df_resultado) <- NULL
             vec_pos <- integer(0)
 
-            resultados[[x]] <- df_resultado
+            resultados[[x]] <- df_resultado[order(df_resultado$Count, decreasing = T), ]
         }
     }
     return(resultados)
@@ -84,9 +84,9 @@ FE_empirical <- function(CC, CE , EE, reps , THR , maxOrder , CE_N ){
             # Segundo para CE_empirica: TRABAJO FUTURO, PASAR ESTE CODIGO A RCPP
             for( i in seq_len( nrow( CE ))){
                 for( j in seq_len( ncol( CE ))){
-                    if( i != j){
+                    #if( i != j){
                         CE_empirica[i,j] <- as.numeric(quantile( as.numeric(CE[i,j,]), runif(1,0,1), na.rm = TRUE))
-                    }
+                    #}
                 }
             }
             #--------------------------------------------------------------------------#
@@ -95,20 +95,20 @@ FE_empirical <- function(CC, CE , EE, reps , THR , maxOrder , CE_N ){
             # IMPORTANTE!!!!!!!!!!!!!!!!
             # Investigar que es mas costoso, crear la matriz con unos o hacer la diag() de 1.
             diag(CC_empirica) <- 1
-            diag(CE_empirica) <- 1
+            #diag(CE_empirica) <- 1
             # aca llamo a la funcion recursiva y le paso los valores
-            dataList        <- list()
-            assign_global("dataList", dataList)
-            dataSet_left        <- list()
-            dataSet_right       <- list()
-            assign_global("dataSet_left", dataSet_left)
-            assign_global("dataSet_right", dataSet_right)
-            counter_one <- 0
-            assign_global("counter_one", counter_one)
-            counter_two <- 0
-            assign_global("counter_two", counter_two)
+            # dataList        <- list()
+            # assign_global("dataList", dataList)
+            # dataSet_left        <- list()
+            # dataSet_right       <- list()
+            # assign_global("dataSet_left", dataSet_left)
+            # assign_global("dataSet_right", dataSet_right)
+            # counter_one <- 0
+            # assign_global("counter_one", counter_one)
+            # counter_two <- 0
+            # assign_global("counter_two", counter_two)
 
-            new_list_test[[r]] <- FE.recursive( CC=CC_empirica, CE=CE_empirica, EE=EE, THR = THR, maxOrder = maxOrder, CE_N = CE_empirica)
+            new_list_test[[r]] <- call.FE.recursive( CC=CC_empirica, CE=CE_empirica, EE=EE, THR = THR, maxOrder = maxOrder)
 
         }
     } else if( is.null(CC) ){
@@ -138,9 +138,9 @@ FE_empirical <- function(CC, CE , EE, reps , THR , maxOrder , CE_N ){
             # Segundo para CE_empirica: TRABAJO FUTURO, PASAR ESTE CODIGO A RCPP
             for( i in seq_len( nrow( CE ))){
                 for( j in seq_len( ncol( CE ))){
-                    if( i != j){
+                    #if( i != j){
                         CE_empirica[i,j] <- as.numeric(quantile( as.numeric(CE[i,j,]), runif(1,0,1), na.rm = TRUE))
-                    }
+                    #}
                 }
             }
             #browser()
@@ -148,21 +148,21 @@ FE_empirical <- function(CC, CE , EE, reps , THR , maxOrder , CE_N ){
             # CALCULO DE EFECTOS OLVIDADOS
             # Diagonal igual a 1 para realiar el calculo de efectos olvidados
             diag(EE_empirica) <- 1
-            diag(CE_empirica) <- 1
+            #diag(CE_empirica) <- 1
             # aca llamo a la funcion recursiva y le paso los valores
             # La lista que saca tengo que pasarla a una lista que contenga los valores de reps
-            dataList        <- list()
-            assign_global("dataList", dataList)
-            dataSet_left        <- list()
-            dataSet_right       <- list()
-            assign_global("dataSet_left", dataSet_left)
-            assign_global("dataSet_right", dataSet_right)
-            counter_one <- 0
-            assign_global("counter_one", counter_one)
-            counter_two <- 0
-            assign_global("counter_two", counter_two)
+            # dataList        <- list()
+            # assign_global("dataList", dataList)
+            # dataSet_left        <- list()
+            # dataSet_right       <- list()
+            # assign_global("dataSet_left", dataSet_left)
+            # assign_global("dataSet_right", dataSet_right)
+            # counter_one <- 0
+            # assign_global("counter_one", counter_one)
+            # counter_two <- 0
+            # assign_global("counter_two", counter_two)
 
-            new_list_test[[r]] <- FE.recursive( CC=CC, CE=CE_empirica, EE=EE_empirica, THR = THR, maxOrder = maxOrder, CE_N = CE_empirica)
+            new_list_test[[r]] <- call.FE.recursive( CC=CC, CE=CE_empirica, EE=EE_empirica, THR = THR, maxOrder = maxOrder)
         }
     }else{
         # Para las tres matrices se usan las tres matrices
@@ -195,9 +195,9 @@ FE_empirical <- function(CC, CE , EE, reps , THR , maxOrder , CE_N ){
             # Segundo para CE_empirica: TRABAJO FUTURO, PASAR ESTE CODIGO A RCPP
             for( i in seq_len( nrow( CE ))){
                 for( j in seq_len( ncol( CE ))){
-                    if( i != j){
+                    #if( i != j){
                         CE_empirica[i,j] <- as.numeric(quantile( as.numeric(CE[i,j,]), runif(1,0,1), na.rm = TRUE))
-                    }
+                    #}
                 }
             }
             # Primero para EE_empirica: TRABAJO FUTURO, PASAR ESTE CODIGO A RCPP
@@ -209,22 +209,22 @@ FE_empirical <- function(CC, CE , EE, reps , THR , maxOrder , CE_N ){
                 }
             }
             diag(CC_empirica) <- 1
-            diag(CE_empirica) <- 1
+            #diag(CE_empirica) <- 1
             diag(EE_empirica) <- 1
             # aca llamo a la funcion recursiva y le paso los valores
             # La lista que saca tengo que pasarla a una lista que contenga los valores de reps
-            dataList        <- list()
-            assign_global("dataList", dataList)
-            dataSet_left        <- list()
-            dataSet_right       <- list()
-            assign_global("dataSet_left", dataSet_left)
-            assign_global("dataSet_right", dataSet_right)
-            counter_one <- 0
-            assign_global("counter_one", counter_one)
-            counter_two <- 0
-            assign_global("counter_two", counter_two)
+            # dataList        <- list()
+            # assign_global("dataList", dataList)
+            # dataSet_left        <- list()
+            # dataSet_right       <- list()
+            # assign_global("dataSet_left", dataSet_left)
+            # assign_global("dataSet_right", dataSet_right)
+            # counter_one <- 0
+            # assign_global("counter_one", counter_one)
+            # counter_two <- 0
+            # assign_global("counter_two", counter_two)
 
-            new_list_test[[r]] <- FE.recursive( CC=CC_empirica, CE=CE_empirica, EE=EE_empirica, THR = THR, maxOrder = maxOrder, CE_N = CE_empirica)
+            new_list_test[[r]] <- call.FE.recursive( CC=CC_empirica, CE=CE_empirica, EE=EE_empirica, THR = THR, maxOrder = maxOrder)
         }
     }
     output <- tolist(compress_list(new_list_test))
