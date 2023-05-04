@@ -7,6 +7,7 @@ FE_bootstrap <- function( CC, CE, EE, thr, maxOrder, reps, parallel, ncpus ){
     # que pasa si una de las matrices de los laterales no esta presente???.
     if( is.null(CC)  & is.null(EE)){
         CE <- if( is.list(CE) == TRUE)  listo_to_Array3D(CE) else CE
+        # IDENTIFICA QUE CE SEA SOLO 1 MATRIZ DE DATOS
         if( is.na(dim(CE)[3]) ){
             response <- call.FE.recursive(CC = CE, CE = CE, EE = NULL, THR = thr, maxOrder = maxOrder)
             return(putOrder(response))
@@ -153,7 +154,40 @@ FE_bootstrap <- function( CC, CE, EE, thr, maxOrder, reps, parallel, ncpus ){
     }
 }
 
+dataVerification <- function(CC, CE, EE){
+    if( !is.null(CC) & !is.null(CE) & !is.null(EE) ){
+        # CALCULATE WITH THREE MATRIX
+        # afecta si los datos son dim = 2 o dim = 3 ??? NO.
+        if ( (ncol(CC) == nrow(CE)) & (ncol(CE) == nrow(EE))  ){
+            return( list(CC, CE, EE))
+        }else{
+            # warning or stop ?
+            stop("Warning, the data dimension is not correct, verify")
+        }
+    }
+    else if ( !is.null(CC) & !is.null(CE) & is.null(EE) ){
+        # CALCULO POR DERECHA (FALTA EE)
+        if( ncol(CC) == nrow(CE)){
+            return( list(CC, CE, NULL))
+        }else{
+            stop("Warning, the data dimension is not correct, verify")
+        }
+    }
+    else if ( is.null(CC) & !is.null(CE) & !is.null(EE) ){
+        # CALCULO POR IZQUIERDA (FALTA CC)
+        if ( ncol(CE) == nrow(EE)){
+            return( list(NULL, CE, EE))
+        }else{
+            stop("Warning, the data dimension is not correct, verify")
+        }
+    }
+}
+
 wrapper.FE <- function(CC, CE, EE, mode, thr, maxOrder, reps, parallel, ncpus){
+
+    CC <- dataVerification(CC = CC, CE = CE, EE = EE)[[1]]
+    CE <- dataVerification(CC = CC, CE = CE, EE = EE)[[2]]
+    EE <- dataVerification(CC = CC, CE = CE, EE = EE)[[3]]
 
     if(mode == 'Empirical'){
         parallel <- NULL
@@ -165,5 +199,4 @@ wrapper.FE <- function(CC, CE, EE, mode, thr, maxOrder, reps, parallel, ncpus){
         return(output)
     }
 }
-
 
