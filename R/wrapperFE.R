@@ -5,7 +5,7 @@ FE_bootstrap <- function( CC, CE, EE, thr, maxOrder, reps, parallel, ncpus ){
     parallel <- ifelse( length(parallel) != 1, "no", parallel)
     # agregar validaciones para las dimensiones de las matrices (m1: col = m2: row, m2:col = m3:row)
     # que pasa si una de las matrices de los laterales no esta presente???.
-    if( is.null(CC)  & is.null(EE)){
+    if( is.null(CC)  &  is.null(EE) ){
         CE <- if( is.list(CE) == TRUE)  listo_to_Array3D(CE) else CE
         # IDENTIFICA QUE CE SEA SOLO 1 MATRIZ DE DATOS
         if( is.na(dim(CE)[3]) ){
@@ -192,11 +192,11 @@ wrapper.FE <- function(CC, CE, EE, mode, thr, maxOrder, reps, parallel, ncpus){
     if(mode == 'Empirical'){
         parallel <- NULL
         ncpus <- NULL
-        output <- FE_empirical(CC = CC, CE = CE, EE= EE, reps = reps, THR = thr, maxOrder = maxOrder, CE_N = CE)
-        return(output)
+        output <- FE_empirical(CC = CC, CE = CE, EE = EE, reps = reps, THR = thr, maxOrder = maxOrder, CE_N = CE)
+        return( putOrder(output) )
     }else if (mode == 'Bootstrap'){
         output <- FE_bootstrap( CC = CC, CE = CE, EE = EE, thr = thr, maxOrder = maxOrder, reps = reps, parallel = parallel, ncpus = ncpus )
-        return(output)
+        return( output )
     }
 }
 
