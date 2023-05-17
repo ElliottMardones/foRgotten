@@ -33,21 +33,21 @@ The package allows for the following:
 
 ## Authors
 
-**Elliott Jamil Mardones Arias**  
-School of Computer Science  
-Universidad Católica de Temuco  
-Rudecindo Ortega 02351  
-Temuco, Chile  
+**Elliott Jamil Mardones Arias**\
+School of Computer Science\
+Universidad Católica de Temuco\
+Rudecindo Ortega 02351\
+Temuco, Chile\
 [elliott.mardones\@uct.cl](mailto:elliott.mardones@uct.cl)
 
-**Julio Rojas-Mora**  
-Department of Computer Science  
-Universidad Católica de Temuco  
-Rudecindo Ortega 02351  
-Temuco, Chile  
-and  
-Centro de Políticas Públicas Universidad Católica de Temuco  
-Temuco, Chile  
+**Julio Rojas-Mora**\
+Department of Computer Science\
+Universidad Católica de Temuco\
+Rudecindo Ortega 02351\
+Temuco, Chile\
+and\
+Centro de Políticas Públicas Universidad Católica de Temuco\
+Temuco, Chile\
 [julio.rojas\@uct.cl](mailto:julio.rojas@uct.cl)
 
 ## Installation
@@ -332,6 +332,7 @@ And the second is `$byExpert`, which contains the following information:
 -   **CC:** It allows for entering a three-dimensional incidence array, with each submatrix along the z-axis being a square incidence matrix. By default, `CC = NULL`.
 -   **CE:** It allows for entering a three-dimensional incidence array, with each submatrix along the z-axis being a square incidence matrix (for complete graphs) or a rectangular matrix (for chained bipartite graphs).
 -   **EE:** It allows for entering a three-dimensional incidence array, with each submatrix along the z-axis being a square incidence matrix. By default, `EE = NULL`.
+-   **mode**: Specify the mode for the FE function. If the mode is set to 'Per-Expert,' the function will calculate using all experts. If the mode is set to 'Bootstrap,' the function will utilize this method. 
 -   **thr:** Defines the degree of truth in which incidence is considered significant within the range [0,1]. By default, `thr = 0.5`.
 -   **maxOrder:** Defines the limit of forgotten effects to calculate (if they exist). By default, `maxOrder = 2`.
 -   **reps:** Defines the number of bootstrap replicates. By default, `reps = 10000`.
@@ -343,7 +344,7 @@ And the second is `$byExpert`, which contains the following information:
 For example, to calculate the forgotten effects of three-dimensional incidence arrays `CC`, `CE`, and `EE`, with `thr = 0.5`, `maxOrder = 3`, and `reps = 1000`, we use the `FE()` function.
 
 ```{r}
-result <- FE(CC = CC, CE = CE, EE = EE, thr = 0.5, maxOrder = 3, reps = 1000)
+result <- FE(CC = CC, CE = CE, EE = EE, mode = 'Per-Expert', thr = 0.5, maxOrder = 3, reps = 1000)
 ```
 
 The results are in the `$boot` list, which contains the forgotten effects sorted in order.
@@ -391,7 +392,7 @@ head(result$boot$Order_2)
 
 8.  Gillespie, C. S. (2014). Fitting heavy tailed distributions: the poweRlaw package. arXiv preprint arXiv:1407.3492.
 
-9.  Kohl, M., & Kohl, M. M. (2020). Package ‘MKinfer’.
+9.  Kohl, M., & Kohl, M. M. (2020). Package 'MKinfer'.
 
 ## Citation
 

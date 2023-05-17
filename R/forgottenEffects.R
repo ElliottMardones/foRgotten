@@ -20,7 +20,9 @@
 #' and reflective incidence matrix, or a list of data.frames containing square and reflective
 #' incidence matrices. Each matrix represents a complete graph.
 #'
-#' @param mode Use empirical method or bootstrap method.
+#' @param mode  Mode: Specify the mode for the FE function. If the mode is set to 'Per-Expert,'
+#'  the function will calculate using all experts. If the mode is set to 'Bootstrap,' the function will utilize this method.
+
 #'
 #' @param thr Real between [0,1]: Defines the degree of truth for which the incidence
 #' is considered significant. By default thr = 0.5.
@@ -79,7 +81,13 @@
 #'
 #' Eddelbuettel D, Balamuta JJ (2018). "Extending extitR with extitC++: A Brief Introduction to extitRcpp." The American Statistician, 72(1), 28-36.6.
 #'
-FE <- function(CC = NULL, CE = NULL, EE = NULL, mode = c("Empirical", "Bootstrap"), thr = 0.5, maxOrder = 2, reps = 10000, parallel = c("multicore","snow","no"), ncpus = 1){
+#' @examples
+#' # example code
+#' # To chain bipartite graphs the parameters CC, CE and EE are used.
+#' FE(CC = CC, CE = CE, EE = EE, mode = "Per-Expert", thr = 0.5, maxOrder = 2, reps = 100)
+#' # To complete graphs you will need to use two dataset, for example
+#' FE(CC = CC, CE = CE, EE = NULL, mode = "Per-Expert", thr = 0.5, maxOrder = 2, reps = 100)
+FE <- function(CC = NULL, CE = NULL, EE = NULL, mode = c("Per-Expert", "Bootstrap"), thr = 0.5, maxOrder = 2, reps = 10000, parallel = c("multicore","snow","no"), ncpus = 1){
     output <- wrapper.FE( CC = CC, CE = CE, EE =EE, mode = mode, thr = thr, maxOrder = maxOrder, reps =reps , parallel =parallel , ncpus = ncpus)
     return(output)
 }

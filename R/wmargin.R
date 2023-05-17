@@ -7,7 +7,7 @@ plotBootMargin <-function(dataSet, thr.cause, thr.effect){
   data <- list(Drivers =dataSet$byCause, Dependance =  dataSet$byEffect)
   data$Drivers$varname<- dataSet$byCause$Var
   data$Dependance$varname<-dataSet$byEffect$Var
-  myVar <- factor(paste(data$Drivers$varname ), levels=data$Dependance$varname)
+  myVar <- factor( paste(data$Drivers$varname ), levels=data$Dependance$varname)
   p<-ggplot2::ggplot()+
     ggplot2::geom_hline(aes(yintercept=thr.cause),lty=2)+geom_vline(aes(xintercept=thr.effect),lty=2)+
     #geom_abline(lty=4)+

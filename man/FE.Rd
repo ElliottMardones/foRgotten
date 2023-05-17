@@ -8,7 +8,7 @@ FE(
   CC = NULL,
   CE = NULL,
   EE = NULL,
-  mode = c("Empirical", "Bootstrap"),
+  mode = c("Per-Expert", "Bootstrap"),
   thr = 0.5,
   maxOrder = 2,
   reps = 10000,
@@ -29,7 +29,8 @@ Each matrix represents a bipartite graph.}
 and reflective incidence matrix, or a list of data.frames containing square and reflective
 incidence matrices. Each matrix represents a complete graph.}
 
-\item{mode}{Use empirical method or bootstrap method.}
+\item{mode}{Mode: Specify the mode for the FE function. If the mode is set to 'Per-Expert,'
+the function will calculate using all experts. If the mode is set to 'Bootstrap,' the function will utilize this method.}
 
 \item{thr}{Real between [0,1]: Defines the degree of truth for which the incidence
 is considered significant. By default thr = 0.5.}
@@ -79,6 +80,13 @@ The function extends the theory of forgotten effects proposed by Kaufmann and Gi
  to find indirect cause-effect relationships from direct cause-effect relationships, in the
  case of multiple experts.
 The parallel and ncpus options are not available on Windows operating systems.
+}
+\examples{
+# example code
+# To chain bipartite graphs the parameters CC, CE and EE are used.
+FE(CC = CC, CE = CE, EE = EE, mode = "Per-Expert", thr = 0.5, maxOrder = 2, reps = 100)
+# To complete graphs you will need to use two dataset, for example
+FE(CC = CC, CE = CE, EE = NULL, mode = "Per-Expert", thr = 0.5, maxOrder = 2, reps = 100)
 }
 \references{
 Kaufmann, A., & Aluja, J. G. (1988). Modelos para la investigación de efectos olvidados. Milladoiro.

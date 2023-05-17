@@ -22,7 +22,7 @@ conpl_function <- function(resultCent, R, conf.level,  parallel, ncpus ){
         cent_table[j,4] <- 0
         cent_table[j,5] <- "median"
         cent_table[j, 6]  <- NA
-    }else if(sd(col) == 0){
+    }else if(sd(col) == 0 || is.na(sd(col))){
         cent_table[j,2] <- col[1]
         cent_table[j,3] <- col[1]
         cent_table[j,4] <- col[1]
@@ -85,14 +85,14 @@ resultBoot_median <- function(resultCent, parallel, reps, ncpus, conf.level){
         cent_table[j,2] <- 0
         cent_table[j,3] <- 0
         cent_table[j,4] <- 0
-        cent_table[j,5] <- "0"
+        cent_table[j,5] <- "median"
         cent_table[j, 6]  <- NA
         # 2 validar si sd(col) == 0 (rellenar con el primer valor y despues con 0)
-    }else if(sd(col) == 0){
+    }else if(sd(col) == 0 || is.na(sd(col)) ){
         cent_table[j,2] <- col[1]
         cent_table[j,3] <- col[1]
         cent_table[j,4] <- col[1]
-        cent_table[j,5] <- "0"
+        cent_table[j,5] <- "median"
         cent_table[j, 6]  <- NA
     }else{
         bs_median <- boot(data = col, statistic = sample_median, R = reps, parallel = parallel, ncpus= ncpus)

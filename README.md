@@ -1,9 +1,15 @@
+---
+editor_options: 
+  markdown: 
+    wrap: 72
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # foRgotten
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
 ## Description
@@ -24,22 +30,22 @@ The package allows for the following:
 
 ## Authors
 
-**Elliott Jamil Mardones Arias**  
-School of Computer Science  
-Universidad Católica de Temuco  
-Rudecindo Ortega 02351  
-Temuco, Chile  
-<elliott.mardones@uct.cl>
+**Elliott Jamil Mardones Arias**\
+School of Computer Science\
+Universidad Católica de Temuco\
+Rudecindo Ortega 02351\
+Temuco, Chile\
+[elliott.mardones\@uct.cl](mailto:elliott.mardones@uct.cl){.email}
 
-**Julio Rojas-Mora**  
-Department of Computer Science  
-Universidad Católica de Temuco  
-Rudecindo Ortega 02351  
-Temuco, Chile  
-and  
-Centro de Políticas Públicas Universidad Católica de Temuco  
-Temuco, Chile  
-<julio.rojas@uct.cl>
+**Julio Rojas-Mora**\
+Department of Computer Science\
+Universidad Católica de Temuco\
+Rudecindo Ortega 02351\
+Temuco, Chile\
+and\
+Centro de Políticas Públicas Universidad Católica de Temuco\
+Temuco, Chile\
+[julio.rojas\@uct.cl](mailto:julio.rojas@uct.cl){.email}
 
 ## Installation
 
@@ -105,9 +111,9 @@ graphs. For more details, see help(FE).
 ## DataSet
 
 The library provides three three-dimensional incidence matrices: `CC`,
-`CE`, and `EE`. The data are those used in the study “Application of the
+`CE`, and `EE`. The data are those used in the study "Application of the
 Forgotten Effects Theory For Assessing the Public Policy on Air
-Pollution Of the Commune of Valdivia, Chile” developed by Manna, E. M et
+Pollution Of the Commune of Valdivia, Chile" developed by Manna, E. M et
 al. (2018).
 
 The data consists of 16 incentives, four behaviors, and ten key
@@ -159,7 +165,7 @@ The function returns a list object with the subset of data
     with each submatrix along the z-axis being a square incidence
     matrix. By default, `EE = NULL`.
 -   **thr**: Defines the degree of truth in which incidence is
-    considered significant within the range \[0,1\]. By default,
+    considered significant within the range $$0,1$$. By default,
     `thr = 0.5`.
 -   **conf.level**: Defines the confidence level. By default,
     `conf.level = 0.95`.
@@ -275,10 +281,10 @@ and `$byEffect`, which includes the following information:
 -   **no.zeros:** For `no-zeros = TRUE`, the function omits zeros in the
     calculations. By default, `no-zeros = TRUE`.
 -   **thr.cause**: Defines the degree of truth in which incidence is
-    considered significant within the range \[0,1\]. By default,
+    considered significant within the range $$0,1$$. By default,
     `thr = 0.5`.
 -   **thr.effect**: Defines the degree of truth in which incidence is
-    considered significant within the range \[0,1\]. By default,
+    considered significant within the range $$0,1$$. By default,
     `thr = 0.5`.
 -   **conf.level**: Defines the confidence level. By default,
     `conf.level = 0.95`.
@@ -290,8 +296,8 @@ and `$byEffect`, which includes the following information:
     are significantly lower than `thr` at the p-value set in the
     `conf.level` parameter. By default, `delete = FALSE`.
 -   **plot:** Generates a Dependence-Influence plot with the data from
-    `$byCause` and `$byEffect`. The “Dependence” associated with
-    `$byEffect` is on the X-axis, and the “Influence” associated with
+    `$byCause` and `$byEffect`. The "Dependence" associated with
+    `$byEffect` is on the X-axis, and the "Influence" associated with
     `$byCause` is on the Y-axis.
 
 #### 
@@ -364,7 +370,7 @@ based on the results obtained.
 result$plot
 ```
 
-<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%"/>
 
 The parameter `delete = TRUE` eliminates the causes and effects whose
 average incidences are non-significant to the parameters `thr.cause` and
@@ -380,7 +386,7 @@ The variable I14 was removed from the new Dependence-Influence plane.
 result$plot
 ```
 
-<img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-17-1.png" width="100%"/>
 
 Also, for `delete = TRUE`, the function returns the three-dimensional
 incidence matrices entered but removed non-significant causes and
@@ -400,7 +406,7 @@ result <- bootMargin(CE = CC, thr.cause = 0.5, thr.effect = 0.5, reps = 1000, pl
 result$plot
 ```
 
-<img src="man/figures/README-unnamed-chunk-19-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-19-1.png" width="100%"/>
 
 ## centralitry()
 
@@ -438,7 +444,7 @@ following components:
 -   **reps**: Defines the number of bootstrap replicates. By default,
     `reps = 10000`.
 -   **parallel:** Sets the type of parallel operation required. The
-    options are “multicore”, “snow”, and “no”. By default,
+    options are "multicore", "snow", and "no". By default,
     `parallel = "no"`.
 -   **ncpus:** Defines the number of cores to use. By default,
     `ncpus = 1`.
@@ -559,14 +565,14 @@ And the second is `$byExpert`, which contains the following information:
     with each submatrix along the z-axis being a square incidence
     matrix. By default, `EE = NULL`.
 -   **thr:** Defines the degree of truth in which incidence is
-    considered significant within the range \[0,1\]. By default,
+    considered significant within the range $$0,1$$. By default,
     `thr = 0.5`.
 -   **maxOrder:** Defines the limit of forgotten effects to calculate
     (if they exist). By default, `maxOrder = 2`.
 -   **reps:** Defines the number of bootstrap replicates. By default,
     `reps = 10000`.
 -   **parallel:** Sets the type of parallel operation required. The
-    options are “multicore”, “snow”, and “no”. By default,
+    options are "multicore", "snow", and "no". By default,
     `parallel = "no"`**.**
 -   **ncpus:** Defines the number of cores to use. By default,
     `ncpus = 1`.
@@ -615,10 +621,12 @@ generated.
 
 #### Example: Complete graphs
 
-Complete graphs only make use of the `CE` parameter. Here is an example:
+For complete graphs you need to use the parameters \`CC\` and \`CE\` or
+the parameters \`CE\` and \`EE\`. This depends on your data. Here is an
+example:
 
 ``` r
-result <- FE(CE = CC, thr = 0.5, maxOrder = 3, reps = 1000)
+result <- directEffects(CC = CC, CE = CC, mode = 'Per-Expert',thr = 0.5, reps = 1000)
 head(result$boot$Order_2)
 #>   From Through_1  To Count      Mean    LCI       UCI         SE
 #> 1   I8       I11 I10     4 0.6125000 0.5625 0.6500000 0.02690025
@@ -652,13 +660,13 @@ head(result$boot$Order_2)
     Applications. Cambridge University Press, Cambridge. ISBN
     0-521-57391-2, <http://statwww.epfl.ch/davison/BMA/>.
 
-7.  Newman, M. E. (2005). Power laws, Pareto distributions and Zipf’s
+7.  Newman, M. E. (2005). Power laws, Pareto distributions and Zipf's
     law. Contemporary physics, 46(5), 323-351.
 
 8.  Gillespie, C. S. (2014). Fitting heavy tailed distributions: the
     poweRlaw package. arXiv preprint arXiv:1407.3492.
 
-9.  Kohl, M., & Kohl, M. M. (2020). Package ‘MKinfer’.
+9.  Kohl, M., & Kohl, M. M. (2020). Package 'MKinfer'.
 
 ## Citation
 

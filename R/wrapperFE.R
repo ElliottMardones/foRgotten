@@ -184,12 +184,19 @@ dataVerification <- function(CC, CE, EE){
 }
 
 wrapper.FE <- function(CC, CE, EE, mode, thr, maxOrder, reps, parallel, ncpus){
-
+    # PRIMERO TRANSFORMA LOS DATOS Y LUEGO LOS VERIFICA...
+    CC <- if( is.list(CC) == TRUE)  listo_to_Array3D(CC) else CC
+    CE <- if( is.list(CE) == TRUE)  listo_to_Array3D(CE) else CE
+    EE <- if( is.list(EE) == TRUE)  listo_to_Array3D(EE) else EE
+    # VERIFICACION
     CC <- dataVerification(CC = CC, CE = CE, EE = EE)[[1]]
     CE <- dataVerification(CC = CC, CE = CE, EE = EE)[[2]]
     EE <- dataVerification(CC = CC, CE = CE, EE = EE)[[3]]
 
-    if(mode == 'Empirical'){
+
+
+
+    if(mode == 'Per-Expert'){
         parallel <- NULL
         ncpus <- NULL
         output <- FE_empirical(CC = CC, CE = CE, EE = EE, reps = reps, THR = thr, maxOrder = maxOrder, CE_N = CE)
@@ -197,6 +204,8 @@ wrapper.FE <- function(CC, CE, EE, mode, thr, maxOrder, reps, parallel, ncpus){
     }else if (mode == 'Bootstrap'){
         output <- FE_bootstrap( CC = CC, CE = CE, EE = EE, thr = thr, maxOrder = maxOrder, reps = reps, parallel = parallel, ncpus = ncpus )
         return( output )
+    }else{
+        stop("Use Per-Expert or Bootstrap.")
     }
 }
 
