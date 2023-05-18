@@ -8,7 +8,7 @@ FE(
   CC = NULL,
   CE = NULL,
   EE = NULL,
-  mode = c("Per-Expert", "Bootstrap"),
+  mode = c("Empirical", "Per-Expert"),
   thr = 0.5,
   maxOrder = 2,
   reps = 10000,
