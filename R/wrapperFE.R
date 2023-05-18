@@ -194,8 +194,6 @@ wrapper.FE <- function(CC, CE, EE, mode, thr, maxOrder, reps, parallel, ncpus){
     EE <- dataVerification(CC = CC, CE = CE, EE = EE)[[3]]
 
 
-
-
     if(mode == 'Empirical'){
         parallel <- NULL
         ncpus <- NULL
