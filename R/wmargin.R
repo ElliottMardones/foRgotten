@@ -67,9 +67,9 @@ wrapper.BootMargin<-function(CC, CE, EE, no.zeros,  thr.cause, thr.effect, reps,
     promColumnas    <- data.frame(Var=colnames(CE[,,1]),Mean=0,LCI= 0,UCI=0,p.value=0)
     #
 
-    for (i in seq_len(dim(CE)[3])) {
-        diag(CE[, , i]) <- NA
-    }
+    #for (i in seq_len(dim(CE)[3])) {
+    #    diag(CE[, , i]) <- NA
+    #}
 
     for(i in 1:nn){
         # nuevo parametro no.zeros
