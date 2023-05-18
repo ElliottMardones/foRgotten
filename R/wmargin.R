@@ -95,7 +95,7 @@ wrapper.BootMargin<-function(CC, CE, EE, no.zeros,  thr.cause, thr.effect, reps,
                     fila.p_value  <- NA
                 }
                 if(length(unique(fila)) != 1){
-                    fila.CI       <- boot.t.test(x = fila , alternative = "two.sided", mu = thr.cause, R = reps)
+                    fila.CI       <- boot.t.test(x = fila , alternative = "less", mu = thr.cause, R = reps)
                     fila.Mean     <- fila.CI$boot.estimate
                     fila.LCI      <- as.numeric(fila.CI$boot.conf.int)[1]
                     fila.UCI      <- as.numeric(fila.CI$boot.conf.int)[2]
@@ -109,7 +109,7 @@ wrapper.BootMargin<-function(CC, CE, EE, no.zeros,  thr.cause, thr.effect, reps,
                     columna.p_value <- NA
                 }
                 if(length(unique(columna)) != 1){
-                    columna.CI      <- boot.t.test(x = columna , alternative = "two.sided", mu = thr.effect, R = reps)
+                    columna.CI      <- boot.t.test(x = columna , alternative = "less", mu = thr.effect, R = reps)
                     columna.Mean    <- columna.CI$boot.estimate
                     columna.LCI     <- as.numeric(columna.CI$boot.conf.int)[1]
                     columna.UCI     <- as.numeric(columna.CI$boot.conf.int)[2]
@@ -140,7 +140,7 @@ wrapper.BootMargin<-function(CC, CE, EE, no.zeros,  thr.cause, thr.effect, reps,
                 fila.p_value  <- NA
             }
             if(length(unique(fila)) != 1){
-                fila.CI       <- boot.t.test(x = fila , alternative = "two.sided", mu = thr.cause, R = reps)
+                fila.CI       <- boot.t.test(x = fila , alternative = "less", mu = thr.cause, R = reps)
                 fila.Mean     <- fila.CI$boot.estimate
                 fila.LCI      <- as.numeric(fila.CI$boot.conf.int)[1]
                 fila.UCI      <- as.numeric(fila.CI$boot.conf.int)[2]
@@ -154,7 +154,7 @@ wrapper.BootMargin<-function(CC, CE, EE, no.zeros,  thr.cause, thr.effect, reps,
                 columna.p_value <- NA
             }
             if(length(unique(columna)) != 1){
-                columna.CI      <- boot.t.test(x = columna , alternative = "two.sided", mu = thr.effect, R = reps)
+                columna.CI      <- boot.t.test(x = columna , alternative = "less", mu = thr.effect, R = reps)
                 columna.Mean    <- columna.CI$boot.estimate
                 columna.LCI     <- as.numeric(columna.CI$boot.conf.int)[1]
                 columna.UCI     <- as.numeric(columna.CI$boot.conf.int)[2]
