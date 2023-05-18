@@ -87,7 +87,7 @@
 #' FE(CC = CC, CE = CE, EE = EE, mode = "Per-Expert", thr = 0.5, maxOrder = 2, reps = 100)
 #' # To complete graphs you will need to use two dataset, for example
 #' FE(CC = CC, CE = CE, EE = NULL, mode = "Per-Expert", thr = 0.5, maxOrder = 2, reps = 100)
-FE <- function(CC = NULL, CE = NULL, EE = NULL, mode = c("Per-Expert", "Bootstrap"), thr = 0.5, maxOrder = 2, reps = 10000, parallel = c("multicore","snow","no"), ncpus = 1){
+FE <- function(CC = NULL, CE = NULL, EE = NULL, mode = c("Empirical", "Per-Expert"), thr = 0.5, maxOrder = 2, reps = 10000, parallel = c("multicore","snow","no"), ncpus = 1){
     output <- wrapper.FE( CC = CC, CE = CE, EE =EE, mode = mode, thr = thr, maxOrder = maxOrder, reps =reps , parallel =parallel , ncpus = ncpus)
     return(output)
 }

@@ -7,7 +7,7 @@ Authors@R: c(person("Elliott", "Mardones-Arias", email = "elliott.mardones@uct.c
 Description: The foRgotten library extends the theory of forgotten effects with the aggregation of 
             multiple key informants for complete graphs and chained bipartite graphs. 
             Provides analysis tools for direct effects and forgotten effects.
-Maintainer: Elliott Mardones <elliott.mardones@uct.cl>
+Maintainer: Elliott Mardones-Arias <elliott.mardones@uct.cl>
 License: GPL-3
 Encoding: UTF-8
 Date: 2022-01-20

@@ -196,12 +196,12 @@ wrapper.FE <- function(CC, CE, EE, mode, thr, maxOrder, reps, parallel, ncpus){
 
 
 
-    if(mode == 'Per-Expert'){
+    if(mode == 'Empirical'){
         parallel <- NULL
         ncpus <- NULL
         output <- FE_empirical(CC = CC, CE = CE, EE = EE, reps = reps, THR = thr, maxOrder = maxOrder, CE_N = CE)
         return( putOrder(output) )
-    }else if (mode == 'Bootstrap'){
+    }else if (mode == 'Per-Expert'){
         output <- FE_bootstrap( CC = CC, CE = CE, EE = EE, thr = thr, maxOrder = maxOrder, reps = reps, parallel = parallel, ncpus = ncpus )
         return( output )
     }else{
