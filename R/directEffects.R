@@ -5,19 +5,17 @@
 #' @description Performs the calculation of the mean incidence, left one-sided confidence interval, and p-value with multiple key informants for complete graphs and chained bipartite graphs. The function allows assigning zeros to the edges whose mean incidences are not significant at the set p-value.
 
 #'
-#' @param CC Three-dimensional matrix, where each submatrix along the z-axis is a square and reflective incidence matrix, or a list of data.frames containing square and reflective incidence matrices. Each matrix represents a complete graph.
-#' @param CE Three-dimensional matrix, where each submatrix along the z-axis is a rectangular incidence matrix, or a list of data.frames containing rectangular incidence matrices. Each matrix represents a bipartite graph. By default CE = NULL.
-#' @param EE Three-dimensional matrix, where each submatrix along the z-axis is a square and reflective incidence matrix, or a list of data.frames containing square and reflective incidence matrices. Each matrix represents a complete graph. By default EE = NULL.
+#' @param CC It allows for entering a three-dimensional incidence array, with each submatrix along the z-axis being a square incidence matrix. By default, CC = NULL.
+#' @param CE It allows for entering a three-dimensional incidence array, with each submatrix along the z-axis being a square incidence matrix (for complete graphs) or a rectangular matrix (for chained bipartite graphs).
+#' @param EE It allows for entering a three-dimensional incidence array, with each submatrix along the z-axis being a square incidence matrix. By default, EE = NULL.
 
-#' @param thr Real between [0,1]: Defines the degree of truth for which the incidence is considered significant. By default thr = 0.5.
-#' @param conf.level Real between [0,1]: Defines the confidence level. By default conf.level = 0.95.
+#' @param thr Defines the degree of truth in which incidence is considered significant within the range [0,1]. By default thr = 0.5.
+#' @param conf.level Defines the confidence level within the range [0,1]. By default, conf.level = 0.95.
 
-#' @param reps The number of bootstrap replicas. By default reps = 10,000.
+#' @param reps Defines the number of bootstrap replicates. By default, reps = 10000.
 
-#' @param delete Logical: If delete = TRUE, zeroes are assigned to edges whose incidences are significantly less than thr to the p-value set in conf.level. By default delete = FALSE.
+#' @param delete Removes the non-significant results from the $DirectEffects set and returns the entered three-dimensional incidence arrays by assigning zeros to the edges whose incidences are significantly lower than thr at the p-value set in the conf.level parameter. By default, delete = FALSE.
 #'
-#' @details
-#' p.value
 
 #'If you use the full graph mode, make sure to keep the default values of the CE and EE parameters.
 
@@ -28,7 +26,7 @@
 ##'  \item{From}{Origin of the incident.}
 ##'  \item{To}{Destination of the incident.}
 ##'  \item{Mean}{Average incidence.}
-##'  \item{UCI}{Upper Confidence Interval of Incidence.}
+##'  \item{UCI}{Upper Confidence Interval}
 ##'  \item{p.value}{The calculated p-value.}
 ##'
 #' For delete = TRUE with complete graphs, the function returns $Data, the three-dimensional
