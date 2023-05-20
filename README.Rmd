@@ -367,7 +367,7 @@ The `$byExpert` list indicates in which expert the forgotten effect is generated
 
 #### Example: Complete graphs
 
-When working with complete graphs, it is necessary to specify either the CC and CE parameters or the CE and EE parameters (as they are equivalent). Here is an example:
+When working with complete graphs, it is necessary to specify either the `CC` and `CE` parameters or the `CE` and `EE` parameters (as they are equivalent). Here is an example:
 
 ```{r}
 result <- FE(CC = CC, CE = CC, thr = 0.5,mode = "Empirical", maxOrder = 3, reps = 1000)
