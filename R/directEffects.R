@@ -2,7 +2,7 @@
 #' directEffects
 #' @title Significant Direct Effects For Complete and Chain Bipartite Graphs
 #' @aliases directEffects
-#' @description Performs the calculation of the mean incidence, left one-sided confidence interval, and p-value with multiple key informants for complete graphs and chained bipartite graphs. The function allows assigning zeros to the edges whose mean incidences are not significant at the set p-value.
+#' @description The directEffects() function calculates the mean incidence, left-sided confidence interval, and p-value for complete and chained bipartite graphs using multiple key informants. This function performs a t-test with left one-sided contrast via bootstrap BCa.
 
 #'
 #' @param CC It allows for entering a three-dimensional incidence array, with each submatrix along the z-axis being a square incidence matrix. By default, CC = NULL.

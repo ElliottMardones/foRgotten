@@ -2,46 +2,39 @@
 #' @title Significant Mean Causes and Effects For Complete and Chain Bipartite Graphs
 #' @aliases bootMargin
 #' @description
-#' It performs the calculation of the mean incidence for each cause and each effect,
-#'  confidence intervals and p-value with multiple key informants for complete graphs
-#'   and chained bipartite graphs for multiple experts. The function allows eliminating
-#'    causes and effects whose average incidence is not significant at the set thr.
-#' @param CC Three-dimensional matrix, where each submatrix along the z-axis is a
-#'  square and reflective incidence matrix, or a list of data.frames containing
-#'  square and reflective incidence matrices. Each matrix represents a complete
-#'  graph.
-#' @param CE Three-dimensional matrix, where each submatrix along the z-axis is a
-#'  rectangular incidence matrix, or a list of data.frames containing rectangular
-#'   incidence matrices. Each matrix represents a bipartite graph. By default CE = NULL.
+#' The bootMargin() function calculates the mean incidence of each cause and each effect,
+#'  confidence intervals, and p-value for complete and chained bipartite graphs using multiple key informants.
+#'   This function performs a t-test with bilateral contrast via bootstrap BCa.
 #'
-#' @param EE Three-dimensional matrix, where each submatrix along the z-axis is a
-#' square and reflective incidence matrix, or a list of data.frames containing square
-#' and reflective incidence matrices. Each matrix represents a complete graph.
-#' By default EE = NULL.
+#' @param CC TIt allows for entering a three-dimensional incidence array, with each submatrix
+#' along the z-axis being a square incidence matrix. By default, CC = NULL.
+#' @param CE It allows for entering a three-dimensional incidence array, with each submatrix
+#'  along the z-axis being a square incidence matrix (for complete graphs) or a rectangular
+#'   matrix (for chained bipartite graphs).
 #'
-#' @param no.zeros no.zeros TRUE or FALSE
-#' @param thr.cause Real between [0,1]: Defines the degree of truth for which the incidence
-#' is considered significant. By default thr = 0.5.
-#' @param thr.effect Real between [0,1]: Defines the degree of truth for which the incidence
-#' is considered significant. By default thr = 0.5.
+#' @param EE It allows for entering a three-dimensional incidence array, with each submatrix
+#'  along the z-axis being a square incidence matrix. By default, EE = NULL.
+#'
+#' @param no.zeros For no-zeros = TRUE, the function omits zeros in the calculations.
+#' By default, no-zeros = TRUE.
+#' @param thr.cause Defines the degree of truth in which incidence is considered significant
+#'  within the range [0,1]. By default thr.cause = 0.5
+#' @param thr.effect Defines the degree of truth in which incidence is considered significant
+#'  within the range [0,1]. By default thr.effect = 0.5
 
-#' @param reps The number of bootstrap replicas. By befault reps = 10.000.
+#' @param reps Defines the number of bootstrap replicates. By default, reps = 10000.
 #'
-#' @param conf.level Real between [0,1]: Defines the confidence level.
-#' By default conf.level = 0.95.
+#' @param conf.level Defines the confidence level. By default, conf.level = 0.95.
 #'
-#' @param delete Logical: If delete = TRUE, it deletes rows and columns whose incidences
-#' are significantly less than the set thr. By default delete = FALSE.
+#' @param delete Removes the non-significant results from the $DirectEffects set and
+#'  returns the entered three-dimensional incidence arrays by assigning zeros to the
+#'  edges whose incidences are significantly lower than thr at the p-value set in the
+#'  conf.level parameter. By default, delete = FALSE.
 #'
-#' @param plot Logical: If plot = TRUE, creates a graph from the results obtained.
-#'  By default plot = FALSE.
+#' @param plot Generates a Dependence-Influence plot with the data from $byCause and $byEffect.
+#'  The "Dependence" associated with $byEffect is on the X-axis, and the "Influence"
+#'  associated with $byCause is on the Y-axis.
 #'
-#' @details
-#' The function implements "boot.one.bca" from the wBoot package to obtain the confidence intervals and the p-value.
-
-#' The function contemplates two modalities, the first is focused on complete graphs and the second for chained bipartite graphs.
-#' If you use the full graph mode, make sure to keep the default values of the CE and EE parameters.
-
 #' @return
 #' The function returns a list with subsets of data.
 #' The subset $byRow and $byCol contains the following values:
@@ -58,8 +51,8 @@
 #' eliminating the non-significant rows and columns.
 #'
 #'For plot = TRUE, the function returns the subset $plot, which contains the graph
-#'generated from the data $byRow and $byCol. On the X axis there is "dependency"
-#'associated with $byCol and on the Y axis "influence" associated with $byRow.
+#'generated from the data $byCause and $byEffect on the X axis there is "dependency"
+#'associated with $byEffect and on the Y axis "influence" associated with $byCause.
 #'
 #' @export
 #'

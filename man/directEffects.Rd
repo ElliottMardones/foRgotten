@@ -48,7 +48,7 @@ the three-dimensional matrices entered in the parameters CC, CE and EE, but assi
 0 to the non-significant edges.
 }
 \description{
-Performs the calculation of the mean incidence, left one-sided confidence interval, and p-value with multiple key informants for complete graphs and chained bipartite graphs. The function allows assigning zeros to the edges whose mean incidences are not significant at the set p-value.
+The directEffects() function calculates the mean incidence, left-sided confidence interval, and p-value for complete and chained bipartite graphs using multiple key informants. This function performs a t-test with left one-sided contrast via bootstrap BCa.
 }
 \details{
 directEffects
