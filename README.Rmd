@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 
 ## Description
 
-The **foRgotten** library extends the theory of forgotten effects by aggregating multiple key informants for complete and chained bipartite graphs. 
+The **foRgotten** library extends the theory of forgotten effects by aggregating multiple key informants for complete and chained bipartite graphs.
 
 The package allows for the following:
 
@@ -332,8 +332,8 @@ And the second is `$byExpert`, which contains the following information:
 -   **CC:** It allows for entering a three-dimensional incidence array, with each submatrix along the z-axis being a square incidence matrix. By default, `CC = NULL`.
 -   **CE:** It allows for entering a three-dimensional incidence array, with each submatrix along the z-axis being a square incidence matrix (for complete graphs) or a rectangular matrix (for chained bipartite graphs).
 -   **EE:** It allows for entering a three-dimensional incidence array, with each submatrix along the z-axis being a square incidence matrix. By default, `EE = NULL`.
--   **mode**: Specify the mode for the FE function. If the mode is set to 'Per-Expert,' the function will calculate using all experts. If the mode is set to 'Empirical,' the function will utilize this method. 
--   **thr:** Defines the degree of truth in which incidence is considered significant within the range [0,1]. By default, `thr = 0.5`.
+-   **mode**: Specify the mode for the FE function. If the mode is set to 'Per-Expert,' the function will calculate using all experts. If the mode is set to 'Empirical,' the function will utilize this method.
+-   **thr:** Defines the degree of truth in which incidence is considered significant within the range $[0,1]$. By default, `thr = 0.5`.
 -   **maxOrder:** Defines the limit of forgotten effects to calculate (if they exist). By default, `maxOrder = 2`.
 -   **reps:** Defines the number of bootstrap replicates. By default, `reps = 10000`.
 -   **parallel:** Sets the type of parallel operation required. The options are "multicore", "snow", and "no". By default, `parallel = "no"`**.**
