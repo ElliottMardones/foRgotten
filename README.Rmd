@@ -309,7 +309,7 @@ The `FE()` function calculates the forgotten effects, the frequency of their occ
 The function returns two list-type objects. The first is `$boot`, which contains the following information:
 
 -   **From**: Indicates the origin of the forgotten effects relationships.
--   **\$Through\_{x}\$**: Dynamic field that represents the intermediate relationships of the forgotten effects. For example, for order n there will be \$Though\_{1}\$ up to \$Though\_{n-1}\$.
+-   **\$Through\_{x}\$**: Dynamic field that represents the intermediate relationships of the forgotten effects. For example, for order n there will be \$Through\_{1}\$ up to \$Through\_{n-1}\$.
 -   **To**: Indicates the end of the forgotten effects relationships.
 -   **Count**: Number of times the forgotten effect was repeated.
 -   **Mean**: Mean effect of the forgotten effect
@@ -320,7 +320,7 @@ The function returns two list-type objects. The first is `$boot`, which contains
 And the second is `$byExpert`, which contains the following information:
 
 -   **From**: Indicates the origin of the forgotten effects relationships.
--   $Through_{x}$: Dynamic field that represents the intermediate relationships of the forgotten effects. For example, for order n there will be $Though_{1}$ up to $Though_{n-1}$.
+-   $Through_{x}$: Dynamic field that represents the intermediate relationships of the forgotten effects. For example, for order n there will be $Through_{1}$ up to $Through_{n-1}$.
 -   **To**: Indicates the end of the forgotten effects relationships.
 -   **Count**: Number of times the forgotten effect was repeated.
 -   $Expert_x$: Dynamic field that represents each of the entered experts.
