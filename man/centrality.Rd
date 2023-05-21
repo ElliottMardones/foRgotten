@@ -16,54 +16,42 @@ centrality(
 )
 }
 \arguments{
-\item{CC}{Three-dimensional matrix, where each submatrix along the z-axis is
-a square and reflective incidence matrix, or a list of data.frames
-containing square and reflective incidence matrices. Each matrix
-represents a complete graph.}
+\item{CC}{It allows for entering a three-dimensional incidence array, with each submatrix along
+the z-axis being a square incidence matrix. By default, CC = NULL.}
 
-\item{CE}{Three-dimensional matrix, where each submatrix along the z-axis is a
-rectangular incidence matrix, or a list of data.frames containing
-rectangular incidence matrices. Each matrix represents a bipartite graph.
- By default CE = NULL.}
+\item{CE}{It allows for entering a three-dimensional incidence array, with each submatrix
+along the z-axis being a square incidence matrix (for complete graphs) or a rectangular matrix
+(for chained bipartite graphs).}
 
-\item{EE}{Three-dimensional matrix, where each submatrix along the z-axis is a
-square and reflective incidence matrix, or a list of data.frames
-containing square and reflective incidence matrices. Each matrix
-represents a complete graph. By default EE = NULL.}
+\item{EE}{It allows for entering a three-dimensional incidence array, with each submatrix
+along the z-axis being a square incidence matrix. By default, EE = NULL.}
 
-\item{model}{Bootstrap with one of the following statistics: "conpl","conlnorm","median".
-By default Model = "median".}
+\item{model}{Allows you to determine to which heavy-tailed distribution the entered variables correspond.}
 
-\item{reps}{The number of bootstrap replicas. By default reps = 10,000.}
+\item{reps}{Defines the number of bootstrap replicates. By default, reps = 10000.}
 
-\item{conf.level}{Real: Indicates the confidence levels of the required intervals. By default conf = 0.95.}
+\item{conf.level}{Defines the confidence level. By default, conf.level = 0.95.}
 
-\item{parallel}{The type of parallel operation to use (if applicable). The options are "multicore", "snow" and "no". By default parallel = "no".}
+\item{parallel}{Sets the type of parallel operation required. The options are “multicore”, “snow”, and “no”. By default, parallel = "no".}
 
-\item{ncpus}{Integer: Number of processes that will be used in the parallel implementation.}
+\item{ncpus}{Defines the number of cores to use. By default, ncpus = 1.}
 }
 \value{
 Returns a data.frame containing the following:
- \item{Median}{Calculated median.}
- \item{LCI}{Lower confidence interval.}
- \item{UCI}{Upper confidence interval.}
- \item{Method}{Statistical method used.}
+ \item{Var}{Name of the variable.}
+ \item{Median}{Median calculated.}
+ \item{LCI}{Lower Confidence Interval.}
+ \item{UCI}{Upper Confidence Interval.}
+ \item{Method}{Statistical method used associated with the model parameter.}
 }
 \description{
-Performs the calculation of the median betweenness centrality, confidence intervals
- and the selected method for the calculation of the distribution of centralities with multiple
-  key informants for complete graphs and chain bipartite graphs.
+The centrality() function calculates the median betweenness centrality, confidence intervals,
+and the selected method for calculating the centrality distribution for complete and chained
+ bipartite graphs using multiple key informants.
 }
 \details{
 centrality
 
-The function implements "boot" from the boot package to obtain the confidence intervals and the p-value.
-
-The function contemplates two modalities, the first is focused on complete graphs and the second for chained bipartite graphs.
-
-If you use the full graph mode, make sure to keep the default values of the CE and EE parameters.
-
-The model parameter makes use of the PoweRlaw package. For "conpl" the median of a power distribution is calculated according to Newman, M. E. (2005), or "conlnorm" can be used according to Gillespie CS (2015). In the event that either of the two statistical methods fails, the error will be reported and the median centrality will be calculated.
 
 The parallel and ncpus options are not available on Windows operating systems.
 }

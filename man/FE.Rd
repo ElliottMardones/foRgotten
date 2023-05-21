@@ -17,34 +17,29 @@ FE(
 )
 }
 \arguments{
-\item{CC}{Three-dimensional matrix, where each submatrix along the z-axis is a square and
-reflective incidence matrix, or a list of data.frames containing square and reflective
-incidence matrices. Each matrix represents a complete graph.}
+\item{CC}{It allows for entering a three-dimensional incidence array, with each submatrix
+along the z-axis being a square incidence matrix. By default, CC = NULL.}
 
-\item{CE}{Three-dimensional matrix, where each submatrix along the z-axis is a rectangular
-incidence matrix, or a list of data.frames containing rectangular incidence matrices.
-Each matrix represents a bipartite graph.}
+\item{CE}{It allows for entering a three-dimensional incidence array, with each submatrix
+along the z-axis being a square incidence matrix (for complete graphs) or a rectangular
+matrix (for chained bipartite graphs).}
 
-\item{EE}{Three-dimensional matrix, where each submatrix along the z-axis is a square
-and reflective incidence matrix, or a list of data.frames containing square and reflective
-incidence matrices. Each matrix represents a complete graph.}
+\item{EE}{It allows for entering a three-dimensional incidence array, with each submatrix
+along the z-axis being a square incidence matrix. By default, EE = NULL.}
 
-\item{mode}{Mode: Specify the mode for the FE function. If the mode is set to 'Per-Expert,'
-the function will calculate using all experts. If the mode is set to 'Bootstrap,' the function will utilize this method.}
+\item{mode}{Specify the mode for the FE function. If the mode is set to ‘Per-Expert,’
+the function will calculate using all experts. If the mode is set to ‘Empirical,’ the
+function will utilize this method.}
 
-\item{thr}{Real between [0,1]: Defines the degree of truth for which the incidence
-is considered significant. By default thr = 0.5.}
+\item{thr}{Defines the degree of truth in which incidence is considered significant within the range. By default, thr = 0.5.}
 
-\item{maxOrder}{Positive integer greater than 1: Defines the maximum order
-of the forgotten effects. By default maxOrder = 2.}
+\item{maxOrder}{Defines the limit of forgotten effects to calculate (if they exist). By default, maxOrder = 2.}
 
-\item{reps}{The number of bootstrap replicas. By default reps = 10.000.}
+\item{reps}{Defines the number of bootstrap replicates. By default, reps = 10000.}
 
-\item{parallel}{The type of parallel operation to use (if applicable).
-The options are "multicore", "snow" and "no". By default parallel = "no".}
+\item{parallel}{Sets the type of parallel operation required. The options are “multicore”, “snow”, and “no”. By default, parallel = "no".}
 
-\item{ncpus}{Integer: Number of processes that will be used in the parallel
-implementation. By default ncpus = 1.}
+\item{ncpus}{IDefines the number of cores to use. By default, ncpus = 1.}
 }
 \value{
 The function returns a list with subsets of data.
@@ -69,11 +64,9 @@ For example, for order n there will be "Through_1" up to "Through_ <n-1>".}
 \item{Expert_x}{Dynamic field that represent each of the entered experts.}
 }
 \description{
-Performs the forgotten effects calculation proposed by Kaufman and Gil-Aluja (1988)
- with multiple experts. The parameters allow you to specify the significant degree of truth and
- the order of incidence that is required to be calculated for chained bipartite graphs.
-  The function returns the frequency of appearance of the forgotten effect, its mean incidence,
-   the confidence intervals and the standard error in each order.
+The FE() function calculates the forgotten effects, the frequency of their occurrence,
+ the mean incidence, the confidence intervals, and the standard error for complete and chained bipartite
+  graphs using multiple key informants. This function implements bootstrap BCa.
 }
 \details{
 The function extends the theory of forgotten effects proposed by Kaufmann and Gil-Aluja (1988),
