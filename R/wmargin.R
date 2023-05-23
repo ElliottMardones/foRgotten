@@ -55,13 +55,20 @@ deconstructMatrix <- function(dataSet, AA, AB=NULL, BB=NULL){
 
 wrapper.BootMargin<-function(CC, CE, EE, no.zeros,  thr.cause, thr.effect, reps, conf.level, delete, plot){
   if( !is.null(CC) & !is.null(EE)){
+    if( is.null(rownames(CC)) & is.null(colnames(CC)) & is.null(rownames(CE)) & is.null(colnames(CE)) & is.null(rownames(EE)) & is.null(colnames(EE)) ){
+        stop("The dataset needs row and column names")
+    }
     CE <- BTCgraphs_bootMargin(CC = CC, CE = CE, EE = EE)
+
   }
   if( missing(CE)){
     message("Parameter CC is missing, its required.")
     return(NULL)
   }
   if( nrow(CE) == ncol(CE)){
+    if( is.null(rownames(CE)) & is.null(colnames(CE))){
+        stop("The dataset needs row and column names")
+    }
     nn              <- nrow(CE)
     promFilas       <- data.frame(Var=rownames(CE[,,1]),Mean=0,LCI= 0,UCI=0,p.value=0)
     promColumnas    <- data.frame(Var=colnames(CE[,,1]),Mean=0,LCI= 0,UCI=0,p.value=0)

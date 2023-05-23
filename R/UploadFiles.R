@@ -1,5 +1,6 @@
 #' loadFiles
 #' @title loadFiles
+#' @aliases loadFiles
 #' @name loadFiles
 #' @param directory directory
 #' @param sep sep

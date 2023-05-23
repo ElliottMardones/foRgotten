@@ -28,6 +28,12 @@ wrapper.de.sq <- function(CE, thr, conf.level, reps, delete){
   }else{
     if(is.list(CE)){
       CE <- listo_to_Array3D(CE)
+      if( is.null(rownames(CE)) & is.null(colnames(CE))){
+          stop("The dataset needs row and column names")
+      }
+    }
+    else if( is.null(rownames(CE)) & is.null(colnames(CE))){
+        stop("The dataset needs row and column names")
     }
     #
     # bootCC <- data.frame(From = character(), To = character(), Mean = numeric(), UCI= numeric(), p.value = numeric())
@@ -62,41 +68,43 @@ wrapper.de.sq <- function(CE, thr, conf.level, reps, delete){
     #   }
     # }
     #
-    rownamesData <- rownames(CE[,,1])
-    colnamesData <- colnames(CE[,,1])
-    result <- Rcpp_directEffects(CE, rownamesData , colnamesData ,thr, reps)
+    else{
+        rownamesData <- rownames(CE[,,1])
+        colnamesData <- colnames(CE[,,1])
+        result <- Rcpp_directEffects(CE, rownamesData , colnamesData ,thr, reps)
 
-    bootCC <- data.frame("From" = result$From,
-                       "To" = result$To,
-                       "Mean" = result$Mean,
-                       "UCI" = result$UCI,
-                       "p.value" = result$p.value )
+        bootCC <- data.frame("From" = result$From,
+                           "To" = result$To,
+                           "Mean" = result$Mean,
+                           "UCI" = result$UCI,
+                           "p.value" = result$p.value )
 
-    if( delete){
-      conf.level <- 1 - conf.level
-      borrar <-  which(bootCC$p.value < conf.level | ( bootCC$Mean < thr & is.na(bootCC$p.value)))
-      temp <- bootCC[borrar, ]
-      for( ii in seq_len(nrow(temp)) ){
-        From <- temp[ii, 1]
-        To <- temp[ii, 2]
-        From <- which(rownamesData == From)
-        To <- which(colnamesData == To)
-        CE[From, To, ] <- 0
-      }
-      if(length(borrar > 0)){
-        message("deleting data...")
-        bootCC <- bootCC[-borrar, ]
-        rownames(bootCC) <- seq_len(nrow(bootCC))
-        return(list(Data=CE,DirectEffects=bootCC ))
-      }else{
-        message("There is no data to delete...")
-        rownames(bootCC) <- seq_len(nrow(bootCC))
-        return(list(Data=CE,DirectEffects=bootCC ))
-      }
+        if( delete){
+          conf.level <- 1 - conf.level
+          borrar <-  which(bootCC$p.value < conf.level | ( bootCC$Mean < thr & is.na(bootCC$p.value)))
+          temp <- bootCC[borrar, ]
+          for( ii in seq_len(nrow(temp)) ){
+            From <- temp[ii, 1]
+            To <- temp[ii, 2]
+            From <- which(rownamesData == From)
+            To <- which(colnamesData == To)
+            CE[From, To, ] <- 0
+          }
+          if(length(borrar > 0)){
+            message("deleting data...")
+            bootCC <- bootCC[-borrar, ]
+            rownames(bootCC) <- seq_len(nrow(bootCC))
+            return(list(Data=CE,DirectEffects=bootCC ))
+          }else{
+            message("There is no data to delete...")
+            rownames(bootCC) <- seq_len(nrow(bootCC))
+            return(list(Data=CE,DirectEffects=bootCC ))
+          }
 
-    }else{
-      rownames(bootCC) <- seq_len(nrow(bootCC))
-      return(list(DirectEffects=bootCC ))
+        }else{
+          rownames(bootCC) <- seq_len(nrow(bootCC))
+          return(list(DirectEffects=bootCC ))
+        }
     }
   }
 }

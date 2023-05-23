@@ -159,6 +159,9 @@ dataVerification <- function(CC, CE, EE){
         # CALCULATE WITH THREE MATRIX
         # afecta si los datos son dim = 2 o dim = 3 ??? NO.
         if ( (ncol(CC) == nrow(CE)) & (ncol(CE) == nrow(EE))  ){
+            if( is.null(rownames(CC)) & is.null(colnames(CC)) & is.null(rownames(CE)) & is.null(colnames(CE)) & is.null(rownames(EE)) & is.null(colnames(EE))){
+                stop("The dataset needs row and column names")
+            }
             return( list(CC, CE, EE))
         }else{
             # warning or stop ?
@@ -168,6 +171,9 @@ dataVerification <- function(CC, CE, EE){
     else if ( !is.null(CC) & !is.null(CE) & is.null(EE) ){
         # CALCULO POR DERECHA (FALTA EE)
         if( ncol(CC) == nrow(CE)){
+            if( is.null(rownames(CC)) & is.null(colnames(CC)) & is.null(rownames(CE)) & is.null(colnames(CE)) ){
+                stop("The dataset needs row and column names")
+            }
             return( list(CC, CE, NULL))
         }else{
             stop("Warning, the data dimension is not correct, verify")
@@ -176,6 +182,9 @@ dataVerification <- function(CC, CE, EE){
     else if ( is.null(CC) & !is.null(CE) & !is.null(EE) ){
         # CALCULO POR IZQUIERDA (FALTA CC)
         if ( ncol(CE) == nrow(EE)){
+            if( is.null(rownames(CE)) & is.null(colnames(CE)) & is.null(rownames(EE)) & is.null(colnames(EE))){
+                stop("The dataset needs row and column names")
+            }
             return( list(NULL, CE, EE))
         }else{
             stop("Warning, the data dimension is not correct, verify")

@@ -126,6 +126,9 @@ bootCent <- function(CC, CE, EE, model, reps, conf.level, parallel, ncpus){
         assign(xVal, valVal, envir = ofuss)
     }
   if( !is.null(CE) & !is.null(EE)){
+    if( is.null(rownames(CC)) & is.null(colnames(CC)) & is.null(rownames(CE)) & is.null(colnames(CE)) & is.null(rownames(EE)) & is.null(colnames(EE)) ){
+        stop("The dataset needs row and column names")
+    }
     CE <- BTCgraphs_centrality(CC = CC, CE = CE, EE = EE)
   }
   if( missing(CE)){
@@ -136,6 +139,9 @@ bootCent <- function(CC, CE, EE, model, reps, conf.level, parallel, ncpus){
     if( nrow(CE) != ncol(CE)){
       warning("Only for square matrix.")
       return(NULL)
+    }
+    else if(is.null(rownames(CE)) & is.null(colnames(CE))){
+        stop("The dataset needs row and column names")
     }
     output_resultIgraph <- resultIgraph(CE)
 
