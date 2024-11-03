@@ -286,85 +286,90 @@ DataFrame fe_left(NumericMatrix threshold, NumericMatrix CC, NumericMatrix CE,Nu
     }
 }
 // [[Rcpp::export]]
-DataFrame fe_right(NumericMatrix threshold, NumericMatrix CE, NumericMatrix EE,NumericMatrix M3){
-    if(threshold.length() == 0){
+DataFrame fe_right(NumericMatrix threshold, NumericMatrix CE, NumericMatrix EE, NumericMatrix M3) {
+    if (threshold.length() == 0) {
         return R_NilValue;
-    }else{
-        // 1) Obtener nombres de filas y columas de las matrices ingresadas
+    } else {
+        // 1) Obtener nombres de filas y columnas de las matrices ingresadas
         CharacterVector rownames_CE = rownames(CE);
         CharacterVector colnames_CE = colnames(CE);
-        //
+
         CharacterVector rownames_EE = rownames(EE);
         CharacterVector colnames_EE = colnames(EE);
-        // RIGHT
-        // right_0 -> From, right_1 -> through, right_2 -> To, right_3 -> Mu
-        int nrowCE = CE.nrow();
-        int dim_right = nrowCE*threshold.nrow();
-        NumericVector right_0( dim_right, NumericVector::get_na() );
-        NumericVector right_1( dim_right, NumericVector::get_na() );
-        NumericVector right_2( dim_right, NumericVector::get_na() );
-        NumericVector right_3( dim_right, NumericVector::get_na() );
-        //
-        for( int x = 0; x < threshold.nrow(); x++ ){
-            // Datos por derecha
-            NumericVector row_CE = CE( (threshold(x,0) -1) , _ );
-            NumericVector col_EE = EE( _ , (threshold(x,1) -1) );
-            // 3.1) Preparacion para encontrar los caminos con maxmin multiple.
-            // DERECHA
-            NumericMatrix right = cbindRcpp(row_CE, col_EE);
-            // maxmin multiple por derecha
-            NumericVector right_min(right.nrow());
-            for(int i = 0; i < right.nrow(); i ++ ){
-                right_min[i]  = min(right(i, _ ));
-            }
-            NumericVector right_max = which_max_multiple(right_min, CE);
 
-            if( right_max.size() > 1 ){
-                for(int i = 0; i < right_max.size(); i++ ){
-                    right_0.push_back(threshold(x,0) -1);
-                    right_1.push_back(right_max[i]);
-                    right_2.push_back(threshold(x,1) -1 );
-                    right_3.push_back(M3((threshold(x,0) - 1), (threshold(x,1) - 1)));
-                }
-            }else{
-                right_0.push_back(threshold(x,0) -1 );
-                right_1.push_back(right_max[0]);
-                right_2.push_back(threshold(x,1) -1 );
-                right_3.push_back(M3((threshold(x,0) - 1), (threshold(x,1) - 1)));
+        // 2) Crear vectores vacíos para almacenar los resultados
+        NumericVector right_0;
+        NumericVector right_1;
+        NumericVector right_2;
+        NumericVector right_3;
+
+        // 3) Recorrer las filas de threshold para obtener los índices con los valores
+        for (int x = 0; x < threshold.nrow(); x++) {
+            // Datos por derecha
+            NumericVector row_CE = CE((threshold(x, 0) - 1), _);
+            //NumericVector col_EE = EE(_, (threshold(x, 1) - 1));
+            // El de arriba es el antiguo pero realmente deberia ser con CE siempre
+            NumericVector col_EE = EE(_, (threshold(x, 1) - 1));
+
+            // Preparación para encontrar los caminos con maxmin múltiple
+            NumericMatrix right = cbindRcpp(row_CE, col_EE);
+
+
+            // Rcpp::Rcout << "right " << right <<  std::endl;
+            // Maxmin múltiple por derecha
+            NumericVector right_min(right.nrow());
+            for (int i = 0; i < right.nrow(); i++) {
+                right_min[i] = min(right(i, _));
+            }
+            // Imprimir el right_min
+            // Rcpp::Rcout << "right_min " << right_min <<  std::endl;
+
+
+
+            NumericVector right_max = which_max_multiple(right_min, CE);
+            // Imprimir el right_max
+            //Rcpp::Rcout << "right_max " << right_max <<  std::endl;
+
+
+            // Identificar por cuál camino se fueron los datos
+            for (int i = 0; i < right_max.size(); i++) {
+                right_0.push_back(threshold(x, 0) - 1);
+                right_1.push_back(right_max[i]);
+                right_2.push_back(threshold(x, 1) - 1);
+                right_3.push_back(M3((threshold(x, 0) - 1), (threshold(x, 1) - 1)));
             }
         }
-        ////////////////////////////////////////////////////////////////////////////
-        // RIGHT
-        ////////////////////////////////////////////////////////////////////////////
-        // 4) ORDENAR LOS DATOS EN SUS RESPECTIVAS SALIDAS
-        right_0 = na_omit(right_0);
-        right_1 = na_omit(right_1);
-        right_2 = na_omit(right_2);
-        right_3 = na_omit(right_3);
-        // Preparando los row and col names
+
+        // 4) Ordenar los datos en sus respectivas salidas
+        // Preparando los nombres de filas y columnas
         CharacterVector right_FROM;
         CharacterVector right_THROUGH;
         CharacterVector right_TO;
         NumericVector right_MU;
-        for( int i = 0; i < right_0.size(); i++){
-            double from = right_0[i] ;
-            double thought = right_1[i];
-            double to = right_2[i] ;
+        for (int i = 0; i < right_0.size(); i++) {
+            int from = static_cast<int>(right_0[i]);
+            int through = static_cast<int>(right_1[i]);
+            int to = static_cast<int>(right_2[i]);
             double mu = right_3[i];
-            //
-            if(colnames_CE[thought] != colnames_EE[to]){
+
+            // Evitar que 'Through' y 'To' sean iguales
+            // Imprimir los valores actuales
+            //Rcpp::Rcout << "Iteración " << i << ": rownames_CE[through] = " << rownames_CE[through] << ", colnames_EE[to] = " << colnames_EE[to] <<  std::endl;
+
+            if (rownames_CE[through] != colnames_EE[to]) {
                 right_FROM.push_back(rownames_CE[from]);
-                right_THROUGH.push_back(colnames_CE[thought]);
+                right_THROUGH.push_back(rownames_CE[through]); // Corrección aplicada aquí
                 right_TO.push_back(colnames_EE[to]);
                 right_MU.push_back(mu);
             }
         }
+
         DataFrame df__RIGHT = DataFrame::create(
             Named("From") = clone(na_omit(right_FROM)),
             Named("Through") = clone(na_omit(right_THROUGH)),
             Named("To") = clone(na_omit(right_TO)),
             Named("Mu") = clone(na_omit(right_MU))
         );
-        return(df__RIGHT);
+        return df__RIGHT;
     }
 }
