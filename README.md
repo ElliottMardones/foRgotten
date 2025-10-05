@@ -1,6 +1,6 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/ElliottMardones/foRgotten)
 # foRgotten
 
 <!-- badges: start -->
