@@ -5,12 +5,12 @@
 \alias{EE}
 \title{Public policy data on air pollution in the Valdivia commune, Chile.}
 \format{
-Three-dimensional matrix with 4 behavior and 10 key experts
+Three-dimensional matrix with 4 behavior variables and 10 key experts.
 \describe{
-  \item{B1}{ People improve thermal insulation of houses}
-  \item{B2}{ People improve firewood combustion equipment efficiency and its components}
-  \item{B3}{ People improve firewood quality and availability of other combustibles}
-  \item{B4}{ Education and awareness in the community}
+  \item{B1}{People improve thermal insulation of houses}
+  \item{B2}{People improve firewood combustion equipment efficiency and its components}
+  \item{B3}{People improve firewood quality and availability of other combustibles}
+  \item{B4}{Education and awareness in the community}
 }
 }
 \usage{
@@ -18,13 +18,17 @@ EE
 }
 \description{
 We illustrate the use of the foRgotten package with data on public
- policies on air pollution from the Valdivia commune, Chile. Studied by Manna, E. M et al (2018)
-  where incentives were considered to promote behavior change in public policy on air pollution.
+policies on air pollution from the Valdivia commune, Chile. Studied by Manna, E. M. et al. (2017),
+where incentives were considered to promote behavior change in public policy on air pollution.
 }
 \details{
 EE
 }
 \references{
-Nicolas, C., Rojas-Mora, J., & Valenzuela-Fernandez, L. (2020). Causal relationships between economic activity and the mining industry in Chile. Journal of Intelligent & Fuzzy Systems, 38(5), 5405-5412.
+Manna, E. M., Rojas-Mora, J., & Mondaca-Marino, C. (2017).
+Application of the Forgotten Effects Theory for Assessing the Public Policy
+on Air Pollution of the Commune of Valdivia, Chile. In
+\emph{From Science to Society: New Trends in Environmental Informatics}
+(pp. 61-72). Cham: Springer International Publishing.
 }
 \keyword{datasets}

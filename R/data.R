@@ -1,95 +1,179 @@
-
 #' CC
 #'
-#'
 #' @title Public policy data on air pollution in the Valdivia commune, Chile.
-
+#'
 #' @description We illustrate the use of the foRgotten package with data on public policies
-#'  on air pollution from the Valdivia commune, Chile. Studied by Manna, E. M et al (2018) where
-#'   incentives were considered to promote behavior change in public policy on air pollution.
-
+#' on air pollution from the Valdivia commune, Chile. Studied by Manna, E. M. et al. (2017), where
+#' incentives were considered to promote behavior change in public policy on air pollution.
+#'
 #' @format Three-dimensional matrix with 16 incentives and 10 key experts.
 #' \describe{
-#'   \item{I1}{ Prohibition}
-#'   \item{I2}{ Standard(regulation))}
-#'   \item{I3}{ Subsidy for heating devices for public services}
-#'   \item{I4}{ Subsidy for heating devices for households}
-#'   \item{I5}{ Record (inventory, information)}
-#'   \item{I6}{ Dry firewood}
-#'   \item{I7}{ Inspection and audit}
-#'   \item{I8}{ Improvement and production}
-#'   \item{I9}{ Subsidy for firewood}
-#'   \item{I10}{ Subsidy for thermal insulation of houses}
-#'   \item{I11}{ Education}
-#'   \item{I12}{ Subsidy for boilers}
-#'   \item{I13}{ R&D, research and development}
-#'   \item{I14}{ Subsidy for transportation}
-#'   \item{I15}{ Environmental impact assessment system}
-#'   \item{I16}{ Mitigation}
+#'   \item{I1}{Prohibition}
+#'   \item{I2}{Standard/regulation}
+#'   \item{I3}{Subsidy for heating devices for public services}
+#'   \item{I4}{Subsidy for heating devices for households}
+#'   \item{I5}{Record: inventory and information}
+#'   \item{I6}{Dry firewood}
+#'   \item{I7}{Inspection and audit}
+#'   \item{I8}{Improvement and production}
+#'   \item{I9}{Subsidy for firewood}
+#'   \item{I10}{Subsidy for thermal insulation of houses}
+#'   \item{I11}{Education}
+#'   \item{I12}{Subsidy for boilers}
+#'   \item{I13}{R&D, research and development}
+#'   \item{I14}{Subsidy for transportation}
+#'   \item{I15}{Environmental impact assessment system}
+#'   \item{I16}{Mitigation}
 #' }
-#' @references
-#' Nicolas, C., Rojas-Mora, J., & Valenzuela-Fernandez, L. (2020). Causal relationships between economic activity and the mining industry in Chile. Journal of Intelligent & Fuzzy Systems, 38(5), 5405-5412.
 #'
+#' @references
+#' Manna, E. M., Rojas-Mora, J., & Mondaca-Marino, C. (2017).
+#' Application of the Forgotten Effects Theory for Assessing the Public Policy
+#' on Air Pollution of the Commune of Valdivia, Chile. In
+#' \emph{From Science to Society: New Trends in Environmental Informatics}
+#' (pp. 61-72). Cham: Springer International Publishing.
+#'
+#' @keywords datasets
 "CC"
+
 
 #' CE
 #'
 #' @title Public policy data on air pollution in the Valdivia commune, Chile.
-
-#' @description We illustrate the use of the foRgotten package with data on public policies
-#'  on air pollution from the Valdivia commune, Chile. Studied by Manna, E. M et al (2018) where
-#'   incentives were considered to promote behavior change in public policy on air pollution.
-
-#' @format Three-dimensional matrix with 16 incentives in rows, 4 behavior in columns and 10 key experts.
-#' @format Incentives
-#' \describe{
-#'   \item{I1}{ Prohibition}
-#'   \item{I2}{ Standard(regulation))}
-#'   \item{I3}{ Subsidy for heating devices for public services}
-#'   \item{I4}{ Subsidy for heating devices for households}
-#'   \item{I5}{ Record (inventory, information)}
-#'   \item{I6}{ Dry firewood}
-#'   \item{I7}{ Inspection and audit}
-#'   \item{I8}{ Improvement and production}
-#'   \item{I9}{ Subsidy for firewood}
-#'   \item{I10}{ Subsidy for thermal insulation of houses}
-#'   \item{I11}{ Education}
-#'   \item{I12}{ Subsidy for boilers}
-#'   \item{I13}{ R&D, research and development}
-#'   \item{I14}{ Subsidy for transportation}
-#'   \item{I15}{ Environmental impact assessment system}
-#'   \item{I16}{ Mitigation}
-#' }
-#' @format Behavior
-#' \describe{
-#'   \item{B1}{ People improve thermal insulation of houses}
-#'   \item{B2}{ People improve firewood combustion equipment efficiency and its components}
-#'   \item{B3}{ People improve firewood quality and availability of other combustibles}
-#'   \item{B4}{ Education and awareness in the community}
-#' }
-#' @references
-#' Nicolas, C., Rojas-Mora, J., & Valenzuela-Fernandez, L. (2020). Causal relationships between economic activity and the mining industry in Chile. Journal of Intelligent & Fuzzy Systems, 38(5), 5405-5412.
 #'
+#' @description We illustrate the use of the foRgotten package with data on public policies
+#' on air pollution from the Valdivia commune, Chile. Studied by Manna, E. M. et al. (2017), where
+#' incentives were considered to promote behavior change in public policy on air pollution.
+#'
+#' @format Three-dimensional matrix with 16 incentives in rows, 4 behavior in columns and 10 key experts.
+#'
+#' Incentives:
+#' \describe{
+#'   \item{I1}{Prohibition}
+#'   \item{I2}{Standard/regulation}
+#'   \item{I3}{Subsidy for heating devices for public services}
+#'   \item{I4}{Subsidy for heating devices for households}
+#'   \item{I5}{Record: inventory and information}
+#'   \item{I6}{Dry firewood}
+#'   \item{I7}{Inspection and audit}
+#'   \item{I8}{Improvement and production}
+#'   \item{I9}{Subsidy for firewood}
+#'   \item{I10}{Subsidy for thermal insulation of houses}
+#'   \item{I11}{Education}
+#'   \item{I12}{Subsidy for boilers}
+#'   \item{I13}{R&D, research and development}
+#'   \item{I14}{Subsidy for transportation}
+#'   \item{I15}{Environmental impact assessment system}
+#'   \item{I16}{Mitigation}
+#' }
+#'
+#' Behavior:
+#' \describe{
+#'   \item{B1}{People improve thermal insulation of houses}
+#'   \item{B2}{People improve firewood combustion equipment efficiency and its components}
+#'   \item{B3}{People improve firewood quality and availability of other combustibles}
+#'   \item{B4}{Education and awareness in the community}
+#' }
+#'
+#' @references
+#' Manna, E. M., Rojas-Mora, J., & Mondaca-Marino, C. (2017).
+#' Application of the Forgotten Effects Theory for Assessing the Public Policy
+#' on Air Pollution of the Commune of Valdivia, Chile. In
+#' \emph{From Science to Society: New Trends in Environmental Informatics}
+#' (pp. 61-72). Cham: Springer International Publishing.
+#'
+#' @keywords datasets
 "CE"
+
 
 #' EE
 #'
 #' @title Public policy data on air pollution in the Valdivia commune, Chile.
 #'
 #' @description We illustrate the use of the foRgotten package with data on public
-#'  policies on air pollution from the Valdivia commune, Chile. Studied by Manna, E. M et al (2018)
-#'   where incentives were considered to promote behavior change in public policy on air pollution.
+#' policies on air pollution from the Valdivia commune, Chile. Studied by Manna, E. M. et al. (2017),
+#' where incentives were considered to promote behavior change in public policy on air pollution.
 #'
-#' @format Three-dimensional matrix with 4 behavior and 10 key experts
+#' @format Three-dimensional matrix with 4 behavior variables and 10 key experts.
 #' \describe{
-#'   \item{B1}{ People improve thermal insulation of houses}
-#'   \item{B2}{ People improve firewood combustion equipment efficiency and its components}
-#'   \item{B3}{ People improve firewood quality and availability of other combustibles}
-#'   \item{B4}{ Education and awareness in the community}
+#'   \item{B1}{People improve thermal insulation of houses}
+#'   \item{B2}{People improve firewood combustion equipment efficiency and its components}
+#'   \item{B3}{People improve firewood quality and availability of other combustibles}
+#'   \item{B4}{Education and awareness in the community}
 #' }
-#' @references
-#' Nicolas, C., Rojas-Mora, J., & Valenzuela-Fernandez, L. (2020). Causal relationships between economic activity and the mining industry in Chile. Journal of Intelligent & Fuzzy Systems, 38(5), 5405-5412.
 #'
+#' @references
+#' Manna, E. M., Rojas-Mora, J., & Mondaca-Marino, C. (2017).
+#' Application of the Forgotten Effects Theory for Assessing the Public Policy
+#' on Air Pollution of the Commune of Valdivia, Chile. In
+#' \emph{From Science to Society: New Trends in Environmental Informatics}
+#' (pp. 61-72). Cham: Springer International Publishing.
+#'
+#' @keywords datasets
 "EE"
 
 
+#' M
+#'
+#' @title Public policy data on air pollution in the Valdivia commune, Chile.
+#'
+#' @description Three-dimensional block matrix combining policy incentives and behavior
+#' variables related to public policy on air pollution in the Valdivia commune,
+#' Chile. We illustrate the use of the foRgotten package with data on public policies
+#' on air pollution from the Valdivia commune, Chile. Studied by Manna, E. M.
+#' et al. (2017), where incentives were considered to promote behavior change
+#' in public policy on air pollution.
+#'
+#' @format A three-dimensional matrix with dimensions 20 x 20 x 10.
+#'
+#' The first dimension represents rows, the second dimension represents columns,
+#' and the third dimension represents 10 key experts.
+#'
+#' Rows and columns are organized as follows:
+#' \describe{
+#'   \item{I1}{Prohibition}
+#'   \item{I2}{Standard/regulation}
+#'   \item{I3}{Subsidy for heating devices for public services}
+#'   \item{I4}{Subsidy for heating devices for households}
+#'   \item{I5}{Record: inventory and information}
+#'   \item{I6}{Dry firewood}
+#'   \item{I7}{Inspection and audit}
+#'   \item{I8}{Improvement and production}
+#'   \item{I9}{Subsidy for firewood}
+#'   \item{I10}{Subsidy for thermal insulation of houses}
+#'   \item{I11}{Education}
+#'   \item{I12}{Subsidy for boilers}
+#'   \item{I13}{R&D, research and development}
+#'   \item{I14}{Subsidy for transportation}
+#'   \item{I15}{Environmental impact assessment system}
+#'   \item{I16}{Mitigation}
+#'   \item{B1}{People improve thermal insulation of houses}
+#'   \item{B2}{People improve firewood combustion equipment efficiency and its components}
+#'   \item{B3}{People improve firewood quality and availability of other combustibles}
+#'   \item{B4}{Education and awareness in the community}
+#' }
+#'
+#' The matrix is arranged by blocks:
+#' \describe{
+#'   \item{M[1:16, 1:16, ]}{CC: relationships among the 16 public policy incentives.}
+#'   \item{M[1:16, 17:20, ]}{CE: relationships from incentives to behavior variables. In this dataset, this block is a zero matrix.}
+#'   \item{M[17:20, 1:16, ]}{Zero block: relationships from behavior variables to incentives are not considered in this dataset.}
+#'   \item{M[17:20, 17:20, ]}{EE: relationships among the 4 behavior variables.}
+#' }
+#'
+#' @details
+#' `M` is obtained by joining `CC`, `CE`, and `EE` into a single
+#' three-dimensional block matrix. The rows and columns follow the same order:
+#' first the 16 incentives, followed by the 4 behavior variables.
+#'
+#' For each key expert, `M[, , k]` is a 20 x 20 matrix.
+#'
+#' @references
+#' Manna, E. M., Rojas-Mora, J., & Mondaca-Marino, C. (2017).
+#' Application of the Forgotten Effects Theory for Assessing the Public Policy
+#' on Air Pollution of the Commune of Valdivia, Chile. In
+#' \emph{From Science to Society: New Trends in Environmental Informatics}
+#' (pp. 61-72). Cham: Springer International Publishing.
+#'
+#' @keywords datasets
+"M"
